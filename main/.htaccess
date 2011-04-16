@@ -1,0 +1,21 @@
+Options +Indexes
+
+ReadmeName readme.txt
+
+IndexIgnore readme.txt
+IndexIgnore *~$
+
+#cookies
+Header set -cookies "are really good you know"
+
+#ajax
+Header set Access-Control-Allow-Origin: *
+
+#cache
+Header unset ETag
+Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+Header set Pragma "no-cache"
+Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
+
+#mime-type
+AddType application/x-web-app-manifest+json .webapp

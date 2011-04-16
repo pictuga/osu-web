@@ -1,0 +1,9 @@
+recupère les différentes parties du fichier
+\[(\w*?)\]\r\n(.*?)\n\r
+
+récupère les différentes données des parties
+(\w+?) ?: ?(.*?)(?:\n|\Z)
+(?:(?:\n|\A))(\w+?) ?: ?(.*?)(?=(\n|\Z))
+
+récupère les différentes données des parties + LES BIZARRES
+(?:(?:\n|\A))((\w+?) ?: ?(.*?)|.*?)(?=(\n|\Z))

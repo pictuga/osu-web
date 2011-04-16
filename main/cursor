@@ -1,0 +1,1 @@
+icotool -c -h 64 -w 64 -X 32 -Y 32 --cursor -o cursor.cur cursor-64.png

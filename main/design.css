@@ -1,0 +1,197 @@
+@font-face
+{
+	font-family : Arial;
+	src : url(font.ttf);
+}
+
+body, html
+{
+	height : 100%;
+	width : 100%;
+	
+	margin : 0;
+	padding : 0;
+	
+	cursor: url("cursor.cur"), auto;
+}
+
+html > *
+{
+	width : 100%;
+	margin : 0;
+	padding : 0;
+}
+
+*
+{
+	overflow : hidden;
+	font-family: Arial, serif;
+}
+
+h1
+{
+	text-align : center;
+	font-size : 2em;
+}
+
+h2
+{
+	border-bottom : 1px dotted gray;
+	font-size : 1em;
+	text-indent : 10%;
+}
+
+canvas
+{
+	margin : auto;
+	
+	background-repeat : no-repeat;
+	background-position : center center;
+	background-attachment : fixed;
+	background-size: 100%;
+}
+
+.key
+{
+	width : 5%;
+	display : block;
+	float : left;
+	font-family: monaco, "Bitstream Vera Sans Mono", "Courier New", courier, monospace, serif;
+	font-weight : bold;
+	text-transform : uppercase;
+}
+
+	.key:after
+	{
+		content : ' → ';
+		text-align : right;
+	}
+
+.warning
+{
+	color : red;
+	font-size : 2em;
+	text-transform : uppercase;
+	border : none;
+}
+
+/******************************************** loader ********************************************/
+
+#pdiv + #loader
+{
+	top : auto;
+	position : fixed;
+	bottom : 1.25%;
+	height : 7.5%;
+}
+
+#loader
+{
+	width : 80%;
+	height : 10%;
+	border : 1px solid black;
+	position : fixed;
+	top : 45%;
+	left : 10%;
+	
+	border-radius : 50px;
+}
+
+	#loader div
+	{
+		left : 0;
+		top : 0;
+		margin : 0;
+		background-color : gray;
+		height : 100%;
+		
+		border-radius : 50px;
+	}
+
+/******************************************** picker ********************************************/
+
+#pdiv
+{
+	width : 80%;
+	height : 80%;
+	
+	margin : auto;
+	top : 10%;
+	right : 10%;
+	position : fixed;
+	
+	border : 1px solid gray;
+	
+	overflow : auto;
+	
+	background-color : rgba(255, 255, 255, 0.5); 
+}
+
+	#pdiv > div
+	{
+		border-bottom : 1px solid gray;
+	}
+	
+		#pdiv > div:hover
+		{
+			font-weight : bold;
+		}
+		
+		#pdiv > div:hover > div
+		{
+			font-weight : normal;
+		}
+	
+	#pdiv > div > div
+	{
+		padding-left : 5%;
+	}
+	
+		#pdiv > div > div:hover
+		{
+			font-weight : bold;
+		}
+	
+	#pdiv #button, #pdiv input, #pdiv button
+	{
+		bottom : 1.25%;
+		margin : auto;
+		position : fixed;
+		
+		width : 80%;
+		height : 7.5%;
+		display : block;
+		
+		text-align : center;
+		border : 1px solid gray;
+	}
+
+/******************************************** jWindow ********************************************/
+
+#jWindow
+{
+	width : 30%;
+	height : 30%;
+
+	position : absolute;
+	overflow-x : hidden;
+	overflow-y : hidden;
+
+	background-color : rgba(192, 192, 192, 0.75);
+	border : 1px solid black;
+	
+	z-index : 1000;
+}
+
+#jWindow #jWindowText
+{
+	width : 90%;
+	height : 100%;
+	margin-right : 0;
+
+	overflow-x : hidden;
+	overflow-y : auto;
+
+	background-color : white;
+	cursor : default;
+}
