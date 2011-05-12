@@ -1,3 +1,3 @@
-<h1>osu! web / unstable / main</h1>
+<h1>osu! web / unstable</h1>
 
-Main unstable branch. Working on sliders.
+latest commit from <a href="https://launchpad.net/osu-web">https://launchpad.net/osu-web</a>
