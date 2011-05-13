@@ -28,18 +28,30 @@ function cartFromPol(r, teta)
 	
 function pointAtDistance(array, distance)
 {
-	var current_distance = 0,
-		last_distance = 0;
+	//needs a serious cleanup !
 	
-	if(distanceFromPoints(array) < distance)
-	{
-		var angle = angleFromPoints(array[array.length-2][0], array[array.length-2][1], array[array.length-1][0], array[array.length-1][1]);
-		return [array[array.length-1][0], array[array.length-1][0], angle, array.length-2];
-	}
+	var current_distance = 0;
+	var last_distance = 0;
+	
+	if(array.length < 2) return [0, 0, 0, 0];
+	
 	if(distance == 0)
 	{
 		var angle = angleFromPoints(array[0][0], array[0][1], array[1][0], array[1][1]);
 		return [array[0][0], array[0][1], angle, 0];
+	}
+	
+	if(distanceFromPoints(array) <= distance)
+	{
+		var angle = angleFromPoints
+			(
+			array[array.length-2][0], array[array.length-2][1],
+			array[array.length-1][0], array[array.length-1][1]
+			);
+		return	[
+			array[array.length-1][0], array[array.length-1][1],
+			angle, array.length-2
+			];
 	}
 	
 	for(i = 0; i <= array.length - 2; i++)
