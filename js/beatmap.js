@@ -49,38 +49,16 @@ function initBeatMap()
 	
 		for(key in osu_file.HitObjects)
 		{
-			var hc_info = osu_file.HitObjects[key];
-		
-			var new_hc = new hitCircle();
-			new_hc.x = hc_info[0];
-			new_hc.y = hc_info[1];
-		
-			new_hc.time = hc_info[2];
-			new_hc.type = hc_info[3];
-			new_hc.sound = hc_info[4];
-		
-			if(hc_info[3] == 2 || hc_info[3] == 6)
-			{
-				//slider
-				new_hc.curveData = hc_info[5];
-				new_hc.repeatCount = hc_info[6];
-				new_hc.sliderLengthPixels = hc_info[7];
-			}
-			else if(hc_info[3] == 8 || hc_info[3] == 12)
-			{
-				//spinner
-				new_hc.endTime = hc_info[5];
-			}
-		
-			if(hc_info[3] == 4 || hc_info[3] == 5 || hc_info[3] == 6)
+			var new_hc = new hitCircle(osu_file.HitObjects[key]);
+			
+			if(new_hc.type == 4 || new_hc.type == 5 || new_hc.type == 6)
 			{
 				//new combo
-			
 				if(key != 0) combo++;//solves issue if 1st hitObject
-			
+
 				new_hc.comboKey = 1;
 				new_hc.combo = combo;
-			
+
 				comboKey = 2;
 			}
 			else
@@ -89,8 +67,7 @@ function initBeatMap()
 				new_hc.combo = combo;
 				comboKey++;
 			}
-		
-			//send to array
+			
 			hc.push(new_hc);
 		}
 	
@@ -238,7 +215,7 @@ function checkHit(e)
 		
 		if(hc[key].type == 2 || hc[key].type == 6)//slider
 		{
-			var t = hc[key].repeatCount * ( hc[key].sliderLengthPixels / sliderSpeed );//time with repeat
+			var t = hc[key].sliderCount * ( hc[key].sliderLength / sliderSpeed );//time with repeat
 			
 			if(isIn(time, hc[key].time-1500, hc[key].time+t))
 			{
@@ -568,33 +545,59 @@ var type_array = {
 
 var hc = [];//filled with initBeatMap()
 
-function hitCircle() //class // actually not only hitcircles ;)
+function hitCircle(input)//class
 {
-	this.x = 0;
-	this.y = 0;
+	//init
 	
-	this.comboKey = 0;
-	this.combo = 0;
+	this.comboKey	= 0;
+	this.combo	= 0;
 	
-	this.type = 0;
-	this.sound = 0;
+	this.sound	= 0;
 	
-	this.time = 0;
+	this.clic	= false;
+	this.clicTime	= 0;
+	this.score	= 0;
 	
-	this.clic = false;
-	this.clicTime = 0;
-	this.score = 0;
+	//parse
 	
-	//sliders
-	this.curveData = 0;
-	this.repeatCount = 1;
-	this.sliderLengthPixels = 0;
+	this.input	= input;
 	
-	this.slidePoints = [];
-	
-	//spinners
-	this.endTime = 0;
-	this.spinPoints = [];
+	this.x		= this.input[0];
+	this.y		= this.input[1];
+
+	this.time	= this.input[2];
+	this.type	= this.input[3];
+	this.sound	= this.input[4];
+
+	if(this.type == 2 || this.type == 6)
+	{
+		//slider
+		this.sliderData		= this.input[5];
+		this.sliderType		= this.input[5][0];
+		this.sliderPoints	= this.sliderData.slice(1);
+		
+		this.curveData		= this.input[5];
+		this.curveData[0]	= [this.x, this.y];
+		
+		this.sliderCount	= this.input[6];
+		this.sliderLength	= this.input[7];
+		
+		this.slidePoints = [];
+		
+		if(this.sliderType == "B")
+		{
+			//bezier
+			this.bezier = new Bezier(this.curveData);
+			this.bezier.calcPoints();
+			this.curveData = array_values(this.bezier.pos);
+		}
+	}
+	else if(this.type == 8 || this.type == 12)
+	{
+		//spinner
+		this.endTime		= this.input[5];
+		this.spinPoints = [];
+	}
 }
 	
 	hitCircle.prototype.draw = function()
@@ -618,9 +621,8 @@ function hitCircle() //class // actually not only hitcircles ;)
 		{
 			//have fun
 			var points = this.curveData;
-			points[0] = [this.x, this.y];
 			
-			var t = this.repeatCount * ( this.sliderLengthPixels / sliderSpeed );//time with repeat
+			var t = this.sliderCount * ( this.sliderLength / sliderSpeed );//time with repeat
 			
 			if(isIn(time, this.time-1500, this.time))//approach
 			{
@@ -642,7 +644,7 @@ function hitCircle() //class // actually not only hitcircles ;)
 			}
 		}
 		
-		else	log('unkown hitObject type', this.type);
+		else	log('unkown hitObject type : ' + this.type, this);
 	}
 	
 	
@@ -692,16 +694,16 @@ function hitCircle() //class // actually not only hitcircles ;)
 			ctx.globalCompositeOperation = "destination-over";
 			
 			//reverse arrow
-				if(this.repeatCount > 1)
+				if(this.sliderCount > 1)
 				{
 					if(time > this.time)
 					{
-						var t = this.sliderLengthPixels / sliderSpeed;
+						var t = this.sliderLength / sliderSpeed;
 						var repeat = (Math.ceil((time-this.time) / t));
 						
-						log(repeat, [repeat % 2, (repeat % 2 == 1)], this.repeatCount);
+						log(repeat, [repeat % 2, (repeat % 2 == 1)], this.sliderCount);
 						
-						if(this.repeatCount > repeat)
+						if(this.sliderCount > repeat)
 						{
 							var xy = (repeat % 2 == 1) ? this.curveData[this.curveData.length-1] : [this.x, this.y];
 							var image = pic["reversearrow"];
@@ -808,8 +810,8 @@ function hitCircle() //class // actually not only hitcircles ;)
 			{
 				var image = pic["spinner-circle"];
 				
-				var angle1 =  angleWithCenter(this.spinPoints[0][0], this.spinPoints[0][1]);
-				var angle2 =  angleWithCenter(this.spinPoints[this.spinPoints.length-1][0], this.spinPoints[this.spinPoints.length-1][1]);
+				var angle1 =  angleWithCenter(this.spinPoints[0]);
+				var angle2 =  angleWithCenter(this.spinPoints[this.spinPoints.length-1]);
 				
 				angleDiff = mainMesure(angle2 - angle1);
 				
@@ -865,42 +867,38 @@ function hitCircle() //class // actually not only hitcircles ;)
 				slided = true;
 			}
 		}
-		
+	
 		var points = this.curveData;
-		points[0] = [this.x, this.y];
-		
+	
 		//speed
-		var t1 = this.sliderLengthPixels / sliderSpeed;	//time if slider at good speed
-		
+		var t1 = this.sliderLength / sliderSpeed;	//time if slider at good speed
 		var v2 = distanceFromPoints(points) / t1;	//speed with sliders with wrong length
-		
-		var progress = ( time - this.time ) - ( t1 * Math.floor( ( time-this.time ) / t1) );
-								// ↑ elsapsed time
+		var progress = ( time - this.time ) - ( t1 * Math.floor( ( time-this.time ) / t1) );//elsapsed time
 		var dist = v2 * progress;			//distance during elapsed time
-		
+	
 		if((Math.floor((time-this.time) / t1)) % 2 != 0)//if going back
 			dist = distanceFromPoints(points) - dist;
-		
+	
 		var at = pointAtDistance(points, dist);
-		
+	
 		if(!isNaN(at[0]) && !isNaN(at[1]))
 		{
 			//circle
 				if(slided)
 				{
 					ctx.globalCompositeOperation = "source-over";
-			
+		
 					ctx.beginPath();
 					ctx.strokeStyle = "yellow";
 					ctx.lineWidth = 5;
 						ctx.circle(at[0]*ws, at[1]*hs, circleSize*hs*2);
 					ctx.stroke();
 				}
-			
+		
 			//ball
 				var i = (Math.floor(dist/10) % 10);
 				if(points[at[3]][0] > points[at[3]+1][0]) i = 9 - i;//fix issues where ball goes backward
-				
+			
 				var image = pic["sliderb" + i];
 				ctx.globalCompositeOperation = "source-over";
 				ctx.drawImageAngle(image, at[0]*hs, at[1]*ws, at[2]);
@@ -961,12 +959,11 @@ function hitCircle() //class // actually not only hitcircles ;)
 			var radius = circleSize * 1.25;
 		
 			var points = this.curveData;
-			points[0] = [this.x, this.y];
 		
 			//speed
-			var t = this.sliderLengthPixels / sliderSpeed;
+			var t = this.sliderLength / sliderSpeed;
 		
-			if(isIn(time, this.time-1500, (this.time + t * this.repeatCount)))
+			if(isIn(time, this.time-1500, (this.time + t * this.sliderCount)))
 			{
 				var v = distanceFromPoints(points) / t;//speed with wrong length
 		

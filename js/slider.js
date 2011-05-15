@@ -13,9 +13,9 @@ function distanceFromPoints(array)
 	return distance;
 }
 
-function angleFromPoints(x1, y1, x2, y2)
+function angleFromPoints(p1, p2)
 {
-	return Math.atan((y2-y1)/(x2-x1));
+	return Math.atan((p2[1]-p1[1])/(p2[0]-p1[0]));
 }
 
 function cartFromPol(r, teta)
@@ -37,21 +37,15 @@ function pointAtDistance(array, distance)
 	
 	if(distance == 0)
 	{
-		var angle = angleFromPoints(array[0][0], array[0][1], array[1][0], array[1][1]);
+		var angle = angleFromPoints(array[0], array[1]);
 		return [array[0][0], array[0][1], angle, 0];
 	}
 	
 	if(distanceFromPoints(array) <= distance)
 	{
-		var angle = angleFromPoints
-			(
-			array[array.length-2][0], array[array.length-2][1],
-			array[array.length-1][0], array[array.length-1][1]
-			);
-		return	[
-			array[array.length-1][0], array[array.length-1][1],
-			angle, array.length-2
-			];
+		var angle = angleFromPoints(array[array.length-2], array[array.length-1]);
+		return	[array[array.length-1][0], array[array.length-1][1],
+			angle, array.length-2];
 	}
 	
 	for(i = 0; i <= array.length - 2; i++)
@@ -70,11 +64,11 @@ function pointAtDistance(array, distance)
 	if(distance == current_distance)
 	{
 		var coord = [array[i][0], array[i][1]];
-		var angle = angleFromPoints(array[i][0], array[i][1], array[i+1][0], array[i+1][1]);
+		var angle = angleFromPoints(array[i], array[i+1]);
 	}
 	else
 	{
-		var angle = angleFromPoints(array[i][0], array[i][1], array[i+1][0], array[i+1][1]);
+		var angle = angleFromPoints(array[i], array[i+1]);
 		var cart = cartFromPol((distance - current_distance), angle);
 		
 		if(array[i][0] > array[i+1][0])

@@ -258,7 +258,7 @@ function loadImages()
 
 function loadJS()
 {
-	var js_array = ['beatmap', 'addons', 'slider', 'spinner', 'picker', 'sb', 'menu'];
+	var js_array = ['beatmap', 'addons', 'slider', 'spinner', 'picker', 'sb', 'menu', 'bezier'];
 	
 	for(key in js_array)
 	{
