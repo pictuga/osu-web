@@ -587,8 +587,11 @@ function hitCircle(i, input)//class
 		case 8:
 		case 12:
 			this.Type = "spinner";
+			break;
 		
-		default	this.Type = "none";
+		default:
+			this.Type = "none";
+			break;
 	}
 
 	if(this.Type == "slider")
