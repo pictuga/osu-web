@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" >
+	<head>
+		<title>osu! test</title>
+	</head>
+	<body>
+		<script style="text/javascript">
+		var points = [];
+		
+		function distanceFromPoints(array)
+		{
+			var distance = 0;
+		
+			for(i = 1; i <= array.length - 1; i++)
+			{
+				x = (array[i][0]-array[i-1][0]);
+				y = (array[i][1]-array[i-1][1]);
+			
+				distance += (Math.sqrt(x*x+y*y));
+			}
+		
+			return distance;
+		}
+	
+		function angleFromPoints(x1, y1, x2, y2)
+		{
+			return Math.atan((y2-y1)/(x2-x1));
+		}
+
+		function cartFromPol(r, teta)
+		{
+			x2 = (r*Math.cos(teta));
+			y2 = (r*Math.sin(teta));
+	
+			return [x2, y2];
+		}
+		
+		function pointAtDistance(array, distance)
+		{
+			var current_distance = 0,
+				last_distance = 0;
+		
+			if(distanceFromPoints(array) < distance) return array[array.length-1];
+			if(distance == 0) return array[0];
+		
+			for(i = 0; i <= array.length - 2; i++)
+			{
+				x = (array[i][0]-array[i+1][0]);
+				y = (array[i][1]-array[i+1][1]);
+			
+				new_distance = (Math.sqrt(x*x+y*y));
+				current_distance += new_distance;
+			
+				if(distance <= current_distance) break;
+			}
+		
+			current_distance -= new_distance;
+		
+			if(distance == current_distance) var coord = [array[i][0], array[i][1]];
+			else
+			{
+				var angle = angleFromPoints(array[i+1][0], array[i+1][1], array[i][0], array[i][1]);
+				var cart = cartFromPol((distance - current_distance), angle);
+			
+				if(array[i][0] >= array[i+1][0])
+				{
+					var coord = [(array[i][0]-cart[0]), (array[i][1]-cart[1])];
+					color = "Red";
+				}
+				else
+				{
+				 	var coord = [(array[i][0]+cart[0]), (array[i][1]+cart[1])];
+				 	color = "Blue";
+				}
+			}
+		
+			return coord;
+		}
+		
+		function angleWithCenter(x, y)
+		{
+			var width  = document.getElementById("canvas").offsetWidth;
+			var height = document.getElementById("canvas").offsetHeight;
+				var xc = width/2;
+				var yc = height/2;
+			
+			var rawAngle = angleFromPoints(x, y, xc, yc);
+			var angle = (x > xc) ? rawAngle : rawAngle-Math.PI;
+			//var angle = rawAngle;
+			
+			var ctx = document.getElementById("canvas").getContext("2d");
+			ctx.arc(xc, yc, 5, 0, Math.PI*2, 0);
+			ctx.arc(x, y, 5, 0, Math.PI*2, 0);
+			ctx.stroke();
+			
+			return mainMesure(angle);
+		}
+		
+		function mainMesure(angle)//pi / -pi
+		{
+			while(angle > Math.PI)
+			{
+				angle -= 2*Math.PI;
+			}
+			
+			while(angle < -Math.PI)
+			{
+				angle += 2*Math.PI;
+			}
+			
+			return angle;
+		}
+		
+		function checkCircle(points)
+		{
+			for(i = 2; i <= points.length-1; i++)
+			{
+				var angle0 =  angleWithCenter(points[points.length-3][0], points[points.length-3][1]);
+				var angle1 =  angleWithCenter(points[points.length-2][0], points[points.length-2][1]);
+				var angle2 =  angleWithCenter(points[points.length-1][0], points[points.length-1][1]);
+				
+				angleInter = (Math.max(angle1, angle2)-Math.min(angle1, angle2));
+				angleDiff = mainMesure(angle2 - angle1);
+					angleSign = (angleDiff/Math.abs(angleDiff));
+				angleDiffPrec = mainMesure(angle1 - angle0);
+					angleSignPrec = (angleDiffPrec/Math.abs(angleDiffPrec));
+				
+				//alert(angle1 + " / " + mainMesure(angle1));
+				var isCircle = (angleSign  == angleSignPrec);
+				
+				if(isCircle == false) break;
+			}
+			
+			if(points.length <= 2) isCircle = true;
+			
+			return isCircle;
+		}
+		
+		window.onload = function()
+		{
+			//test(0);
+			window.onclick = hit;
+		}
+		
+		function hit(e)
+		{
+			if (e == null) e = window.event;
+		
+			var mouseX = e.clientX;
+			var mouseY = e.clientY;
+			
+			points.push([mouseX, mouseY]);
+			angleWithCenter(mouseX, mouseY);
+			
+			alert(checkCircle(points));
+		}
+		</script>
+		<canvas id="canvas" width=500 height=500>
+	</body>
+</html>

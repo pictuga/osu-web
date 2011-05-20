@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>parse</title>
+		<script src="../js/parse.js"></script>
+	</head>
+	
+	<body>
+		<script>
+			var log = console.log;
+			
+			function getXMLHttpRequest() {
+				var xhr = null;
+				if (window.XMLHttpRequest || window.ActiveXObject)
+				{
+					if (window.ActiveXObject) {
+						try {
+							xhr = new ActiveXObject("Msxml2.XMLHTTP");
+						} catch(e) {
+							xhr = new ActiveXObject("Microsoft.XMLHTTP");
+						}
+					} else {
+						xhr = new XMLHttpRequest();
+					}
+				} 
+				else
+				{
+					alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest...");
+					return null;
+				}
+	
+				return xhr;
+			}
+			
+			var xhr = getXMLHttpRequest();
+			xhr.onreadystatechange = function()
+			{
+				if (xhr.readyState == 4 && xhr.status == 200)
+				{
+					var return_array = parseOSU(xhr.responseText);
+					
+					alert(return_array.General.AudioFilename);
+					log(return_array);
+				}
+			}
+
+			xhr.open("POST", "/beatmap/9407/The%20Beatles%20-%20Here%20Comes%20The%20Sun%20(MetalMario201)%20%5bCruisin%27%5d.osu", true);
+			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			xhr.send(null);
+		</script>
+	</body>
+</head>

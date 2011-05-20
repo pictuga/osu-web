@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" >
+	<head>
+		<title>osu! test</title>
+	</head>
+	<body>
+		<script style="text/javascript">
+			window.onload = function()
+			{
+				canvas = document.getElementById("canvas");
+	
+				if (canvas.getContext)
+				{
+					ctx = canvas.getContext("2d");
+					
+					var points =
+					[
+						[100, 100],
+						[200, 200],
+						[200, 100]
+					];
+					
+					var angle1 = angleFromPoints(points[0][0], points[0][1], points[1][0], points[1][1]);
+					var angle2 = angleFromPoints(points[1][0], points[1][1], points[2][0], points[2][1]);
+					var angle_sum = Math.abs(Math.abs(fix(angle1))+Math.abs(fix(angle2)));
+										
+					var angleCentre1 = angleFromPoints(points[1][0], points[1][1], points[0][0], points[0][1]);
+					var angleCentre2 = angleFromPoints(points[2][0], points[2][1], points[1][0], points[1][1]);
+					var angle_sum_centre = Math.abs(Math.abs(fix(angleCentre1))+Math.abs(fix(angleCentre2)));
+					
+					
+					var angle_dec = Math.abs(Math.abs(fix(angle1))-Math.abs(fix(angle2)));//angle entre la droite 1 et 2
+					var angle_dec_centre = Math.abs(Math.abs(fix(angleCentre1))-Math.abs(fix(angleCentre2)));//angle entre la droite 1 et 2
+					
+
+					
+					//coord
+						ctx.textAlign = "left";
+						ctx.textBaseline = "top";
+						ctx.font = "20px Arial";
+						ctx.fillText(points[0] + "   |   " + points[1] + "   |   " + points[2], 0, 0);
+						
+					//alert(angle1 + " // " + angle2);
+						ctx.textAlign = "left";
+						ctx.textBaseline = "top";
+						ctx.font = "20px Arial";
+						ctx.fillText(angle1/Math.PI + "   |   " + angle2/Math.PI + "   =   " + angle_dec/Math.PI + "   /   " + angle_sum/Math.PI, 0, 30);
+					
+					//angleCentre
+						ctx.textAlign = "left";
+						ctx.textBaseline = "top";
+						ctx.font = "20px Arial";
+						ctx.fillText(angleCentre1/Math.PI + "   |   " + angleCentre2/Math.PI + "   =   " + angle_dec_centre/Math.PI + "   /   " + angle_sum_centre/Math.PI, 0, 60);
+					
+					//FIXME tests
+					var cart1 = cartFromPol(20, (angle1+Math.PI/2));
+					var point1 = [(points[0][0]-cart1[0]), (points[0][1]-cart1[1])];
+					var eqn1 = eqnFromPoints(points[0][0], points[0][1], points[1][0], points[1][1]);
+					var par1 = parallel(eqn1[0], eqn1[1], point1[0], point1[1]);
+					
+					var cart2 = cartFromPol(20, (angle2+Math.PI/2));
+					var point2 = [(points[2][0]-cart2[0]), (points[2][1]-cart2[1])];
+					var eqn2 = eqnFromPoints(points[1][0], points[1][1], points[2][0], points[2][1]);
+					var par2 = parallel(eqn2[0], eqn2[1], point2[0], point2[1]);
+					
+					//inter
+					if(isInfinity(eqn1[0]) || isInfinity(eqn2[0]))
+					{
+						if(isInfinity(eqn1[0]))
+						{
+							x = (points[0][0]+20);
+							var inter = [x, (par2[0]*x+par2[1])];
+						}
+						else
+						{
+							x = (points[1][0]-20);
+							var inter = [x, (par1[0]*x+par1[1])];
+						}
+					}
+					else
+					{
+						var inter = interFromEqn(par1[0], par1[1], par2[0], par2[1]);
+					}
+					
+					/*ctx.beginPath();
+					ctx.strokeStyle = "Black";
+						ctx.arc(points[0][0], points[0][1], 20, Math.PI/2+angle1, -Math.PI/2+angle1, 0);
+						ctx.arc(points[1][0], points[1][1], 20, -Math.PI/2+angle1, Math.PI/2+angle1, 0);
+					ctx.closePath();
+					ctx.stroke();
+					
+					ctx.beginPath();
+					ctx.strokeStyle = "Blue";
+						ctx.arc(points[1][0], points[1][1], 20, Math.PI/2+angle2, -Math.PI/2+angle2, 0);
+						ctx.arc(points[2][0], points[2][1], 20, -Math.PI/2+angle2, Math.PI/2+angle2, 0);
+					ctx.closePath();
+					ctx.stroke();
+					
+					ctx.beginPath();
+					ctx.strokeStyle = "Yellow";
+						ctx.arc(points[1][0], points[1][1], 20, Math.PI/2+angle2, Math.PI/2+angle1, 0);
+					ctx.stroke();
+					
+					ctx.beginPath();
+					ctx.strokeStyle = "Green";
+						ctx.moveTo(points[0][0], points[0][1]);
+						ctx.lineTo(points[1][0], points[1][1]);
+						ctx.lineTo(points[2][0], points[2][1]);
+					ctx.stroke();
+					
+					ctx.beginPath();
+					ctx.strokeStyle = "Red";
+						ctx.arc(points[1][0], points[1][1], 20, 0, Math.PI*2, 0);
+					ctx.stroke();
+	
+					ctx.beginPath();
+					ctx.strokeStyle = "Brown";
+						ctx.arc(inter[0], inter[1], 20, 0, Math.PI*2, 0);
+					ctx.stroke();
+	
+					ctx.beginPath();
+					ctx.strokeStyle = "Green";
+						ctx.moveTo(points[0][0], points[0][1]);
+						ctx.lineTo(points[1][0], points[1][1]);
+						ctx.lineTo(points[2][0], points[2][1]);
+					ctx.stroke();*/
+					
+					//rocky :P
+					ctx.beginPath();
+					//déterminer si bon ou pas
+					if(angleCentre2 >=0 && angle_sum <= Math.PI)
+					{
+						ctx.strokeStyle = "Black";
+					}
+					else
+					{
+						ctx.strokeStyle = "Red";
+					}
+					
+					
+					if(points[0][0] == points[2][0] && points[0][1] == points[2][1])
+					{
+						ctx.arc(points[0][0], points[0][1], 20, Math.PI/2+angle1, -Math.PI/2+angle1, 0);
+						ctx.arc(points[1][0], points[1][1], 20, -Math.PI/2+angle1, Math.PI/2+angle1, 0);
+					}
+					else
+					{
+									ctx.arc(points[0][0], points[0][1], 20, -Math.PI/2+angle1,  Math.PI/2+angle1, 1);
+						if(angle_dec != 0)	ctx.arc(points[1][0], points[1][1], 20,  Math.PI/2+angle1,  Math.PI/2+angle2, 1);
+									ctx.arc(points[2][0], points[2][1], 20,  Math.PI/2+angle2, -Math.PI/2+angle2, 1);
+						if(angle_dec != 0)	ctx.lineTo(inter[0], inter[1]);
+					}
+					ctx.closePath();
+					ctx.stroke();
+					
+					//alert(">" + ctx.isPointInPath(173, 149));
+				}
+			}
+			
+			fix = function(angle)
+			{
+				return (angle <= 0) ? angle : (angle-Math.PI);
+			}
+			
+			angleFromPoints = function(x1, y1, x2, y2)
+			{
+				return Math.atan((y2-y1)/(x2-x1));
+			}
+			
+			cartFromPol = function(r, teta)
+			{
+				x2 = (r*Math.cos(teta));
+				y2 = (r*Math.sin(teta));
+				
+				return [x2, y2];
+			}
+			
+			eqnFromPoints = function(x1, y1, x2, y2)
+			{
+				var a = ((y2-y1)/(x2-x1));
+				var b = (y1-(a*x1));
+				
+				return [a, b];
+			}
+			
+			parallel = function(a, b, x, y)
+			{
+				return [a, (y-a*x)];
+			}
+			
+			interFromEqn = function(a1, b1, a2, b2)
+			{
+				var x = ((b2-b1)/(a1-a2));
+				var y = (a1*x+b1);
+				
+				return [x, y];
+			}
+			
+			isInfinity = function(x)
+			{
+				return (x == Infinity | x == -Infinity);
+			}
+			
+			mainMesure = function(teta) //mesure principale telle que -pi < teta <= pi (pas si utile que ça)
+			{
+				while(teta < -Math.PI || teta >= Math.PI)
+				{
+					if(teta < -Math.PI) teta -= Math.PI;
+					else teta += Math.PI;
+				}
+				
+				return teta;
+			}
+		</script>
+		<canvas id="canvas" width=300 height=300>
+	</body>
+</html>

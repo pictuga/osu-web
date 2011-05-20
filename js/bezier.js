@@ -23,7 +23,7 @@ function Bezier(points)
 	this.points = points;
 	this.order = points.length;
 	
-	this.step = 0.025;
+	this.step = 0.025 / this.order;
 	this.pos = {};
 }
 

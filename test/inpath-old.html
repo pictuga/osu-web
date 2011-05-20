@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" >
+	<head>
+		<title>osu! web</title>
+	</head>
+	<body>
+		<script style="text/javascript">
+			window.onload = function()
+			{
+				canvas = document.getElementById("canvas");
+	
+				if (canvas.getContext)
+				{
+					ctx = canvas.getContext("2d");
+					
+					var points =
+					[
+						[100, 100],
+						[200, 200],
+						[300, 200]
+						//[200, 100]
+						
+						/*[100, 100],
+						[100, 200],
+						[200, 200]
+						//[200, 100]*/
+					];
+					
+					var angle1 = angleFromPoints(points[0][0], points[0][1], points[1][0], points[1][1]);
+					var angle2 = angleFromPoints(points[1][0], points[1][1], points[2][0], points[2][1]);
+					
+					ctx.beginPath();
+					ctx.strokeStyle = "Black";
+						ctx.arc(points[0][0], points[0][1], 20, Math.PI/2+angle1, -Math.PI/2+angle1, 0);
+						ctx.arc(points[1][0], points[1][1], 20, -Math.PI/2+angle1, Math.PI/2+angle1, 0);
+					ctx.closePath();
+					ctx.stroke();
+					
+					ctx.beginPath();
+					ctx.strokeStyle = "Blue";
+						ctx.arc(points[1][0], points[1][1], 20, Math.PI/2+angle2, -Math.PI/2+angle2, 0);
+						ctx.arc(points[2][0], points[2][1], 20, -Math.PI/2+angle2, Math.PI/2+angle2, 0);
+					ctx.closePath();
+					ctx.stroke();
+					
+					ctx.beginPath();
+					ctx.strokeStyle = "Yellow";
+						ctx.arc(points[1][0], points[1][1], 20, Math.PI/2+angle2, Math.PI/2+angle1, 0);
+					ctx.stroke();
+					
+					ctx.beginPath();
+					ctx.strokeStyle = "Green";
+						ctx.moveTo(points[0][0], points[0][1]);
+						ctx.lineTo(points[1][0], points[1][1]);
+						ctx.lineTo(points[2][0], points[2][1]);
+					ctx.stroke();
+					
+					/*ctx.beginPath();
+					ctx.strokeStyle = "Red";
+						ctx.arc(points[1][0], points[1][1], 20, 0, Math.PI*2, 0);
+					ctx.stroke();
+					
+					ctx.beginPath();
+					ctx.strokeStyle = "Brown";
+						ctx.arc(cart[0], cart[1], 20, 0, Math.PI*2, 0);
+					ctx.stroke();*/
+					
+					function fix(angle)
+					{
+						return (angle <= 0) ? angle : (angle-Math.PI);
+					}
+					
+					var angle = (fix(angle1)+fix(angle2))/2;
+					
+					var angle_dec = Math.abs(Math.abs(fix(angle1))-Math.abs(fix(angle2)));
+					
+					var adj = adjacente(20, angle_dec/2);
+					var cart = cartFromPol(points[1][0], points[1][1], adj, angle);
+					
+					alert("a > " + angle1 + " / " + angle2 + "\n" + 
+					"b > " + angle + " / " + angle_dec + "\n" + 
+					"c > " + adj + "\n" + 
+					"d > " + cart + "\n" +
+					"d' > " + (cart[0]-points[1][0]) + " , "  + (cart[1]-points[1][1]));
+					
+									ctx.beginPath();
+									ctx.strokeStyle = "Red";
+										ctx.arc(points[1][0], points[1][1], 20, 0, Math.PI*2, 0);
+									ctx.stroke();
+					
+									ctx.beginPath();
+									ctx.strokeStyle = "Brown";
+										ctx.arc(cart[0], cart[1], 20, 0, Math.PI*2, 0);
+									ctx.stroke();
+					
+									ctx.beginPath();
+									ctx.strokeStyle = "Green";
+										ctx.moveTo(points[0][0], points[0][1]);
+										ctx.lineTo(points[1][0], points[1][1]);
+										ctx.lineTo(points[2][0], points[2][1]);
+									ctx.stroke();
+					
+					//rocky :P
+					ctx.beginPath();
+					ctx.strokeStyle = "Black";
+						if(points[0][0] == points[2][0] && points[0][1] == points[2][1])
+						{
+							ctx.arc(points[0][0], points[0][1], 20, Math.PI/2+angle1, -Math.PI/2+angle1, 0);
+							ctx.arc(points[1][0], points[1][1], 20, -Math.PI/2+angle1, Math.PI/2+angle1, 0);
+						}
+						else
+						{
+										ctx.arc(points[0][0], points[0][1], 20, -Math.PI/2+angle1,  Math.PI/2+angle1, 1);
+							if(angle_dec != 0)	ctx.arc(points[1][0], points[1][1], 20,  Math.PI/2+angle1,  Math.PI/2+angle2, 1);
+										ctx.arc(points[2][0], points[2][1], 20,  Math.PI/2+angle2, -Math.PI/2+angle2, 1);
+							if(angle_dec != 0)	ctx.lineTo(cart[0], cart[1]);
+						}
+					ctx.closePath();
+					ctx.stroke();
+					
+					//alert(">" + ctx.isPointInPath(150, 130));
+				}
+			}
+			
+			angleFromPoints = function(x1, y1, x2, y2)
+			{
+				return Math.atan((y2-y1)/(x2-x1));
+			}
+			
+			cartFromPol = function(x, y, r, teta)
+			{
+				x2 = (x - Math.abs(r*Math.cos(teta)));
+				y2 = (y - Math.abs(r*Math.sin(teta)));
+				
+				return [x2, y2];
+			}
+			
+			adjacente = function(r, teta)
+			{
+				return (r/Math.tan(teta));
+			}
+		</script>
+		<canvas id="canvas" width=300 height=300>
+	</body>
+</html>

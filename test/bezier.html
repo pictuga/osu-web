@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>bezier</title>
+		<meta charset="UTF-8" />
+		<script src="../js/bezier.js"></script>
+		<script src="../js/slider.js"></script>
+	</head>
+	
+	<body>
+		<canvas width="500" height="500"></canvas>
+		<script>
+var points = [];
+var dist = 1;
+var ctx = document.getElementsByTagName("canvas")[0].getContext("2d");
+document.getElementsByTagName("canvas")[0].onclick = function(e)
+{
+	points.push([e.clientX, e.clientY]);
+	
+	if(points.length == 2) setInterval(function()
+	{
+		var bezier = new Bezier(points);
+		ctx.clearRect(0,0, ctx.canvas.width, ctx.canvas.height);
+		bezier.draw(ctx);
+		bezier.drawCP(ctx);
+	
+		var at = bezier.pointAtDistance(dist);
+		ctx.beginPath();
+		ctx.arc(at[0], at[1], 2, 0, Math.PI*2, 0);
+		ctx.stroke();
+		
+		dist += 5;
+	}, 10);
+}
+		</script>
+	</body>
+</html>
