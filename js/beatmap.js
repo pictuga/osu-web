@@ -49,7 +49,7 @@ function initBeatMap()
 	
 		for(key in osu_file.HitObjects)
 		{
-			var new_hc = new hitCircle(osu_file.HitObjects[key]);
+			var new_hc = new hitCircle(key, osu_file.HitObjects[key]);
 			
 			if(new_hc.type == 4 || new_hc.type == 5 || new_hc.type == 6)
 			{
@@ -545,8 +545,10 @@ var type_array = {
 
 var hc = [];//filled with initBeatMap()
 
-function hitCircle(input)//class
+function hitCircle(i, input)//class
 {
+	this.id = parseInt(i);//used for stacks
+	
 	//init
 	
 	this.comboKey	= 0;
@@ -568,10 +570,29 @@ function hitCircle(input)//class
 	this.time	= this.input[2];
 	this.type	= this.input[3];
 	this.sound	= this.input[4];
-
-	if(this.type == 2 || this.type == 6)
+	
+	switch(this.type)
 	{
-		//slider
+		case 1:
+		case 4:
+		case 5:
+			this.Type = "circle";
+			break;
+		
+		case 2:
+		case 6:
+			this.Type = "slider";
+			break;
+		
+		case 8:
+		case 12:
+			this.Type = "spinner";
+		
+		default	this.Type = "none";
+	}
+
+	if(this.Type == "slider")
+	{
 		this.sliderData		= this.input[5];
 		this.sliderType		= this.input[5][0];
 		this.sliderPoints	= this.sliderData.slice(1);
@@ -584,25 +605,40 @@ function hitCircle(input)//class
 		
 		this.slidePoints = [];
 		
-		if(this.sliderType == "B")
+		switch(this.sliderType)
 		{
-			//bezier
-			this.bezier = new Bezier(this.curveData);
-			this.bezier.calcPoints();
-			this.curveData = array_values(this.bezier.pos);
+			case "B":
+				//bezier
+				this.bezier = new Bezier(this.curveData);
+				this.bezier.calcPoints();
+				this.curveData = array_values(this.bezier.pos);
+				break;
+			case "C":
+				//catmull
+				this.catmull = new Catmull(this.curveData);
+				this.catmull.calcPoints();
+				this.curveData = this.catmull.pos;
+				break;
 		}
 	}
-	else if(this.type == 8 || this.type == 12)
+	else if(this.Type == "spinner")
 	{
-		//spinner
 		this.endTime		= this.input[5];
 		this.spinPoints = [];
 	}
+	
+	//init stacks
+	if(this.id && this.Type == "circle")
+		if(hc[this.id-1].input[0] == this.x && hc[this.id-1].input[1] == this.y)
+		{
+			this.x += 10;
+			this.y += 10;
+		}
 }
 	
 	hitCircle.prototype.draw = function()
 	{
-		if(this.type == 1 || this.type == 4 || this.type == 5)//hitCircle
+		if(this.Type == "circle")
 		{
 			if(isIn(time, this.time-1500, this.time) && !this.clic)
 			{
@@ -617,7 +653,7 @@ function hitCircle(input)//class
 			}
 		}
 		
-		else if(this.type == 2 || this.type == 6)//slider
+		else if(this.Type == "slider")
 		{
 			//have fun
 			var points = this.curveData;
@@ -636,7 +672,7 @@ function hitCircle(input)//class
 			}
 		}
 		
-		else if(this.type == 8 || this.type == 12)//spinner
+		else if(this.Type == "spinner")
 		{
 			if(isIn(time, this.time, this.endTime))
 			{
@@ -654,10 +690,8 @@ function hitCircle(input)//class
 		var rgba = this.color(alpha);
 		var rgb = this.color();
 		
-		if(this.type == 1 || this.type == 4 || this.type == 5)
+		if(this.Type == "circle")
 		{
-			//circle
-			
 			var size = circleSize;
 			
 			ctx.globalCompositeOperation = "destination-over";
@@ -687,10 +721,8 @@ function hitCircle(input)//class
 			ctx.fill();
 		}
 		
-		if (this.type == 2 || this.type == 6)
+		if (this.Type == "slider")
 		{
-			//slider
-			
 			ctx.globalCompositeOperation = "destination-over";
 			
 			//reverse arrow
@@ -780,10 +812,8 @@ function hitCircle(input)//class
 				ctx.stroke();
 		}
 		
-		if (this.type == 8 || this.type == 12)
+		if (this.Type == "spinner")
 		{
-			//spinner
-			
 			var isCircle = checkCircle(this.spinPoints);
 			
 			if(false)

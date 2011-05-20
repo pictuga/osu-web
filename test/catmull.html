@@ -3,17 +3,20 @@
 	<head>
 		<title>Catmull</title>
 		<meta charset="UTF-8" />
-		<script src="../js/catmull.js"></script>
+		<script src="../js/curves.js"></script>
 	</head>
 	
 	<body>
 		<canvas width="500" height="500"></canvas>
 		<script>
+var log = console.log;
+
 var points = [];
 var ctx = document.getElementsByTagName("canvas")[0].getContext("2d");
 document.getElementsByTagName("canvas")[0].onclick = function(e)
 {
 	points.push([e.clientX, e.clientY]);
+	
 	var catmull = new Catmull(points);
 	ctx.clearRect(0,0, ctx.canvas.width, ctx.canvas.height);
 	catmull.draw(ctx);
