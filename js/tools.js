@@ -22,23 +22,13 @@ CanvasRenderingContext2D.prototype.drawImageAngle = function(image, x, y, angle)
 {
 	if(typeof angle != 'undefined' && mainMesure(angle) != 0)
 	{
-		var side = Math.max(image.width, image.height);
-	
-		var canvas = document.createElement("canvas");
-		canvas.width = canvas.height = side;
-		// ↑ supports non-square images
-
-		if (!canvas.getContext) return false;
+		ctx.save();
 		
-		var ctxs = canvas.getContext("2d");
-		ctxs.save();
-		ctxs.clearRect(0, 0, side, side);
-		ctxs.translate(side/2, side/2);
-		ctxs.rotate(angle);
-		ctxs.drawImage(image, (-image.width/2), (-image.height/2));
-		ctxs.restore();
-
-		this.drawImage(canvas, (x - side/2), (y - side/2));
+		ctx.translate(x, y);
+		ctx.rotate(angle);
+		ctx.drawImage(image, -image.width/2, -image.height/2);
+		
+		ctx.restore();
 	}
 	else
 	{
