@@ -8,5 +8,8 @@ catmull curves
 stacks wip
 
 <strong>What doesn't work here ?</strong>
-spinners
-stuffs
+nothing hopefully
+
+<strong>Soon...</strong>
+indicators between hitObjects
+.osz import

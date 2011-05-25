@@ -10,19 +10,22 @@ function loader()
 	this.extra = [];
 	
 	this.id = null;
+}
 	
-	this.done = function()
+	loader.prototype.done = function()
 	{
 		if(this.state == 2) return;
 		
-		if(this.type == "folder")
+		switch(this.type)
 		{
-			this.data = (this.extra.param != undefined) ? listFolder(this.data, (this.extra.param + ' dl')) : listFolder(this.data, 'dl');
-		}
-		if(this.type == "audio")
-		{
-			this.data.removeEventListener('canplaythrough', function(){load[id].done();}, true);
-			this.data.oncanplaythrough =  null;
+			case "folder":
+				this.data = (this.extra.param != undefined) ? listFolder(this.data, (this.extra.param + ' dl')) : listFolder(this.data, 'dl');
+			break;
+			
+			case "audio":
+				this.data.removeEventListener('canplaythrough', function(){load[id].done();}, true);
+				this.data.oncanplaythrough =  undefined;
+			break;
 		}
 		
 		this.state = 2;
@@ -32,13 +35,13 @@ function loader()
 		checkLoad();
 	}
 	
-	this.error = function()
+	loader.prototype.error = function()
 	{
 		log('loader fail', this);
 		this.state = 3;
 	}
 	
-	this.start = function()
+	loader.prototype.start = function()
 	{
 		this.id = (load.push(this)-1);
 		var id = this.id;
@@ -47,87 +50,86 @@ function loader()
 		
 		this.state = 1;
 		
-		if(this.type == "img")
+		switch(this.type)
 		{
-			this.data = new Image();
-			this.data.onload = function(){load[id].done();}
-			this.data.onerror = function(){load[id].error();}
-			this.data.src = this.url;
-		}
-		
-		else if(this.type == "audio")
-		{
-			this.data = new Audio();
-			if(!this.extra.skip)
-			{
-				this.data.addEventListener('canplaythrough', function(){load[id].done();}, true);
-				this.data.oncanplaythrough = function(){load[id].done();}
+			case "img":
+				this.data = new Image();
+				this.data.onload = function(){load[id].done();}
 				this.data.onerror = function(){load[id].error();}
-			}
-			
-			if(this.url instanceof Array)
-				this.data.src = (this.data.canPlayType('audio/ogg') == "probably" || this.data.canPlayType('audio/ogg') == "maybe") ? this.url[1] : this.url[0];
-			else	this.data.src = this.url;
-			
-			this.data.load();
-			
-			if(this.extra.skip) this.done();
-		}
+				this.data.src = this.url;
+			default;
 		
-		else if(this.type == "js")
-		{
-			for (param in this.extra.param)
-			{
-		 		if (url.indexOf("?") != -1)
-		 		{
-					this.url += "&";
-				}  else
+			case "audio":
+				this.data = new Audio();
+				if(!this.extra.skip)
 				{
-					this.url += "?";
+					this.data.addEventListener('canplaythrough', function(){load[id].done();}, true);
+					this.data.oncanplaythrough = function(){load[id].done();}
+					this.data.onerror = function(){load[id].error();}
 				}
-				this.url += encodeURIComponent(param) + "=" +  encodeURIComponent(this.extra.param[param]);
-			}
 			
-			this.data = document.createElement("script");
-			this.data.onload = function(){load[id].done()};
-			this.data.type = "text/javascript";
-			this.data.src = this.url;
-			document.body.appendChild(this.data);
-		}
+				if(this.url instanceof Array)
+					this.data.src = (this.data.canPlayType('audio/ogg') == "probably" || this.data.canPlayType('audio/ogg') == "maybe") ? this.url[1] : this.url[0];
+				else	this.data.src = this.url;
+			
+				this.data.load();
+			
+				if(this.extra.skip) this.done();
+			break;
 		
-		else if(this.type == "ajax" || this.type == "folder")
-		{
-			var xhr = getXMLHttpRequest();
+			case "js":
+				for (param in this.extra.param)
+				{
+			 		if (url.indexOf("?") != -1)
+			 		{
+						this.url += "&";
+					}  else
+					{
+						this.url += "?";
+					}
+					this.url += encodeURIComponent(param) + "=" +  encodeURIComponent(this.extra.param[param]);
+				}
 			
-			if (xhr && xhr.readyState != 0) {
-				xhr.abort();
-				delete xhr;
-			}
+				this.data = document.createElement("script");
+				this.data.onload = function(){load[id].done()};
+				this.data.type = "text/javascript";
+				this.data.src = this.url;
+				document.body.appendChild(this.data);
+			break;
+		
+			case "ajax":
+			case "folder":
+				var xhr = getXMLHttpRequest();
+			
+				if (xhr && xhr.readyState != 0) {
+					xhr.abort();
+					delete xhr;
+				}
 
-			xhr.onreadystatechange = function()
-			{
-				if (xhr.readyState == 4)
+				xhr.onreadystatechange = function()
 				{
-					if(xhr.status == 200)
+					if (xhr.readyState == 4)
 					{
-						load[id].data = xhr.responseText;
-						load[id].done();
-					}
-					else if(xhr.status >= 400)
-					{
-						load[id].error();
+						if(xhr.status == 200)
+						{
+							load[id].data = xhr.responseText;
+							load[id].done();
+						}
+						else if(xhr.status >= 400)
+						{
+							load[id].error();
+						}
 					}
 				}
-			}
 			
-			var url = (this.type == "ajax") ? this.url : this.url.replace(/\/+$/gi, '');
+				var url = (this.type == "ajax") ? this.url : this.url.replace(/\/+$/gi, '');
 			
-			xhr.open("GET", url, true);
-			xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-			xhr.send(null);
+				xhr.open("GET", url, true);
+				xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				xhr.send(null);
+			break;
 		}
 	}
-}
 
 function checkLoad()
 {
@@ -258,7 +260,7 @@ function loadImages()
 
 function loadJS()
 {
-	var js_array = ['beatmap', 'addons', 'slider', 'spinner', 'picker', 'sb', 'menu', 'curves'];
+	var js_array = ['beatmap', 'hitcircle', 'addons', 'slider', 'spinner', 'picker', 'sb', 'menu', 'curves'];
 	
 	for(key in js_array)
 	{

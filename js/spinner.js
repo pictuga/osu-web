@@ -11,7 +11,13 @@ function angleWithCenter(pt)
 
 function mainMesure(angle)//-pi < angle < pi
 {
-	return angle % -Math.PI;
+	while(angle > Math.PI)
+		angle -= 2*Math.PI;
+
+	while(angle < -Math.PI)
+		angle += 2*Math.PI;
+		
+        return angle;
 }
 
 function checkCircle(points)
