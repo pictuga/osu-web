@@ -3,12 +3,10 @@
 latest commit from <a href="https://launchpad.net/osu-web">https://launchpad.net/osu-web</a>
 
 <strong>What's new here ?</strong>
-bezier curves
-catmull curves
-stacks wip
+nothing
 
-<strong>What doesn't work here ?</strong>
-nothing hopefully
+<strong>What bugs here ?</strong>
+nothing
 
 <strong>Soon...</strong>
 indicators between hitObjects

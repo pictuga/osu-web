@@ -61,12 +61,6 @@ canvas
 	text-transform : uppercase;
 }
 
-	.key:after
-	{
-		content : ' → ';
-		text-align : right;
-	}
-
 .warning
 {
 	color : red;

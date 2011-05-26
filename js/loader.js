@@ -57,7 +57,7 @@ function loader()
 				this.data.onload = function(){load[id].done();}
 				this.data.onerror = function(){load[id].error();}
 				this.data.src = this.url;
-			default;
+			break;
 		
 			case "audio":
 				this.data = new Audio();
