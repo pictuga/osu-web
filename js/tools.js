@@ -1,3 +1,11 @@
+alert = function(txt){newjWindow(txt);}
+
+function log()
+{
+	if(window.console)
+		console.log(arguments);
+}
+
 function isFunction(prop)
 {
     return (typeof prop == 'function');
@@ -5,7 +13,7 @@ function isFunction(prop)
 
 function isIn(value, start, end)
 {
-	return (value >= start && value <= end);
+	return (value >= Math.min(start, end) && value <= Math.max(end));
 }
 
 CanvasRenderingContext2D.prototype.clear = function()

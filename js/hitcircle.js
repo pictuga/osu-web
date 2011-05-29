@@ -1,7 +1,7 @@
 function hitCircle(id, input)//class
 {
 	this.id = parseInt(id);//used for stacks
-	if(this.id) this.previous = hc[this.id-1];
+	this.previous = this.id ? hc[this.id-1] : false;
 	
 	//init
 	
@@ -108,6 +108,9 @@ hitCircle.prototype.draw = function()
 			if((isIn(time, this.time+100, this.time+500) && !this.clic)
 			|| (isIn(time, this.clicTime-1500, this.clicTime+100) && this.clic))
 				this.drawScore();
+			
+			if(this.previous && isIn(time, this.previous.time, this.time) && isIn(this.previous.time, this.time-1500, this.time))
+				this.drawPath();
 		break;
 	
 		case "slider":
@@ -277,8 +280,8 @@ hitCircle.prototype.drawObject = function()
 				ctx.strokeStyle = "Blue";
 				for(i in this.spinPoints)
 				{
-					if(i == 0)	ctx.moveTo(this.spinPoints[i][0]*hs, this.spinPoints[i][1]*ws);
-					else 		ctx.lineTo(this.spinPoints[i][0]*hs, this.spinPoints[i][1]*ws);
+					if(i == 0)	ctx.moveTo(this.spinPoints[i][0]*ws, this.spinPoints[i][1]*hs);
+					else 		ctx.lineTo(this.spinPoints[i][0]*ws, this.spinPoints[i][1]*hs);
 				}
 				ctx.stroke();
 				ctx.restore();
@@ -322,6 +325,27 @@ hitCircle.prototype.drawObject = function()
 				ctx.restore();
 			}
 		break;
+	}
+}
+
+hitCircle.prototype.drawPath = function()
+{
+	var step = 70;
+	var dist = distanceFromPoints([[this.previous.x, this.previous.y], [this.x, this.y]]);
+	step = dist / Math.ceil(dist/step);
+	
+	if(!(dist > 2*step && this.previous.Type == "circle")) return;
+	
+	for(var i = step; i < dist; i+=step)
+	{
+		var coord = pointAtDistance([[this.previous.x, this.previous.y], [this.x, this.y]], i);
+		
+		ctx.save();
+			ctx.beginPath();
+				ctx.fillStyle = "white";
+				ctx.circle(coord[0]*ws, coord[1]*hs, 5);
+			ctx.fill();
+		ctx.restore();
 	}
 }
 
