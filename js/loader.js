@@ -179,22 +179,22 @@ function isLoaded(obj)
 
 function showLoader(progress)
 {
-	//loader // progress
-	if(document.getElementById("loader"))
-	{
-		document.getElementById("loader").getElementsByTagName("div")[0].style.width = progress + "%";
-	}
-	else
+	if(!document.getElementById("loader"))
 	{
 		var loader_div = document.createElement("div");
 		loader_div.id = "loader";
 		
-		var progress_div = document.createElement("div");
-		progress_div.style.width = progress + "%";
+		var progress = document.createElement("div");
+		var input = document.createElement("input");
+		input.type = "button";
+		progress.appendChild(input);
 		
+		loader_div.appendChild(progress);
 		body.appendChild(loader_div);
-		loader_div.appendChild(progress_div);
 	}
+	
+	document.getElementById("loader").getElementsByTagName("div")[0].style.width = progress + "%";
+	document.getElementById("loader").getElementsByTagName("input")[0].value = Math.ceil(progress) + "%";
 }
 
 

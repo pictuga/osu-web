@@ -12,7 +12,7 @@ body, html
 	margin : 0;
 	padding : 0;
 	
-	cursor: url("cursor.cur"), auto;
+	cursor: url("cursor.png") 32 32, auto;
 }
 
 html > *
@@ -82,25 +82,18 @@ canvas
 #loader
 {
 	width : 80%;
-	height : 10%;
-	border : 1px solid black;
+	height : 7.5%;
 	position : fixed;
-	top : 45%;
+	bottom : 46.25%;
 	left : 10%;
 	
-	border-radius : 50px;
+	-moz-transition-property: bottom;
+	-moz-transition-duration: 0.25s;
+		-webkit-transition-property: bottom;
+		-webkit-transition-duration: 0.25s;
+		-o-transition-property: bottom;
+		-o-transition-duration: 0.25s;
 }
-
-	#loader div
-	{
-		left : 0;
-		top : 0;
-		margin : 0;
-		background-color : gray;
-		height : 100%;
-		
-		border-radius : 50px;
-	}
 
 /******************************************** picker ********************************************/
 
