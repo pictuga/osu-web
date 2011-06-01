@@ -71,7 +71,7 @@ canvas
 
 /******************************************** loader ********************************************/
 
-#pdiv + #loader
+#pdiv + #loader, #pdiv + progress
 {
 	top : auto;
 	position : fixed;
@@ -79,7 +79,7 @@ canvas
 	height : 7.5%;
 }
 
-#loader
+#loader, progress
 {
 	width : 80%;
 	height : 7.5%;
