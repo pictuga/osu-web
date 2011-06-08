@@ -1,0 +1,14 @@
+#!/bin/bash
+#this is a nautilus script - for Gnome
+
+for URI in $NAUTILUS_SCRIPT_SELECTED_URIS; do
+	URI=$(echo "$URI" | cut -c8- | perl -pe "s/\%([A-Fa-f0-9]{2})/pack('C', hex(\$1))/eg;s/\+/ /sg")
+	id=$(basename "$URI" | grep -oE "^[0-9]+")
+	dir=$(dirname "$URI")
+	
+	unzip -o "$URI" -d "$dir/$id"
+	mp3=$(ls -S "$dir/$id" | grep -E "\.mp3$" | head -n 1)
+	
+	lame --decode "$dir/$id/$mp3" - | oggenc -o "$dir/$id.ogg" -
+done
+exit 0
