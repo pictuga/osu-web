@@ -1,4 +1,5 @@
-function getXMLHttpRequest() {
+function getXMLHttpRequest()
+{
 	var xhr = null;
 	
 	if (window.XMLHttpRequest || window.ActiveXObject)
@@ -65,23 +66,30 @@ function listFolder(folder)
 
 	var div = document.createElement("div");
 	div.innerHTML = index;
+	var links = div.getElementsByTagName("a");
 	
-	var i;
-	for(i = 3; i <= div.getElementsByTagName("tr").length-2 ; i++)
+	for(var i in links)
 	{
-		file = div.getElementsByTagName("tr")[i];
+		var fullurl = decodeURI(links[i].href);
 		
-		info = {};
+		if(fullurl.indexOf('?') == -1 && links[i].innerHTML != "Parent Directory" && typeof links[i].innerHTML != 'undefined')
+		{
+			var info = {};
+			
+			info.url =	fullurl.split('/').slice((fullurl[fullurl.length-1] != "/") ? -1 : -2).join('/');
+			info.basename = (info.url[info.url.length-1] != "/")
+				? (info.url.indexOf('.') != -1)
+					? info.url.split('.').slice(0, -1).join('.')
+					: info.url
+				: info.url.split('/')[0];
+			info.ext =	(info.url[info.url.length-1] != '/')
+				? (info.url.indexOf('.') != -1)
+					? info.url.split('.').slice(-1)[0].toLowerCase()
+					: ''
+				: '/';
 		
-		var fullurl = decodeURI(file.getElementsByTagName("a")[0].href);
-		
-		info.url =	fullurl.split('/').slice((fullurl[fullurl.length-1] != "/") ? -1 : -2).join('/');
-		info.basename = (info.url[info.url.length-1] != "/") ? (info.url.indexOf('.') != -1) ? info.url.split('.').slice(0, -1).join('.') : info.url : info.url.split('/')[0];
-		info.ext =	(info.url[info.url.length-1] != '/') ? (info.url.indexOf('.') != -1) ? info.url.split('.').slice(-1)[0].toLowerCase() : '' : '/';
-		info.time = 	file.getElementsByTagName("td")[2].innerHTML.trim();
-		info.size = 	file.getElementsByTagName("td")[3].innerHTML.trim();
-		
-		result_array.push(info);
+			result_array.push(info);
+		}
 	}
 	
 	if(isParam('ext') || !isParam('full'))
@@ -111,6 +119,5 @@ function listFolder(folder)
 		result_array = temp;
 	}
 	
-	delete div, temp;
 	return result_array;
 }

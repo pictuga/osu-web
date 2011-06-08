@@ -5,45 +5,48 @@ function pickBeatMap()
 	var pdiv = document.createElement("div");
 	pdiv.id = "pdiv";
 	
-	for(key in beatmap)
+	for(id in beatmap)
 	{
 		var osz = document.createElement("div");
-		var first = true;
+		osz.innerHTML = beatmap[id].title;
 		
-		for(i in beatmap[key])
+		for(i in beatmap[id].version)
 		{
-			if(first)
-			{
-				osz.innerHTML = beatmap[key][i].Metadata.Title;
-				first = false;
-			}
-			
 			var osu = document.createElement("div");
-			osu.innerHTML = (beatmap[key][i].Metadata.Version != '') ? beatmap[key][i].Metadata.Version : '[no name]';
+			osu.innerHTML = (beatmap[id].version[i] != '') ? beatmap[id].version[i] : '[no name]';
 			
 			osu.onclick =
 			(
-				function(key, i)
+				function(id, i)
 				{
 					return function()
 					{
 						document.body.removeChild(document.getElementById("pdiv"));
-
-						osu_file = beatmap[key][i];
 						
-						loadStoryBoard();
-						
-						var mp3 = new loader();
-						mp3.url = ["/beatmap/" + key + "/" + osu_file.General.AudioFilename, "/beatmap/conv/" + key + ".ogg"];
-						mp3.type = "audio";
-						mp3.callback = function(array)
+						var bm = new loader();
+						bm.extra.id = id;
+						bm.url = "/beatmap/" + id + "/" + beatmap[id].artist + " - " + beatmap[id].title + " (" + beatmap[id].creator + ") [" + beatmap[id].version[i] + "].osu";
+						bm.type = "ajax";
+						bm.callback = function(array)
 						{
-							player = array.data;
+							osu_file = parseOSU(array.data);
+							osu_file.Metadata.id = array.extra.id;
+							
+							loadStoryBoard();
+							
+							var mp3 = new loader();
+							mp3.url = ["/beatmap/" + osu_file.Metadata.id + "/" + osu_file.General.AudioFilename, "/beatmap/conv/" + osu_file.Metadata.id + ".ogg"];
+							mp3.type = "audio";
+							mp3.callback = function(array)
+							{
+								player = array.data;
+							}
+							mp3.start();
 						}
-						mp3.start();
+						bm.start();
 					}
 				}
-			)(key, i);
+			)(id, i);
 			
 			//http://www.siteduzero.com/tutoriel-3-123380-les-closures-en-javascript.html
 			//http://www.howtocreate.co.uk/referencedvariables.html

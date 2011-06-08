@@ -29,6 +29,7 @@ function loader()
 		}
 		
 		this.state = 2;
+		
 		if(isFunction(this.callback))
 			this.callback(this);
 		
@@ -144,9 +145,6 @@ function checkLoad()
 		body.removeChild(document.getElementById("loader"));
 		if(typeof osu_file == 'undefined')
 		{
-			localStorage.setObject('beatmap', beatmap);
-			localStorage.setObject('time', tbeatmap);
-			
 			var button = document.createElement("input");
 			button.type = "button";
 			button.value = "Pick a beatmap →";
@@ -170,11 +168,6 @@ function checkFail()
 	{
 		if(load[i].state != 2) log('!', load[i].url, load[i].type);
 	}
-}
-
-function isLoaded(obj)
-{
-	return (obj.state == 2);
 }
 
 function showLoader(progress)
@@ -282,29 +275,9 @@ function loadJS()
 }
 
 var beatmap = {};
-var tbeatmap= {};
-
-var cache;
-var tcache;//cache time beatmaps folder
 
 function loadBeatMap()
 {
-	if(localStorage && typeof JSON !='undefined')
-	{
-		if(localStorage.getObject('beatmap') != false)
-			cache = localStorage.getObject('beatmap');
-		else	delete cache;
-		
-		if(localStorage.getObject('time') != false)
-			tcache = localStorage.getObject('time');
-		else	delete tcache;
-	}
-	else
-	{
-		delete cache;
-		delete tcache;
-	}
-
 	//list osz (folders)
 	var ls = new loader();
 	ls.url = "/beatmap/";
@@ -314,85 +287,47 @@ function loadBeatMap()
 	{
 		for(i in array.data)
 		{
-			if(array.data[i].url != "conv/")
+			if(array.data[i].url == "conv/") continue;
+			
+			//check
+			var id = array.data[i].basename;
+			
+			//list osu
+			var osz = new loader();
+			osz.url = array.url + array.data[i].url;
+			osz.type = "folder";
+			osz.extra.param = 'ext full';
+			osz.callback = function(array)
 			{
-				//check
-				var id = array.data[i].basename;
-				
-				if(typeof tcache == 'object'
-				&& typeof cache == 'object'
-				&& typeof cache[id] != 'undefined'
-				&& tcache[id] == array.data[i].time)
+				if(typeof array.data.mp4 != 'undefined'
+				|| typeof array.data.mov != 'undefined'
+				|| typeof array.data.avi != 'undefined'
+				|| typeof array.data.mpg != 'undefined'
+				|| typeof array.data.mpeg != 'undefined')
+					log('movie', array.url);
+			
+				var osu = array.data.osu;
+				for(j in osu)
 				{
-					beatmap[id] = cache[id];
-					tbeatmap[id] = array.data[i].time;
-				}
-				else
-				{
-					log('uncached', id, array.data[i].time);
-					tbeatmap[id] = array.data[i].time;
-					
-					//list osu
-					var bms = new loader();
-					bms.url = array.url + array.data[i].url;
-					bms.type = "folder";
-					bms.extra.param = 'ext full';
-					bms.callback = function(array)
+					//list levels
+					var id = array.url.replace(/^.+\/([0-9]+)\/.*$/gi, "$1");
+					if(typeof beatmap[id] == 'undefined')
 					{
-						if(typeof array.data.mp4 != 'undefined'
-						|| typeof array.data.mov != 'undefined'
-						|| typeof array.data.avi != 'undefined'
-						|| typeof array.data.mpg != 'undefined'
-						|| typeof array.data.mpeg != 'undefined')
-							log('movie', array.url);
-					
-						var osu = array.data.osu;
-						for(j in osu)
-						{
-							//get osu
-						
-							//check cache
-							var id = array.url.replace(/^.+\/([0-9]+)\/.*$/gi, "$1");
-							var version = osu[j].url.replace(/^.*\[(.*?)\]\.osu$/g, "$1");
-							
-							if(typeof cache == 'object' &&
-							typeof cache[id] != 'undefined'
-							&& typeof cache[id][version] != 'undefined'
-							&& typeof cache[id][version].Metadata != 'undefined'
-							&& typeof cache[id][version].Metadata.time != 'undefined')
-							{
-								var cache_time = cache[id][version].Metadata.time;
-								cached = (cache_time == osu[j].time);
-								log('uncached', id, version);
-								
-								if(typeof beatmap[id] == 'undefined') beatmap[id] = {};
-								beatmap[id][version] = cache[id][version];
-							}
-							else
-							{
-								var bm = new loader();
-								bm.url = array.url + osu[j].url;
-								bm.type = "ajax";
-								bm.extra.time = osu[j].time;
-								bm.callback = function(array)
-								{
-									var id = array.url.replace(/^.+\/([0-9]+)\/.*$/gi, "$1");
-							
-									if(typeof beatmap[id] == 'undefined') beatmap[id] = {};
-							
-									var parsed = parseOSU(array.data);
-									parsed.Metadata.id = id;
-									parsed.Metadata.time = array.extra.time;
-							
-									beatmap[id][parsed.Metadata.Version] = parsed;
-								}
-								bm.start();
-							}
-						}
+						beatmap[id] = {};
+						beatmap[id].version = [];
 					}
-					bms.start();
+					
+					var more    = osu[j].basename.replace(/^(.*) \(.*?\).*$/g, "$1").split(' - ', 2);
+					
+					beatmap[id].artist	= more[0];
+					beatmap[id].title	= more[1];
+					var version		= osu[j].basename.replace(/^.*\[(.*?)\]$/g, "$1");
+					beatmap[id].creator	= osu[j].basename.replace(/^.*\((.*?)\).*$/g, "$1");
+					
+					beatmap[id].version.push(version);
 				}
 			}
+			osz.start();
 		}
 	}
 	ls.start();
