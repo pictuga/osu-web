@@ -2,6 +2,8 @@ var load = [];
 
 function loader()
 {
+	var self = this;
+	
 	this.state = 0;// 0 empty // 1 en cours // 2 fini
 	this.type = null; //img/js/ajax/folder/audio // /video?
 	this.url = null;
@@ -103,20 +105,24 @@ function loader()
 				this.xhr = new XMLHttpRequest();
 				var xhr  = this.xhr;
 			
-				xhr.onload = function()
+				xhr.onreadystatechange = function()
 				{
-					load[id].data = xhr.responseText;
-					load[id].done();
+					if (xhr.readyState == 4)
+					{
+						if(xhr.status == 200)
+						{
+							load[id].data = xhr.responseText;
+							load[id].done();
+						}
+						else if(xhr.status >= 400)
+						{
+							load[id].error();
+						}
+					}
 				}
-				
-				xhr.onerror = function()
-				{
-					load[id].error();
-				}
+
 			
-				var url = (this.type == "ajax") ? this.url : this.url.replace(/\/+$/gi, '');
-			
-				xhr.open("GET", url, true);
+				xhr.open("GET", this.url, true);
 				xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 				xhr.send(null);
 			break;

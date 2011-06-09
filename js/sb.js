@@ -33,7 +33,7 @@ function initStoryBoard()
 			if(osu_file.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'jpg'
 			|| osu_file.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'jpeg'
 			|| osu_file.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'png')
-			canvas.style.backgroundImage = "url('/beatmap/" + osu_file.Metadata.id + "/" + osu_file.Events[i][2] + "')";
+			canvas.style.backgroundImage = "url('" + BEATMAP + osu_file.Metadata.id + "/" + osu_file.Events[i][2] + "')";
 			
 			else log(osu_file.Events[i][2]);
 		}

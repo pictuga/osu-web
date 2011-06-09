@@ -19,8 +19,6 @@ function listFolder(folder)
 	{
 		var xhr = new XMLHttpRequest();
 		
-		folder = folder.replace(/\/+$/gi, '');
-
 		xhr.open("POST", folder, false);
 		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 		xhr.send(null);
@@ -42,7 +40,7 @@ function listFolder(folder)
 	{
 		var fullurl = decodeURI(links[i].href);
 		
-		if(fullurl.indexOf('?') == -1 && links[i].innerHTML != "Parent Directory" && typeof links[i].innerHTML != 'undefined')
+		if(fullurl.indexOf('?') == -1 && links[i].innerHTML != "Parent Directory" && links[i].innerHTML != " Parent Directory" && typeof links[i].innerHTML != 'undefined')
 		{
 			var info = {};
 			

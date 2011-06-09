@@ -7,12 +7,13 @@ indicators between hitObjects
 nicer loader
 faster to load (no longer caching everything)
 works on more servers
+decentralized beatmap hosting (cross domain AJAX)
 
 <strong>What bugs here ?</strong>
 nothing ?
 
 <strong>Soon...</strong>
-decentralized beatmap hosting (cross domain AJAX)
+?
 
 <strong>Ideas ?</strong>
 .osz import

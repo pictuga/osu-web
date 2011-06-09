@@ -35,7 +35,7 @@ function pickBeatMap()
 							loadStoryBoard();
 							
 							var mp3 = new loader();
-							mp3.url = [BEATMAP + osu_file.Metadata.id + "/" + osu_file.General.AudioFilename, "/beatmap/conv/" + osu_file.Metadata.id + ".ogg"];
+							mp3.url = [BEATMAP + osu_file.Metadata.id + "/" + osu_file.General.AudioFilename, BEATMAP + "conv/" + osu_file.Metadata.id + ".ogg"];
 							mp3.type = "audio";
 							mp3.callback = function(array)
 							{
