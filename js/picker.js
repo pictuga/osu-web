@@ -23,6 +23,8 @@ function pickBeatMap()
 					{
 						document.body.removeChild(document.getElementById("pdiv"));
 						
+						loaded = initBeatMap;
+						
 						var bm = new loader();
 						bm.extra.id = id;
 						bm.url = BEATMAP + id + "/" + beatmap[id].artist + " - " + beatmap[id].title + " (" + beatmap[id].creator + ") [" + beatmap[id].version[i] + "].osu";

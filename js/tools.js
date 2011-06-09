@@ -3,7 +3,7 @@ alert = function(txt){newjWindow(txt);}
 function log()
 {
 	if(window.console)
-		console.log(arguments);
+		console.log(arguments.length == 1 ? arguments[0] : arguments);
 }
 
 function isFunction(prop)

@@ -106,7 +106,7 @@ hitCircle.prototype.draw = function()
 			}
 		
 			if((isIn(time, this.time+100, this.time+500) && !this.clic)
-			|| (isIn(time, this.clicTime-1500, this.clicTime+100) && this.clic))
+			|| (isIn(time, this.clicTime, this.clicTime+400) && this.clic))
 				this.drawScore();
 			
 			if(this.previous && isIn(time, this.previous.time, this.time) && isIn(this.previous.time, this.time-1500, this.time))
@@ -191,7 +191,7 @@ hitCircle.prototype.drawObject = function()
 						var t = this.sliderLength / sliderSpeed;
 						var repeat = (Math.ceil((time-this.time) / t));
 					
-						log(repeat, [repeat % 2, (repeat % 2 == 1)], this.sliderCount);
+						//log(repeat, [repeat % 2, (repeat % 2 == 1)], this.sliderCount);
 					
 						if(this.sliderCount > repeat)
 						{
@@ -330,22 +330,31 @@ hitCircle.prototype.drawObject = function()
 
 hitCircle.prototype.drawPath = function()
 {
-	var step = 70;
+	var progress = 1 - (this.time - time) / (this.time - this.previous.time);
+	
+	var step = 50;
 	var dist = distanceFromPoints([[this.previous.x, this.previous.y], [this.x, this.y]]);
 	step = dist / Math.ceil(dist/step);
 	
 	if(!(dist > 2*step && this.previous.Type == "circle")) return;
 	
+	log(this.id, progress);
+	
 	for(var i = step; i < dist; i+=step)
 	{
-		var coord = pointAtDistance([[this.previous.x, this.previous.y], [this.x, this.y]], i);
+		if( isIn ( (this.time - time), i, i+step ) )
+		{
+			log(i / step);
+			
+			var coord = pointAtDistance([[this.previous.x, this.previous.y], [this.x, this.y]], i);
 		
-		ctx.save();
-			ctx.beginPath();
-				ctx.fillStyle = "white";
-				ctx.circle(coord[0]*ws, coord[1]*hs, 5);
-			ctx.fill();
-		ctx.restore();
+			ctx.save();
+				ctx.beginPath();
+					ctx.fillStyle = "white";
+					ctx.circle(coord[0]*ws, coord[1]*hs, 5);
+				ctx.fill();
+			ctx.restore();
+		}
 	}
 }
 
@@ -535,8 +544,6 @@ hitCircle.prototype.color = function()
 
 hitCircle.prototype.playSound = function()
 {
-	log('paf');
-	
 	return false;
 	
 	var sound_array = ["hitnormal", "hitwhistle"];

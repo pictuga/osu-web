@@ -2,8 +2,6 @@ var load = [];
 
 function loader()
 {
-	var self = this;
-	
 	this.state = 0;// 0 empty // 1 en cours // 2 fini
 	this.type = null; //img/js/ajax/folder/audio // /video?
 	this.url = null;
@@ -17,6 +15,7 @@ function loader()
 	loader.prototype.done = function()
 	{
 		if(this.state == 2) return;
+		this.state = 2;
 		
 		switch(this.type)
 		{
@@ -30,7 +29,6 @@ function loader()
 			break;
 		}
 		
-		this.state = 2;
 		
 		if(isFunction(this.callback))
 			this.callback(this);
@@ -64,35 +62,22 @@ function loader()
 		
 			case "audio":
 				this.data = new Audio();
-				if(!this.extra.skip)
-				{
-					this.data.addEventListener('canplaythrough', function(){load[id].done();}, true);
-					this.data.oncanplaythrough = function(){load[id].done();}
-					this.data.onerror = function(){load[id].error();}
-				}
-			
+				delete this.data.autoplay;
+				
+				this.data.addEventListener('canplaythrough', function(){load[id].done();}, true);
+				this.data.oncanplaythrough = function(){load[id].done();}
+				this.data.onerror = function(){load[id].error();}
+				
 				if(this.url instanceof Array)
-					this.data.src = (this.data.canPlayType('audio/ogg') == "probably" || this.data.canPlayType('audio/ogg') == "maybe") ? this.url[1] : this.url[0];
+					this.data.src = (this.data.canPlayType('audio/ogg') == "probably" || this.data.canPlayType('audio/ogg') == "maybe")
+						? this.url[1]
+						: this.url[0];
 				else	this.data.src = this.url;
-			
+				
 				this.data.load();
-			
-				if(this.extra.skip) this.done();
 			break;
 		
 			case "js":
-				for (param in this.extra.param)
-				{
-			 		if (url.indexOf("?") != -1)
-			 		{
-						this.url += "&";
-					}  else
-					{
-						this.url += "?";
-					}
-					this.url += encodeURIComponent(param) + "=" +  encodeURIComponent(this.extra.param[param]);
-				}
-			
 				this.data = document.createElement("script");
 				this.data.onload = function(){load[id].done()};
 				this.data.type = "text/javascript";
@@ -129,6 +114,11 @@ function loader()
 		}
 	}
 
+var loaded = function()
+{
+	log('gotta change me');
+}
+
 function checkLoad()
 {
 	var counter = 0;
@@ -137,33 +127,20 @@ function checkLoad()
 		if(load[i].state == 2) counter++;
 	}
 	
+	showLoader(counter/load.length*100);
+	
 	if(counter == load.length)
 	{
 		body.removeChild(document.getElementById("loader"));
-		if(typeof osu_file == 'undefined')
-		{
-			var button = document.createElement("input");
-			button.type = "button";
-			button.value = "Pick a beatmap →";
-			button.onclick = function(){pickBeatMap();}
-			document.getElementById("pdiv").appendChild(button);
-		}
-		else
-		{
-			initBeatMap();
-		}
+		loaded();
 	}
-	else showLoader(counter/load.length*100);
-	
-	return counter;
 }
-
 
 function checkFail()
 {
 	for(i in load)
 	{
-		if(load[i].state != 2) log('!', load[i].url, load[i].type);
+		if(load[i].state != 2) log(i);
 	}
 }
 

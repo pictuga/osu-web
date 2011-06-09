@@ -12,6 +12,15 @@ main = function()
 {
 	body = document.body;
 	
+	loaded = function()
+	{
+		var button = document.createElement("input");
+		button.type = "button";
+		button.value = "Pick a beatmap →";
+		button.onclick = function(){pickBeatMap();}
+		document.getElementById("pdiv").appendChild(button);
+	}
+	
 	loadJS();
 	loadImages();
 	loadBeatMap();
