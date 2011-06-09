@@ -3,11 +3,16 @@
 latest commit from <a href="https://launchpad.net/osu-web">https://launchpad.net/osu-web</a>
 
 <strong>What's new here ?</strong>
-nothing
+indicators between hitObjects
+nicer loader
+faster to load (no longer caching everything)
+works on more servers
 
 <strong>What bugs here ?</strong>
-nothing
+nothing ?
 
 <strong>Soon...</strong>
-indicators between hitObjects
+decentralized beatmap hosting (cross domain AJAX)
+
+<strong>Ideas ?</strong>
 .osz import

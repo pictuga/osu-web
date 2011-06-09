@@ -1,8 +1,4 @@
-@font-face
-{
-	font-family : Arial;
-	src : url(font.ttf);
-}
+@import url(https://fonts.googleapis.com/css?family=Ubuntu:regular,bold,italic&subset=Latin);
 
 body, html
 {
@@ -25,7 +21,7 @@ html > *
 *
 {
 	overflow : hidden;
-	font-family: Arial, serif;
+	font-family: Ubuntu, Arial, serif;
 }
 
 h1

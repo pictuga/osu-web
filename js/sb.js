@@ -56,7 +56,7 @@ function loadStoryBoard()
 		)
 		{
 			var img = new loader();
-			img.url = "/beatmap/" + id + "/" + osu_file.Events[i][2];
+			img.url = BEATMAP + id + "/" + osu_file.Events[i][2];
 			img.type = "img";
 			img.start();
 		}
@@ -71,7 +71,7 @@ function loadStoryBoard()
 		)
 		{
 			var img = new loader();
-			img.url = "/beatmap/" + id + "/" + osu_file.Events[i][3];
+			img.url = BEATMAP + id + "/" + osu_file.Events[i][3];
 			img.type = "img";
 			img.extra.basename = osu_file.Events[i][3];
 			img.callback = function(array)

@@ -1,28 +1,3 @@
-function getXMLHttpRequest()
-{
-	var xhr = null;
-	
-	if (window.XMLHttpRequest || window.ActiveXObject)
-	{
-		if (window.ActiveXObject) {
-			try {
-				xhr = new ActiveXObject("Msxml2.XMLHTTP");
-			} catch(e) {
-				xhr = new ActiveXObject("Microsoft.XMLHTTP");
-			}
-		} else {
-			xhr = new XMLHttpRequest();
-		}
-	} 
-	else
-	{
-		alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest...");
-		return null;
-	}
-	
-	return xhr;
-}
-
 function listFolder(folder)
 {
 	var param = (arguments[1] != undefined) ? arguments[1].split(' ') : [];
@@ -42,13 +17,8 @@ function listFolder(folder)
 	
 	if(!isParam('dl'))
 	{
-		var xhr = getXMLHttpRequest();
-		if (xhr && xhr.readyState != 0)
-		{
-			xhr.abort();
-			delete xhr;
-		}
-
+		var xhr = new XMLHttpRequest();
+		
 		folder = folder.replace(/\/+$/gi, '');
 
 		xhr.open("POST", folder, false);

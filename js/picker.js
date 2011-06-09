@@ -25,7 +25,7 @@ function pickBeatMap()
 						
 						var bm = new loader();
 						bm.extra.id = id;
-						bm.url = "/beatmap/" + id + "/" + beatmap[id].artist + " - " + beatmap[id].title + " (" + beatmap[id].creator + ") [" + beatmap[id].version[i] + "].osu";
+						bm.url = BEATMAP + id + "/" + beatmap[id].artist + " - " + beatmap[id].title + " (" + beatmap[id].creator + ") [" + beatmap[id].version[i] + "].osu";
 						bm.type = "ajax";
 						bm.callback = function(array)
 						{
@@ -35,7 +35,7 @@ function pickBeatMap()
 							loadStoryBoard();
 							
 							var mp3 = new loader();
-							mp3.url = ["/beatmap/" + osu_file.Metadata.id + "/" + osu_file.General.AudioFilename, "/beatmap/conv/" + osu_file.Metadata.id + ".ogg"];
+							mp3.url = [BEATMAP + osu_file.Metadata.id + "/" + osu_file.General.AudioFilename, "/beatmap/conv/" + osu_file.Metadata.id + ".ogg"];
 							mp3.type = "audio";
 							mp3.callback = function(array)
 							{

@@ -1,6 +1,8 @@
 var osu_file;
 var player;
 
+var BEATMAP = "/beatmap/";
+
 window.onload = function()
 {
 	setTimeout("main();", 0);

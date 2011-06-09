@@ -100,27 +100,18 @@ function loader()
 		
 			case "ajax":
 			case "folder":
-				var xhr = getXMLHttpRequest();
+				this.xhr = new XMLHttpRequest();
+				var xhr  = this.xhr;
 			
-				if (xhr && xhr.readyState != 0) {
-					xhr.abort();
-					delete xhr;
-				}
-
-				xhr.onreadystatechange = function()
+				xhr.onload = function()
 				{
-					if (xhr.readyState == 4)
-					{
-						if(xhr.status == 200)
-						{
-							load[id].data = xhr.responseText;
-							load[id].done();
-						}
-						else if(xhr.status >= 400)
-						{
-							load[id].error();
-						}
-					}
+					load[id].data = xhr.responseText;
+					load[id].done();
+				}
+				
+				xhr.onerror = function()
+				{
+					load[id].error();
 				}
 			
 				var url = (this.type == "ajax") ? this.url : this.url.replace(/\/+$/gi, '');
@@ -280,7 +271,7 @@ function loadBeatMap()
 {
 	//list osz (folders)
 	var ls = new loader();
-	ls.url = "/beatmap/";
+	ls.url = BEATMAP;
 	ls.type = "folder";
 	ls.extra.param = "full";
 	ls.callback = function(array)
