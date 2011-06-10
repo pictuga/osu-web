@@ -17,7 +17,7 @@ main = function()
 		var button = document.createElement("input");
 		button.type = "button";
 		button.value = "Pick a beatmap →";
-		button.onclick = function(){pickBeatMap();}
+		button.onclick = function(){pickBeatMap()};
 		document.getElementById("pdiv").appendChild(button);
 	}
 	

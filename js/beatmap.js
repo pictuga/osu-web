@@ -16,14 +16,10 @@ function initBeatMap()
 	}
 	
 	//<canvas>
-		if(!document.getElementById("canvas"))
-		{
-			canvas = document.createElement("canvas");
-			canvas.id = "canvas";
-			body.appendChild(canvas);
-		}
-		canvas = document.getElementById("canvas");
+		if(!$('#canvas').size())
+		$('<canvas id="canvas"/>').appendTo(document.body);
 		
+		canvas = $('#canvas').get(0);
 		if(!canvas.getContext) return false;
 		ctx = canvas.getContext("2d");
 	

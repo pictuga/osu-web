@@ -1,4 +1,4 @@
-alert = function(txt){newjWindow(txt);}
+alert = function(txt){newjWindow(txt)};
 
 function log()
 {
@@ -14,6 +14,13 @@ function isFunction(prop)
 function isIn(value, start, end)
 {
 	return (value >= Math.min(start, end) && value <= Math.max(end));
+}
+
+HTMLImageElement.prototype.toDataURL = function()
+{
+	var canvas = $('<canvas/>', {width: this.naturalWidth, height: this.naturalHeight}).get();
+	canvas.getContext("2d").drawImage(this, 0, 0);
+	return canvas.toDataURL();
 }
 
 CanvasRenderingContext2D.prototype.clear = function()

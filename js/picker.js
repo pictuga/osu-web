@@ -1,27 +1,24 @@
 function pickBeatMap()
 {
-	if(document.getElementById("pdiv")) document.body.removeChild(document.getElementById("pdiv"));
+	$('#pdiv').remove();
 	
-	var pdiv = document.createElement("div");
-	pdiv.id = "pdiv";
+	var pdiv = $('<div id="pdiv"/>').appendTo(document.body);
 	
 	for(id in beatmap)
 	{
-		var osz = document.createElement("div");
-		osz.innerHTML = beatmap[id].title;
+		var osz = $('<div/>', {html: beatmap[id].title}).appendTo(pdiv);
 		
 		for(i in beatmap[id].version)
 		{
-			var osu = document.createElement("div");
-			osu.innerHTML = (beatmap[id].version[i] != '') ? beatmap[id].version[i] : '[no name]';
+			var osu = $('<div/>', {html: (beatmap[id].version[i] != '') ? beatmap[id].version[i] : '[no name]'}).appendTo(osz);
 			
-			osu.onclick =
+			osu.click(
 			(
 				function(id, i)
 				{
 					return function()
 					{
-						document.body.removeChild(document.getElementById("pdiv"));
+						$('#pdiv').remove();
 						
 						loaded = initBeatMap;
 						
@@ -48,16 +45,10 @@ function pickBeatMap()
 						bm.start();
 					}
 				}
-			)(id, i);
+			)(id, i));
 			
 			//http://www.siteduzero.com/tutoriel-3-123380-les-closures-en-javascript.html
 			//http://www.howtocreate.co.uk/referencedvariables.html
-			
-			osz.appendChild(osu);
 		}
-		
-		pdiv.appendChild(osz)
 	}
-	
-	document.body.appendChild(pdiv);
 }

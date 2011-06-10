@@ -80,9 +80,8 @@ function loader()
 			case "js":
 				this.data = document.createElement("script");
 				this.data.onload = function(){load[id].done()};
-				this.data.type = "text/javascript";
 				this.data.src = this.url;
-				document.body.appendChild(this.data);
+				document.head.appendChild(this.data);
 			break;
 		
 			case "ajax":
@@ -131,7 +130,7 @@ function checkLoad()
 	
 	if(counter == load.length)
 	{
-		body.removeChild(document.getElementById("loader"));
+		$('#loader').remove();
 		loaded();
 	}
 }
@@ -146,24 +145,14 @@ function checkFail()
 
 function showLoader(progress)
 {
-	if(!document.getElementById("loader"))
-	{
-		var loader_div = document.createElement("div");
-		loader_div.id = "loader";
-		
-		var progress = document.createElement("div");
-		var input = document.createElement("input");
-		input.type = "button";
-		progress.appendChild(input);
-		
-		loader_div.appendChild(progress);
-		body.appendChild(loader_div);
-	}
+	if(!$('#loader').size())
+		$('<div id="loader"/>')
+		.append( $('<div/>').append('<input type="button"/>') )
+		.appendTo(document.body);
 	
-	document.getElementById("loader").getElementsByTagName("div")[0].style.width = progress + "%";
-	document.getElementById("loader").getElementsByTagName("input")[0].value = Math.ceil(progress) + "%";
+	$('#loader div').css('width', progress + "%");
+	$('#loader input').val(Math.ceil(progress) + "%");
 }
-
 
 //////////////////////////////////////////
 
@@ -227,7 +216,7 @@ function loadImages()
 
 function loadJS()
 {
-	var js_array = ['beatmap', 'hitcircle', 'addons', 'slider', 'spinner', 'picker', 'sb', 'menu', 'curves'];
+	var js_array = ['beatmap', 'hitcircle', 'addons', 'slider', 'spinner', 'picker', 'sb', 'menu', 'curves', 'settings'];
 	
 	for(key in js_array)
 	{
@@ -315,11 +304,7 @@ function loadReadme()
 	bm.callback = function(array)
 	{
 		readme = array.data.replace(/\s*(<\/?h[0-9]+>)\s*/gi, "$1").replace(/\n/gi, "<br />");
-		
-		var help = document.createElement("div");
-		help.id = "pdiv";
-		help.innerHTML = readme;
-		document.body.insertBefore(help, document.getElementById("loader"));
+		$('<div/>', {id: "pdiv", html: readme}).insertBefore('#loader');
 	}
 	bm.start();
 }
