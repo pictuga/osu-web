@@ -19,13 +19,13 @@ function drawStoryBoard()
 
 function initStoryBoard()
 {
-	canvas.style.background = '';
+	canvas.css('background', '');
 	
 	for(i in osu_file.Events)
 	{
 		if(osu_file.Events[i][0] == 3)//color
 		{
-			canvas.style.backgroundColor = "rgb(" + osu_file.Events[i][2] + "," + osu_file.Events[i][3] + "," + osu_file.Events[i][4] + ")";
+			canvas.css('backgroundColor', "rgb(" + osu_file.Events[i][2] + "," + osu_file.Events[i][3] + "," + osu_file.Events[i][4] + ")");
 		}
 		
 		if(osu_file.Events[i][0] == 0)//background
@@ -33,7 +33,7 @@ function initStoryBoard()
 			if(osu_file.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'jpg'
 			|| osu_file.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'jpeg'
 			|| osu_file.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'png')
-			canvas.style.backgroundImage = "url('" + BEATMAP + osu_file.Metadata.id + "/" + osu_file.Events[i][2] + "')";
+			canvas.css('backgroundImage', "url('" + BEATMAP + osu_file.Metadata.id + "/" + osu_file.Events[i][2] + "')");
 			
 			else log(osu_file.Events[i][2]);
 		}

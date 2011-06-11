@@ -1,6 +1,6 @@
 <h1>osu! web</h1>
 
-<a style="background-image : url(http://platform.twitter.com/widgets/images/tweet.png) ; height : 20px ; width : 55px; display : inline-block;" href="http://twitter.com/share?text=osu! web – osu! for browsers&url=http://osu-web.tk/&via=pictuga"></a><a href="http://flattr.com/thing/178671/osu-web" target="_blank"><img src="http://api.flattr.com/button/flattr-badge-large.png" /></a><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ECGPQVTWBY22L&item_name=osu%21%20web&currency_code=USD"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" style="height:20px;" /></a><iframe src="https://www.facebook.com/plugins/like.php?href=https://www.facebook.com/pages/Osu-web/108368515907391&layout=button_count" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:150px; height:21px;" allowTransparency="true"></iframe>
+<a href="http://twitter.com/share?text=osu! web – osu! for browsers&url=http://osu-web.tk/&via=pictuga"><img src="files/twitter.png" /></a><a href="http://flattr.com/thing/178671/osu-web"><img src="files/flattr.png" /></a><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ECGPQVTWBY22L&item_name=osu%21%20web&currency_code=USD"><img src="files/paypal.png" /></a><iframe src="https://www.facebook.com/plugins/like.php?href=https://www.facebook.com/pages/Osu-web/108368515907391&layout=button_count" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:150px; height:21px;" allowTransparency="true"></iframe>
 
 <h2>HELP !!!</h2>
 
@@ -53,7 +53,7 @@ Special thanks to Clemaister and anybody who helped the project !
 
 <a href='http://osu.ppy.sh/' title='osu.ppy.sh'>osu! official website</a>
 
-NEW Dev version <a href="unstable/">here</a> (for test purpose only)
+dev version <a href="unstable/">here</a> (for test purpose only)
 
 <h2>License information</h2>
 

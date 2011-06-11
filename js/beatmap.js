@@ -17,11 +17,11 @@ function initBeatMap()
 	
 	//<canvas>
 		if(!$('#canvas').size())
-		$('<canvas id="canvas"/>').appendTo(document.body);
+			$('<canvas id="canvas"/>').appendTo(document.body);
 		
-		canvas = $('#canvas').get(0);
-		if(!canvas.getContext) return false;
-		ctx = canvas.getContext("2d");
+		canvas = $('#canvas');
+		if(!canvas.get(0).getContext) return false;
+		ctx = canvas.get(0).getContext("2d");
 	
 	//couleurs
 		//orange green blue red
@@ -73,9 +73,10 @@ function initBeatMap()
 		//beatLength & sliderSpeed → updateValues()
 	
 	//events
-		canvas.onmousedown = checkHit;
-		canvas.onmouseup = function() { window.onmousemove = null; }
-		canvas.oncontextmenu = function(){ return false; }
+		canvas.mousedown(checkHit);
+		canvas.mouseup(function() { window.onmousemove = null; });
+		
+		canvas.get(0).oncontextmenu = function(){ return false; }
 		window.onkeydown = checkKey;
 	
 		window.onresize = function(){resizeBeatMap()};
@@ -465,8 +466,8 @@ function resizeBeatMap(e)
 	}
 	else	ratio = false;
 	
-	canvas.setAttribute("width", W);
-	canvas.setAttribute("height", H);
+	canvas.attr("width", W);
+	canvas.attr("height", H);
 	
 	//addons
 	updateBeatMap();

@@ -25,25 +25,18 @@ function listFolder(folder)
 
 		var index = xhr.responseText;
 	}
-	else
-	{
-		var index = folder;
-	}
+	else	var index = folder;
 
 	var result_array = [];
 
-	var div = document.createElement("div");
-	div.innerHTML = index;
-	var links = div.getElementsByTagName("a");
-	
-	for(var i in links)
+	$('<div/>', {html: index}).find('a').each(function()
 	{
-		var fullurl = decodeURI(links[i].href);
-		
-		if(fullurl.indexOf('?') == -1 && links[i].innerHTML != "Parent Directory" && links[i].innerHTML != " Parent Directory" && typeof links[i].innerHTML != 'undefined')
+		var fullurl = decodeURI($(this).attr('href'));
+	
+		if(fullurl.indexOf('?') == -1 && $(this).html() != "Parent Directory" && $(this).html() != " Parent Directory" && typeof $(this).html() != 'undefined')
 		{
 			var info = {};
-			
+		
 			info.url =	fullurl.split('/').slice((fullurl[fullurl.length-1] != "/") ? -1 : -2).join('/');
 			info.basename = (info.url[info.url.length-1] != "/")
 				? (info.url.indexOf('.') != -1)
@@ -55,10 +48,10 @@ function listFolder(folder)
 					? info.url.split('.').slice(-1)[0].toLowerCase()
 					: ''
 				: '/';
-		
+	
 			result_array.push(info);
 		}
-	}
+	});
 	
 	if(isParam('ext') || !isParam('full'))
 	{
