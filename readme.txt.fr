@@ -1,0 +1,15 @@
+<h1>osu! web / unstable</h1>
+
+dernier commit de <a href="https://launchpad.net/osu-web">https://launchpad.net/osu-web</a>
+
+<strong>Quoi de nouveau ?</strong>
+jQuery
+
+<strong>Qu'est-ce qui ne fonctionne pas ici ?</strong>
+rien ?
+
+<strong>Bientôt...</strong>
+?
+
+<strong>Idées ?</strong>
+importation de .osz

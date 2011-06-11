@@ -1,0 +1,7 @@
+BM_END=Fin - Appuyez sur "C" pour choisir une autre beatmap !
+BM_PAUS=Pause - Appyuez sur "P" pour continuer la partie
+BM_PICK=Sélectionner une beatmap
+EP_WARN=Cette beatmap contient des scènes avec des couleurs changeant rapidment.\nPrennez vos précautions si vous êtes affecté par l'épilepsie.\n\tAnnuler → Choisir un autre beatmap
+OSU_WEB=osu! web
+BM_1PT=Point
+BM_2PT=Points
