@@ -1,3 +1,5 @@
+"use strict";
+
 alert = function(txt){newjWindow(txt)};
 
 function log()
@@ -37,13 +39,13 @@ CanvasRenderingContext2D.prototype.drawImageAngle = function(image, x, y, angle)
 {
 	if(typeof angle != 'undefined' && mainMesure(angle) != 0)
 	{
-		ctx.save();
+		this.save();
 		
-		ctx.translate(x, y);
-		ctx.rotate(angle);
-		ctx.drawImage(image, -image.width/2, -image.height/2);
+		this.translate(x, y);
+		this.rotate(angle);
+		this.drawImage(image, -image.width/2, -image.height/2);
 		
-		ctx.restore();
+		this.restore();
 	}
 	else
 	{

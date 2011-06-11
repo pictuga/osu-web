@@ -49,40 +49,42 @@ function hitCircle(id, input)//class
 			break;
 	}
 
-	if(this.Type == "slider")
+	switch(this.Type)
 	{
-		this.sliderData		= this.input[5];
-		this.sliderType		= this.input[5][0];
-		this.sliderPoints	= this.sliderData.slice(1);
+		case "slider":
+			this.sliderData		= this.input[5];
+			this.sliderType		= this.input[5][0];
+			this.sliderPoints	= this.sliderData.slice(1);
+			this.sliderLast		= this.sliderPoints.slice(-1)[0];
 		
-		this.curveData		= this.input[5];
-		this.curveData[0]	= [this.x, this.y];
+			this.curveData		= this.input[5];
+			this.curveData[0]	= [this.x, this.y];
 		
-		this.sliderCount	= this.input[6];
-		this.sliderLength	= this.input[7];
+			this.sliderCount	= this.input[6];
+			this.sliderLength	= this.input[7];
 		
-		this.slidePoints = [];
+			this.slidePoints = [];
 		
-		switch(this.sliderType)
-		{
-			case "B":
-				//bezier
-				this.bezier = new Bezier(this.curveData);
-				this.bezier.calcPoints();
-				this.curveData = array_values(this.bezier.pos);
-				break;
-			case "C":
-				//catmull
-				this.catmull = new Catmull(this.curveData);
-				this.catmull.calcPoints();
-				this.curveData = this.catmull.pos;
-				break;
-		}
-	}
-	else if(this.Type == "spinner")
-	{
-		this.endTime		= this.input[5];
-		this.spinPoints = [];
+			switch(this.sliderType)
+			{
+				case "B":
+					//bezier
+					this.bezier = new Bezier(this.curveData);
+					this.bezier.calcPoints();
+					this.curveData = array_values(this.bezier.pos);
+					break;
+				case "C":
+					//catmull
+					this.catmull = new Catmull(this.curveData);
+					this.catmull.calcPoints();
+					this.curveData = this.catmull.pos;
+					break;
+			}
+		break;
+		case "spinner":
+			this.endTime		= this.input[5];
+			this.spinPoints = [];
+		break;
 	}
 	
 	//init stacks
@@ -109,7 +111,7 @@ hitCircle.prototype.draw = function()
 			|| (isIn(time, this.clicTime, this.clicTime+400) && this.clic))
 				this.drawScore();
 			
-			if(this.previous && isIn(time, this.previous.time, this.time) && isIn(this.previous.time, this.time-1500, this.time))
+			if(this.previous && isIn(time, this.previous.time, this.time))
 				this.drawPath();
 		break;
 	
@@ -129,6 +131,9 @@ hitCircle.prototype.draw = function()
 				this.drawObject();
 				this.drawBall();
 			}
+			
+			if(this.previous && isIn(time, this.previous.time, this.time))
+				this.drawPath();
 		break;
 	
 		case "spinner":
@@ -332,30 +337,18 @@ hitCircle.prototype.drawPath = function()
 {
 	var progress = 1 - (this.time - time) / (this.time - this.previous.time);
 	
-	var step = 50;
-	var dist = distanceFromPoints([[this.previous.x, this.previous.y], [this.x, this.y]]);
-	step = dist / Math.ceil(dist/step);
+	var from = this.previous.Type == "circle" ? [this.previous.x, this.previous.y] : this.previous.sliderLast;
+	var to = [this.x, this.y];
 	
-	if(!(dist > 2*step && this.previous.Type == "circle")) return;
+	var dist = distanceFromPoints([from, to]);
+	var target =  pointAtDistance([from, to], dist*progress);
 	
-	log(this.id, progress);
-	
-	for(var i = step; i < dist; i+=step)
-	{
-		if( isIn ( (this.time - time), i, i+step ) )
-		{
-			log(i / step);
-			
-			var coord = pointAtDistance([[this.previous.x, this.previous.y], [this.x, this.y]], i);
-		
-			ctx.save();
-				ctx.beginPath();
-					ctx.fillStyle = "white";
-					ctx.circle(coord[0]*ws, coord[1]*hs, 5);
-				ctx.fill();
-			ctx.restore();
-		}
-	}
+	ctx.save();
+		ctx.beginPath();
+			ctx.fillStyle = "white";
+			ctx.circle(target[0]*ws, target[1]*hs, 5);
+		ctx.fill();
+	ctx.restore();
 }
 
 hitCircle.prototype.drawApproach = function()

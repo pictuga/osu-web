@@ -1,7 +1,7 @@
+#index
 Options +Indexes
-
+DirectoryIndex index
 ReadmeName readme.txt
-
 IndexIgnore readme.txt
 IndexIgnore *~$
 
@@ -19,3 +19,18 @@ Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
 
 #mime-type
 AddType application/x-web-app-manifest+json .webapp
+
+#lang
+AddDefaultCharset UTF-8
+Options +MultiViews
+
+AddLanguage en .en
+AddLanguage en-gb .en
+AddLanguage en-us .en
+
+AddLanguage fr .fr
+AddLanguage fr-fr .fr
+
+DefaultLanguage en
+LanguagePriority en fr de
+ForceLanguagePriority Prefer Fallback

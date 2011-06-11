@@ -9,7 +9,7 @@ var hc = [];//filled with initBeatMap()
 
 function initBeatMap()
 {
-	if(osu_file.General.EpilepsyWarning == 1 && !window.confirm("This beatmap contains scenes with rapidly flashing colours.\nPlease take caution if you are affected by epilepsy.\n\tCancel → Pick another beatmap"))
+	if(osu_file.General.EpilepsyWarning == 1 && !window.confirm(_('EP_WARN')))
 	{
 		pickBeatMap();
 		return false;
@@ -80,7 +80,7 @@ function initBeatMap()
 		window.onkeydown = checkKey;
 	
 		window.onresize = function(){resizeBeatMap()};
-		body.ontouchmove = function (e) { e.preventDefault(); }
+		document.body.ontouchmove = function (e) { e.preventDefault(); }
 	
 		//auto pause
 		window.onblur = function(){ pause(); }
@@ -121,7 +121,7 @@ function autoUpdateBeatMap()
 	else
 	{
 		timer = false;
-		alert('End - Press "C" to pick another beatmap !');
+		alert(_('BM_END'));
 		runAddons("end");
 	}
 }
@@ -366,8 +366,8 @@ function drawScore()
 	ctx.font = h*size + "px Arial";
 	ctx.fillStyle = "Black";
 
-	if(points < 2) ctx.fillText(points + " Point", (2*h), (2*h));
-	else ctx.fillText(points + " Points", (2*h), (2*h));
+	if(points < 2) ctx.fillText(points + " " + _('BM_1PT'), (2*h), (2*h));
+	else ctx.fillText(points + " " + _('BM_2PT'), (2*h), (2*h));
 }
 
 function drawStat()

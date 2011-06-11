@@ -1,3 +1,5 @@
+"use strict";
+
 var osu_file;
 var player;
 
@@ -8,15 +10,13 @@ window.onload = function()
 	setTimeout("main();", 0);
 }
 
-main = function()
+var main = function()
 {
-	body = document.body;
-	
 	loaded = function()
 	{
 		var button = document.createElement("input");
 		button.type = "button";
-		button.value = "Pick a beatmap →";
+		button.value = _('BM_PICK') + " →";
 		button.onclick = function(){pickBeatMap()};
 		document.getElementById("pdiv").appendChild(button);
 	}

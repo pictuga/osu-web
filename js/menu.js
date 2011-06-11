@@ -6,5 +6,5 @@ function pause()
 
 function menu()
 {
-	alert('Pause - Hit "P" to restart the game');
+	alert(_('BM_PAUS'));
 }

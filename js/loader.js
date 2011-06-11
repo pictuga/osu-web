@@ -188,7 +188,7 @@ var pic = {};
 function loadImages()
 {
 	var pic_loader = new loader();
-	pic_loader.url = "images";
+	pic_loader.url = "image";
 	pic_loader.type = "folder";
 	pic_loader.extra.param = "full";
 	pic_loader.callback = function(array)
@@ -197,7 +197,7 @@ function loadImages()
 		
 		for(key in array)
 		{
-			var url = "images/" + array[key].url;
+			var url = "image/" + array[key].url;
 			var basename = array[key].basename;
 			
 			var new_pic = new loader();
@@ -216,7 +216,7 @@ function loadImages()
 
 function loadJS()
 {
-	var js_array = ['beatmap', 'hitcircle', 'addons', 'slider', 'spinner', 'picker', 'sb', 'menu', 'curves', 'settings'];
+	var js_array = ['beatmap', 'hitcircle', 'addons', 'slider', 'spinner', 'picker', 'sb', 'menu', 'curves', 'settings', 'translation'];
 	
 	for(key in js_array)
 	{
@@ -230,6 +230,9 @@ function loadJS()
 			{
 				case "addons":
 					loadAddons();
+					break;
+				case "translation":
+					loadTranslation();
 					break;
 			}
 		}
