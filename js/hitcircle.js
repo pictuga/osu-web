@@ -57,19 +57,26 @@ function hitCircle(id, input)//class
 			this.sliderPoints	= this.sliderData.slice(1);
 			this.sliderLast		= this.sliderPoints.slice(-1)[0];
 			
-			//FIXME
-			this.sliderSpeed	= 0;
-			this.beatLength		= 0;
-			this.updateValues();
-		
+			
 			this.curveData		= this.input[5];
 			this.curveData[0]	= [this.x, this.y];
 		
 			this.sliderCount	= this.input[6];
+			this.repeat		= 1;
 			this.sliderLength	= this.input[7];
 		
 			this.slidePoints = [];
-		
+			
+			//FIXME
+			this.sliderSpeed	= 0;
+			this.beatLength		= 0;
+			
+			this.calcSlider();
+			
+			this.t			= this.sliderLength / this.sliderSpeed;//1 mouvement
+			this.duration		= this.sliderCount * this.t;//with repeats
+			this.endTime		= this.time + this.duration;
+			
 			switch(this.sliderType)
 			{
 				case "B":
@@ -83,6 +90,9 @@ function hitCircle(id, input)//class
 					this.curveData = this.catmull.pos;
 					break;
 			}
+			
+			if(this.sliderType == "B" || this.sliderType == "C")
+				log(distanceFromPoints(this.curveData), this.sliderLength, distanceFromPoints(this.curveData) - this.sliderLength);
 		break;
 		case "spinner":
 			this.endTime		= this.input[5];
@@ -99,7 +109,7 @@ function hitCircle(id, input)//class
 		}
 }
 
-hitCircle.prototype.updateValues = function()
+hitCircle.prototype.calcSlider = function()
 {
 	//FIXME
 	//beatLength inherited only once (cannot inherit from inherited values)
@@ -113,7 +123,7 @@ hitCircle.prototype.updateValues = function()
 	{
 		//inherited
 		var li = i;
-		while(osu_file.TimingPoints[li][1] > 0 && i >= 0)
+		while(i >= 0 && osu_file.TimingPoints[li][1] < 0)
 			li--;
 		
 		var speed = osu_file.Difficulty.SliderMultiplier * ( 100 / osu_file.TimingPoints[li][1] );
@@ -127,9 +137,24 @@ hitCircle.prototype.updateValues = function()
 		this.sliderSpeed = osu_file.Difficulty.SliderMultiplier * ( 100 / this.beatLength );
 	}
 }
+
+hitCircle.prototype.update = function()
+{
+	switch(this.Type)
+	{
+		case "slider":
+			if(this.sliderCount > 1)
+			{
+				this.repeat = Math.ceil((time-this.time) / this.t);//starts at 1
+			}
+		break;
+	}
+}
 	
 hitCircle.prototype.draw = function()
 {
+	this.update();
+	
 	switch(this.Type)
 	{
 		 case "circle":
@@ -148,19 +173,15 @@ hitCircle.prototype.draw = function()
 		break;
 	
 		case "slider":
-			log(sliderSpeed - this.sliderSpeed);
-			
 			//have fun
 			var points = this.curveData;
-		
-			var t = this.sliderCount * ( this.sliderLength / sliderSpeed );//time with repeat
 		
 			if(isIn(time, this.time-1500, this.time))//approach
 			{
 				this.drawApproach();
 				this.drawObject();
 			}
-			if(isIn(time, this.time, this.time+t))//sliding
+			if(isIn(time, this.time, this.endTime))//sliding
 			{
 				this.drawObject();
 				this.drawBall();
@@ -227,21 +248,16 @@ hitCircle.prototype.drawObject = function()
 				{
 					if(time > this.time)
 					{
-						var t = this.sliderLength / sliderSpeed;
-						var repeat = (Math.ceil((time-this.time) / t));
-					
-						//log(repeat, [repeat % 2, (repeat % 2 == 1)], this.sliderCount);
-					
-						if(this.sliderCount > repeat)
+						if(this.sliderCount > this.repeat)
 						{
-							var xy = (repeat % 2 == 1) ? this.curveData[this.curveData.length-1] : [this.x, this.y];
+							var xy = (this.repeat % 2 == 1) ? this.sliderLast : [this.x, this.y];
 							var image = pic["reversearrow"];
 							ctx.drawImageAngle(image, xy[0]*ws, xy[1]*hs);
 						}
 					}
 					else
 					{
-						var xy = this.curveData[this.curveData.length-1];
+						var xy = this.sliderLast;
 						var image = pic["reversearrow"];
 						ctx.drawImageAngle(image, xy[0]*ws, xy[1]*hs);
 					}
@@ -420,18 +436,15 @@ hitCircle.prototype.drawBall = function()
 		}
 	}
 
-	var points = this.curveData;
-
 	//speed
-	var t1 = this.sliderLength / sliderSpeed;	//time if slider at good speed
-	var v2 = distanceFromPoints(points) / t1;	//speed with sliders with wrong length
-	var progress = ( time - this.time ) - ( t1 * Math.floor( ( time-this.time ) / t1) );//elsapsed time
-	var dist = v2 * progress;			//distance during elapsed time
+	var progress = ( ( time - this.time ) - ( this.t * (this.repeat-1) ) ) / this.duration;
+	var dist = this.sliderLength * progress;
+	
+	//FIXME
+	if(this.repeat % 2 == 0)//if going back
+		dist = distanceFromPoints(this.curveData) - dist;
 
-	if((Math.floor((time-this.time) / t1)) % 2 != 0)//if going back
-		dist = distanceFromPoints(points) - dist;
-
-	var at = pointAtDistance(points, dist);
+	var at = pointAtDistance(this.curveData, dist);
 
 	if(!isNaN(at[0]) && !isNaN(at[1]))
 	{
@@ -451,7 +464,7 @@ hitCircle.prototype.drawBall = function()
 	
 		//ball
 			var i = (Math.floor(dist/10) % 10);
-			if(points[at[3]][0] > points[at[3]+1][0]) i = 9 - i;//fix issues where ball goes backward
+			if(this.curveData[at[3]][0] > this.curveData[at[3]+1][0]) i = 9 - i;//fix issues where ball goes backward
 		
 			var image = pic["sliderb" + i];
 			ctx.save();
@@ -520,12 +533,12 @@ hitCircle.prototype.checkSlide = function(mouseX, mouseY)
 	
 		//speed
 		var t = this.sliderLength / sliderSpeed;
-	
-		if(isIn(time, this.time-1500, (this.time + t * this.sliderCount)))
+		
+		if(isIn(time, this.time-1500, this.endTime))
 		{
-			var v = distanceFromPoints(points) / t;//speed with wrong length
+			var v = distanceFromPoints(points) / this.t;//speed with wrong length
 	
-			var progress = ( time - this.time ) - ( t * Math.floor( ( time-this.time ) / t) );//[progress] = T
+			var progress = ( time - this.time ) - ( t * Math.floor( ( time-this.time ) / this.t) );//[progress] = T
 			var dist = v * progress;//distance on the slider
 	
 			if((Math.floor((time-this.time) / t)) % 2 != 0)
