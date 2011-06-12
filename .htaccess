@@ -27,10 +27,22 @@ Options +MultiViews
 AddLanguage en .en
 AddLanguage en-gb .en
 AddLanguage en-us .en
+AddLanguage en-za .en
+AddLanguage en-au .en
+AddLanguage en-bz .en
+AddLanguage en-ca .en
+AddLanguage en-ie .en
+AddLanguage en-jm .en
+AddLanguage en-nz .en
+AddLanguage en-ph .en
+AddLanguage en-tt .en
+AddLanguage en-zw .en
 
 AddLanguage fr .fr
 AddLanguage fr-fr .fr
+AddLanguage fr-be .fr
+AddLanguage fr-ca .fr
 
 DefaultLanguage en
-LanguagePriority en fr de
+LanguagePriority en fr
 ForceLanguagePriority Prefer Fallback
