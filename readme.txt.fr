@@ -1,7 +1,5 @@
 <h1>osu! web / unstable</h1>
 
-dernier commit de <a href="https://launchpad.net/osu-web">https://launchpad.net/osu-web</a>
-
 <strong>Quoi de nouveau ?</strong>
 beatmaps classées par ordre alphabétique
 
