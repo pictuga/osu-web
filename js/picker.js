@@ -4,8 +4,12 @@ function pickBeatMap()
 	
 	var pdiv = $('<div id="pdiv"/>').appendTo(document.body);
 	
-	for(id in beatmap)
+	var out = sortBeatmap();
+	log(out);
+	for(var i in out)
 	{
+		var id = out[i];
+		
 		var osz = $('<div/>', {html: beatmap[id].title}).appendTo(pdiv);
 		
 		for(i in beatmap[id].version)
