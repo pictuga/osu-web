@@ -137,8 +137,6 @@ function updateBeatMap()
 		//addons
 		runAddons("updateBeatMap");
 		
-		updateValues();
-		
 		if(ratio)
 		{
 			ctx.save();
@@ -472,43 +470,6 @@ function resizeBeatMap(e)
 	//addons
 	updateBeatMap();
 	runAddons("resizeBeatMap");
-}
-
-function updateValues()
-{
-	time = player.currentTime * 1000;
-	
-	//beatLength inherited only once (cannot inherit from inherited values)
-	//beatLength in ms
-	
-	var i, li = 0;//latest_i = li
-	
-	for(i in osu_file.TimingPoints)
-	{
-		if(time > osu_file.TimingPoints[i][0])//too late
-		{
-			i = (i == 0) ? 0 : i-1;
-			break;
-		}
-		else if(osu_file.TimingPoints[i][1] > 0)//if not inherited
-		{
-			li = i;
-		}
-	}
-	
-	if(osu_file.TimingPoints[i][1] < 0)
-	{
-		//inherited
-		speed = osu_file.Difficulty.SliderMultiplier * ( 100 / osu_file.TimingPoints[li][1] );
-		
-		beatLength = osu_file.TimingPoints[i][1] / -100 * osu_file.TimingPoints[li][1];
-		sliderSpeed = -100 * speed / osu_file.TimingPoints[i][1];
-	}
-	else
-	{
-		beatLength = osu_file.TimingPoints[i][1];
-		sliderSpeed = osu_file.Difficulty.SliderMultiplier * ( 100 / beatLength );
-	}
 }
 
 function checkKey(e)
