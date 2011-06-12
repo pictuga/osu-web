@@ -3,13 +3,13 @@
 dernier commit de <a href="https://launchpad.net/osu-web">https://launchpad.net/osu-web</a>
 
 <strong>Quoi de nouveau ?</strong>
-jQuery
+beatmaps classées par ordre alphabétique
 
 <strong>Qu'est-ce qui ne fonctionne pas ici ?</strong>
-rien ?
+spinners
 
 <strong>Bientôt...</strong>
-?
+paramètres
 
 <strong>Idées ?</strong>
 importation de .osz
