@@ -55,7 +55,7 @@ function hitCircle(id, input)//class
 			this.sliderData		= this.input[5];
 			this.sliderType		= this.input[5][0];
 			this.sliderPoints	= this.sliderData.slice(1);
-			this.sliderLast		= this.sliderPoints.slice(-1)[0];
+			//this.sliderLast is below
 			
 			
 			this.curveData		= this.input[5];
@@ -67,7 +67,6 @@ function hitCircle(id, input)//class
 		
 			this.slidePoints = [];
 			
-			//FIXME
 			this.sliderSpeed	= 0;
 			this.beatLength		= 0;
 			
@@ -81,18 +80,19 @@ function hitCircle(id, input)//class
 			{
 				case "B":
 					this.bezier = new Bezier(this.curveData);
+					this.bezier.max = this.sliderLength;
 					this.bezier.calcPoints();
 					this.curveData = array_values(this.bezier.pos);
 					break;
 				case "C":
 					this.catmull = new Catmull(this.curveData);
+					this.catmull.max = this.sliderLength;
 					this.catmull.calcPoints();
 					this.curveData = this.catmull.pos;
 					break;
 			}
 			
-			if(this.sliderType == "B" || this.sliderType == "C")
-				log(distanceFromPoints(this.curveData), this.sliderLength, distanceFromPoints(this.curveData) - this.sliderLength);
+			this.sliderLast		= this.curveData.slice(-1)[0];
 		break;
 		case "spinner":
 			this.endTime		= this.input[5];
@@ -167,9 +167,6 @@ hitCircle.prototype.draw = function()
 			if((isIn(time, this.time+100, this.time+500) && !this.clic)
 			|| (isIn(time, this.clicTime, this.clicTime+400) && this.clic))
 				this.drawScore();
-			
-			if(this.previous && isIn(time, this.previous.time, this.time))
-				this.drawPath();
 		break;
 	
 		case "slider":
@@ -186,9 +183,6 @@ hitCircle.prototype.draw = function()
 				this.drawObject();
 				this.drawBall();
 			}
-			
-			if(this.previous && isIn(time, this.previous.time, this.time))
-				this.drawPath();
 		break;
 	
 		case "spinner":
@@ -196,6 +190,8 @@ hitCircle.prototype.draw = function()
 				this.drawObject();
 		break;
 	}
+	
+	this.drawPath();
 }
 
 
@@ -385,13 +381,28 @@ hitCircle.prototype.drawObject = function()
 
 hitCircle.prototype.drawPath = function()
 {
-	var progress = 1 - (this.time - time) / (this.time - this.previous.time);
+	if(!this.previous || (this.Type != "circle" && this.Type != "slider")) return false;
 	
-	var from = this.previous.Type == "circle" ? [this.previous.x, this.previous.y] : this.previous.sliderLast;
+	if(this.previous.Type == "slider")
+	{
+		var fromT = this.previous.endTime;
+		var fromD = this.previous.sliderCount % 2 != 0
+			? this.previous.sliderLast
+			: [this.previous.x, this.previous.y];
+	}
+	else
+	{
+		var fromT = this.previous.time;
+		var fromD = [this.previous.x, this.previous.y];
+	}
+	
+	if(!isIn(time, fromT, this.time)) return false;
+
+	var progress = 1 - (this.time - time) / (this.time - fromT);
 	var to = [this.x, this.y];
 	
-	var dist = distanceFromPoints([from, to]);
-	var target =  pointAtDistance([from, to], dist*progress);
+	var dist = distanceFromPoints([fromD, to]);
+	var target =  pointAtDistance([fromD, to], dist*progress);
 	
 	ctx.save();
 		ctx.beginPath();
@@ -436,13 +447,11 @@ hitCircle.prototype.drawBall = function()
 		}
 	}
 
-	//speed
-	var progress = ( ( time - this.time ) - ( this.t * (this.repeat-1) ) ) / this.duration;
+	var progress = ( ( time - this.time ) - ( this.t * (this.repeat-1) ) ) / this.t;
 	var dist = this.sliderLength * progress;
 	
-	//FIXME
 	if(this.repeat % 2 == 0)//if going back
-		dist = distanceFromPoints(this.curveData) - dist;
+		dist = this.sliderLength - dist;
 
 	var at = pointAtDistance(this.curveData, dist);
 
@@ -492,8 +501,8 @@ hitCircle.prototype.calcPoints = function()
 		if (offset < 400)
 		{
 			if	(isIn(offset,  200, 300))	this.score = 50;
-			else if	(isIn(offset,   75, 200))		this.score = 100;
-			else if	(isIn(offset,  -50,  75))		this.score = 300;
+			else if	(isIn(offset,   75, 200))	this.score = 100;
+			else if	(isIn(offset,  -50,  75))	this.score = 300;
 			else if	(isIn(offset, -100, -50))	this.score = 100;
 		}
 	}
@@ -529,23 +538,16 @@ hitCircle.prototype.checkSlide = function(mouseX, mouseY)
 	{
 		var radius = circleSize * 1.25;
 	
-		var points = this.curveData;
-	
-		//speed
-		var t = this.sliderLength / sliderSpeed;
-		
 		if(isIn(time, this.time-1500, this.endTime))
 		{
-			var v = distanceFromPoints(points) / this.t;//speed with wrong length
+			var progress = ( ( time - this.time ) - ( this.t * (this.repeat-1) ) ) / this.t;
+			var dist = this.sliderLength * progress;
 	
-			var progress = ( time - this.time ) - ( t * Math.floor( ( time-this.time ) / this.t) );//[progress] = T
-			var dist = v * progress;//distance on the slider
-	
-			if((Math.floor((time-this.time) / t)) % 2 != 0)
-				dist = distanceFromPoints(points) - dist;
-	
-			var at = pointAtDistance(points, dist);
-		
+			if(this.repeat % 2 == 0)//if going back
+				dist = this.sliderLength - dist;
+
+			var at = pointAtDistance(this.curveData, dist);
+			
 			if(!isNaN(at[0]) && !isNaN(at[1]))
 			{
 				ctx.beginPath();
