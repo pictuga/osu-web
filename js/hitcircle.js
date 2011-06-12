@@ -56,6 +56,11 @@ function hitCircle(id, input)//class
 			this.sliderType		= this.input[5][0];
 			this.sliderPoints	= this.sliderData.slice(1);
 			this.sliderLast		= this.sliderPoints.slice(-1)[0];
+			
+			//FIXME
+			this.sliderSpeed	= 0;
+			this.beatLength		= 0;
+			this.updateValues();
 		
 			this.curveData		= this.input[5];
 			this.curveData[0]	= [this.x, this.y];
@@ -68,13 +73,11 @@ function hitCircle(id, input)//class
 			switch(this.sliderType)
 			{
 				case "B":
-					//bezier
 					this.bezier = new Bezier(this.curveData);
 					this.bezier.calcPoints();
 					this.curveData = array_values(this.bezier.pos);
 					break;
 				case "C":
-					//catmull
 					this.catmull = new Catmull(this.curveData);
 					this.catmull.calcPoints();
 					this.curveData = this.catmull.pos;
@@ -94,6 +97,35 @@ function hitCircle(id, input)//class
 			this.x = this.previous.x + 10;
 			this.y = this.previous.y + 10;
 		}
+}
+
+hitCircle.prototype.updateValues = function()
+{
+	//FIXME
+	//beatLength inherited only once (cannot inherit from inherited values)
+	//beatLength in ms
+	
+	var i = osu_file.TimingPoints.length-1;
+	while(i >= 0 && this.time < osu_file.TimingPoints[i][0])
+		i--;
+	
+	if(osu_file.TimingPoints[i][1] < 0)
+	{
+		//inherited
+		var li = i;
+		while(osu_file.TimingPoints[li][1] > 0 && i >= 0)
+			li--;
+		
+		var speed = osu_file.Difficulty.SliderMultiplier * ( 100 / osu_file.TimingPoints[li][1] );
+		
+		this.beatLength = osu_file.TimingPoints[i][1] / ( -100 * osu_file.TimingPoints[li][1] );
+		this.sliderSpeed = -100 * speed / osu_file.TimingPoints[i][1];
+	}
+	else
+	{
+		this.beatLength = osu_file.TimingPoints[i][1];
+		this.sliderSpeed = osu_file.Difficulty.SliderMultiplier * ( 100 / this.beatLength );
+	}
 }
 	
 hitCircle.prototype.draw = function()
@@ -116,6 +148,8 @@ hitCircle.prototype.draw = function()
 		break;
 	
 		case "slider":
+			log(sliderSpeed - this.sliderSpeed);
+			
 			//have fun
 			var points = this.curveData;
 		

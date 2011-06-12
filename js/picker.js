@@ -5,7 +5,6 @@ function pickBeatMap()
 	var pdiv = $('<div id="pdiv"/>').appendTo(document.body);
 	
 	var out = sortBeatmap();
-	log(out);
 	for(var i in out)
 	{
 		var id = out[i];
