@@ -76,17 +76,21 @@ function initBeatMap()
 		//beatLength & sliderSpeed → updateValues()
 	
 	//events
-		canvas.mousedown(checkHit);
-		canvas.mouseup(function() { window.onmousemove = null; });
+		//reset
+			canvas.unbind();
+			$(window).unbind();
+			$(document.body).unbind();
 		
-		canvas.get(0).oncontextmenu = function(){ return false; }
-		window.onkeydown = checkKey;
-	
-		window.onresize = function(){resizeBeatMap()};
-		document.body.ontouchmove = function (e) { e.preventDefault(); }
-	
-		//auto pause
-		window.onblur = function(){ pause(); }
+		//new
+			canvas.mousedown(checkHit);
+			canvas.mouseup(function() { window.onmousemove = null; });
+			canvas.bind('oncontextmenu', function(e){ e.preventDefault(); });
+		
+			$(window).keydown(checkKey);
+			$(window).resize(resizeBeatMap);
+			$(window).blur(pause);
+		
+			$(document.body).bind('ontouchmove', function (e) { e.preventDefault(); });
 	
 	//addons
 		runAddons("initBeatMap");
@@ -123,9 +127,16 @@ function autoUpdateBeatMap()
 	}
 	else
 	{
-		timer = false;
-		alert(_('BM_END'));
-		runAddons("end");
+		//"end"
+			timer = false;
+			alert(_('BM_END'));
+			runAddons("end");
+		
+		//reset events
+			canvas.unbind();
+			$(window).unbind();
+			$(window).resize(resizeBeatMap);
+			$(document.body).unbind();
 	}
 }
 
