@@ -135,6 +135,7 @@ function updateBeatMap()
 	if(!player.ended)
 	{
 		//addons
+		time = player.currentTime * 1000;
 		runAddons("updateBeatMap");
 		
 		if(ratio)
