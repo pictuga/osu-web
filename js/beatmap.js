@@ -15,6 +15,9 @@ function initBeatMap()
 		return false;
 	}
 	
+	//reset
+		hc = [];
+	
 	//<canvas>
 		if(!$('#canvas').size())
 			$('<canvas id="canvas"/>').appendTo(document.body);

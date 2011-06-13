@@ -15,8 +15,6 @@
 		switchOnOff : function()
 		{
 			player.pause();
-			hc = [];
-			player.currentTime = 0;
 			pickBeatMap();
 		}
 	}

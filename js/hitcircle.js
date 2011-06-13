@@ -111,7 +111,6 @@ function hitCircle(id, input)//class
 
 hitCircle.prototype.calcSlider = function()
 {
-	//FIXME
 	//beatLength inherited only once (cannot inherit from inherited values)
 	//beatLength in ms
 	
@@ -119,12 +118,16 @@ hitCircle.prototype.calcSlider = function()
 	while(i >= 0 && this.time < osu_file.TimingPoints[i][0])
 		i--;
 	
+	i = Math.max(i, 0);
+	
 	if(osu_file.TimingPoints[i][1] < 0)
 	{
 		//inherited
 		var li = i;
 		while(i >= 0 && osu_file.TimingPoints[li][1] < 0)
 			li--;
+		
+		li = Math.max(li, 0);
 		
 		var speed = osu_file.Difficulty.SliderMultiplier * ( 100 / osu_file.TimingPoints[li][1] );
 		
