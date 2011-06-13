@@ -15,40 +15,41 @@ function pickBeatMap()
 		{
 			var osu = $('<div/>', {html: (beatmap[id].version[i] != '') ? beatmap[id].version[i] : '[no name]'}).appendTo(osz);
 			
-			osu.click(
-			(
-				function(id, i)
+			osu.click({id: id, i: i}, function(event)
+			{
+				var id = event.data.id;
+				var i  = event.data.i; 
+				
+				$('#pdiv').remove();
+				
+				loaded = initBeatMap;
+				
+				var bm = new loader();
+				bm.extra.id = id;
+				bm.url = BEATMAP + id + "/" + beatmap[id].artist + " - " + beatmap[id].title + " (" + beatmap[id].creator + ") [" + beatmap[id].version[i] + "].osu";
+				bm.type = "ajax";
+				bm.callback = function(array)
 				{
-					return function()
+					osu_raw  = array.data;
+					osu_id   = array.extra.id;
+					
+					//helps sb.js
+					osu_file = parseOSU(array.data);
+					osu_file.Metadata.id = array.extra.id;
+					
+					loadStoryBoard();
+					
+					var mp3 = new loader();
+					mp3.url = [BEATMAP + osu_id + "/" + osu_file.General.AudioFilename, BEATMAP + "conv/" + osu_id + ".ogg"];
+					mp3.type = "audio";
+					mp3.callback = function(array)
 					{
-						$('#pdiv').remove();
-						
-						loaded = initBeatMap;
-						
-						var bm = new loader();
-						bm.extra.id = id;
-						bm.url = BEATMAP + id + "/" + beatmap[id].artist + " - " + beatmap[id].title + " (" + beatmap[id].creator + ") [" + beatmap[id].version[i] + "].osu";
-						bm.type = "ajax";
-						bm.callback = function(array)
-						{
-							osu_file = parseOSU(array.data);
-							osu_file.Metadata.id = array.extra.id;
-							
-							loadStoryBoard();
-							
-							var mp3 = new loader();
-							mp3.url = [BEATMAP + osu_file.Metadata.id + "/" + osu_file.General.AudioFilename, BEATMAP + "conv/" + osu_file.Metadata.id + ".ogg"];
-							mp3.type = "audio";
-							mp3.callback = function(array)
-							{
-								player = array.data;
-							}
-							mp3.start();
-						}
-						bm.start();
+						player = array.data;
 					}
+					mp3.start();
 				}
-			)(id, i));
+				bm.start();
+			});
 			
 			//http://www.siteduzero.com/tutoriel-3-123380-les-closures-en-javascript.html
 			//http://www.howtocreate.co.uk/referencedvariables.html

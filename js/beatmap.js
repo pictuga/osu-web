@@ -1,14 +1,20 @@
 var canvas, ctx;
-var color;
+var color, hc;
 
-var circleSize, beatLength, sliderSpeed, time = 0;
+var circleSize, time = 0;
 var timer = false;
 
+var osu_file, osu_raw, osu_id;
+var player;
 
-var hc = [];//filled with initBeatMap()
+var fps = 50;
 
 function initBeatMap()
 {
+	//init
+		osu_file = parseOSU(osu_raw);
+		osu_file.Metadata.id = osu_id;
+	
 	if(osu_file.General.EpilepsyWarning == 1 && !window.confirm(_('EP_WARN')))
 	{
 		pickBeatMap();
@@ -99,6 +105,7 @@ function initBeatMap()
 		initStoryBoard();
 		resizeBeatMap();
 		
+		player.currentTime = 0;
 		player.play();
 		
 		if(!timer) autoUpdateBeatMap();
@@ -116,7 +123,7 @@ function autoUpdateBeatMap()
 			{
 				try//solves some issues // ugly workaround I know
 				{
-					setTimeout("autoUpdateBeatMap();", 0);
+					setTimeout("autoUpdateBeatMap();", 1000/fps);
 				}
 				catch(e)
 				{
@@ -134,8 +141,7 @@ function autoUpdateBeatMap()
 		
 		//reset events
 			canvas.unbind();
-			$(window).unbind();
-			$(window).resize(resizeBeatMap);
+			$(window).unbind('blur');
 			$(document.body).unbind();
 	}
 }

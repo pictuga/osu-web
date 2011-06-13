@@ -1,8 +1,5 @@
 "use strict";
 
-var osu_file;
-var player;
-
 var BEATMAP = "/beatmap/";
 
 window.onload = function()
