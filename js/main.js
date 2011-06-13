@@ -1,6 +1,5 @@
-"use strict";
-
 var BEATMAP = "/beatmap/";
+var readme;
 
 window.onload = function()
 {

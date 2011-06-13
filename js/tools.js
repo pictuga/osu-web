@@ -1,5 +1,3 @@
-"use strict";
-
 window.alert = function(txt){newjWindow(txt)};
 
 function log()

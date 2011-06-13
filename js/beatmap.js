@@ -1,12 +1,6 @@
-var canvas, ctx;
-var color, hc;
-
-var circleSize, time = 0;
-
-var osu_file, osu_raw, osu_id;
-var player;
-
-var fps = 50;
+var canvas, ctx, color, hc;
+var circleSize, time = 0, fps = 50;
+var osu_file, osu_raw, osu_id, player;
 
 function initBeatMap()
 {
@@ -112,11 +106,26 @@ function initBeatMap()
 		player.play();
 }
 
+var ON = false;
+function startUpdateBeatMap()
+{
+	updateBeatMap();
+	if(!ON && !player.ended && !player.paused)
+	{
+		ON = true;
+		autoUpdateBeatMap();
+	}
+}
+
 function autoUpdateBeatMap()
 {
 	updateBeatMap();
-	if(player.ended || player.paused) return pause();
-	setTimeout("autoUpdateBeatMap();", 1000/fps);
+	if(player.ended || player.paused)
+	{
+		ON = false;
+		return pause();
+	}
+	else	setTimeout(autoUpdateBeatMap, 1000/fps);
 }
 
 var tps = 0;
