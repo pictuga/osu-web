@@ -195,26 +195,18 @@ function checkHit(e)
 	
 	for(key in hc)
 	{
-		if(isIn(click_time, hc[key].time-1500, hc[key].time+100) && !hc[key].clic && (hc[key].type == 1 || hc[key].type == 4 || hc[key].type == 5))//hitcircle
+		if(hc[key].Type == "circle" && isIn(click_time, hc[key].time-1500, hc[key].time+100) && !hc[key].clic)//hitcircle
 		{
 			if(hc[key].checkHit(mouseX, mouseY)) break;
 		}
 		
-		if(hc[key].type == 2 || hc[key].type == 6)//slider
+		if(hc[key].Type == "slider" && isIn(time, hc[key].time-1500, hc[key].endTime) && hc[key].checkSlide(mouseX, mouseY))
 		{
-			var t = hc[key].sliderCount * ( hc[key].sliderLength / sliderSpeed );//time with repeat
-			
-			if(isIn(time, hc[key].time-1500, hc[key].time+t))
-			{
-				if(hc[key].checkSlide(mouseX, mouseY))
-				{
-					window.onmousemove = checkSlide;
-					break;
-				}
-			}
+			window.onmousemove = checkSlide;
+			break;
 		}
 		
-		if(isIn(time, hc[key].time, hc[key].endTime) && (hc[key].type == 8 || hc[key].type == 12))//spinner
+		if(hc[key].Type == "spinner" && isIn(time, hc[key].time, hc[key].endTime))//spinner
 		{
 			window.onmousemove = checkSpin;
 			hc[key].checkSpin(mouseX, mouseY);
@@ -223,13 +215,11 @@ function checkHit(e)
 	}
 	
 	//désactiver le clic
-	return false;
+	e.preventDefault();
 }
 
 function checkSlide(e)
 {
-	var slide_time = time;
-	
 	if (e == null) e = window.event;
 		
 	var mouseX = e.clientX;
@@ -248,24 +238,19 @@ function checkSlide(e)
 	
 	for(key in hc)
 	{
-		if(hc[key].type == 2 || hc[key].type == 6)
+		if(hc[key].Type == "slider" && hc[key].checkSlide(mouseX, mouseY))
 		{
-			if(hc[key].checkSlide(mouseX, mouseY))
-			{
-				hc[key].slidePoints.push([mouseX, mouseY]);
-				break;
-			}
+			hc[key].slidePoints.push([mouseX, mouseY]);
+			break;
 		}
 	}
 	
 	//disables click
-	return false;
+	e.preventDefault();
 }
 
 function checkSpin(e)
 {
-	var spin_time = time;
-	
 	if (e == null) e = window.event;
 		
 	var mouseX = e.clientX;
@@ -284,7 +269,7 @@ function checkSpin(e)
 	
 	for(key in hc)
 	{
-		if(isIn(time, hc[key].time, hc[key].endTime) && (hc[key].type == 8 || hc[key].type == 12))
+		if(hc[key].Type == "spinner" && isIn(time, hc[key].time, hc[key].endTime))
 		{
 			hc[key].checkSpin(mouseX, mouseY);
 			break;
@@ -292,7 +277,7 @@ function checkSpin(e)
 	}
 	
 	//disables click
-	return false;
+	e.preventDefault();
 }
 
 function sumPoints(type)

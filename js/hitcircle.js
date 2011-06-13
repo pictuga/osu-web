@@ -516,10 +516,13 @@ hitCircle.prototype.checkHit = function(mouseX, mouseY)
 	ctx.circle(this.x, this.y, radius);
 	this.clic = ctx.isPointInPath(mouseX, mouseY);
 	
-	this.clicTime = time;
-	this.calcPoints();
+	if(this.clic)
+	{
+		this.clicTime = time;
+		this.calcPoints();
 	
-	if(this.clic) this.playSound();
+		//if(this.clic) this.playSound();
+	}
 	
 	return this.clic;
 }

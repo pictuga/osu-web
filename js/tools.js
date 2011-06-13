@@ -1,6 +1,6 @@
 "use strict";
 
-alert = function(txt){newjWindow(txt)};
+window.alert = function(txt){newjWindow(txt)};
 
 function log()
 {
