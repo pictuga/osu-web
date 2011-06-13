@@ -16,8 +16,8 @@
 		{
 			if(player.paused)
 			{
-				alert('play');
-				player.play()
+				removejWindow();
+				player.play();
 			}
 			else
 			{
