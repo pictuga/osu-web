@@ -93,7 +93,6 @@ function initBeatMap()
 			$(document.body).bind('ontouchmove', function (e) { e.preventDefault(); });
 			
 			$(player).bind('playing', autoUpdateBeatMap);
-			//$(player).bind('suspend error ended', pause);
 	
 	//addons
 		runAddons("initBeatMap");
@@ -107,25 +106,36 @@ function initBeatMap()
 }
 
 var ON = false;
-function startUpdateBeatMap()
-{
-	updateBeatMap();
-	if(!ON && !player.ended && !player.paused)
-	{
-		ON = true;
-		autoUpdateBeatMap();
-	}
-}
-
 function autoUpdateBeatMap()
 {
 	updateBeatMap();
+	if(!ON)
+	{
+		ON = true;
+		keepUpdateBeatMap();
+	}
+}
+
+function keepUpdateBeatMap()
+{
 	if(player.ended || player.paused)
 	{
+		log('ended');
+		ctx.clear();
+		if(player.ended)
+		{
+			pickBeatMap();
+		}
+		else	pause();
+		
 		ON = false;
-		return pause();
+		return;
 	}
-	else	setTimeout(autoUpdateBeatMap, 1000/fps);
+	else
+	{
+		updateBeatMap();
+		setTimeout(keepUpdateBeatMap, 1000/fps);
+	}
 }
 
 var tps = 0;
@@ -168,10 +178,6 @@ function updateBeatMap()
 		
 		drawInfo('FPS ⋅ ' + Math.floor(1000 / Math.abs(new Date().getMilliseconds() - tps)));
 		tps = new Date().getMilliseconds();
-	}
-	else
-	{
-		drawStat();
 	}
 }
 
@@ -341,6 +347,8 @@ function drawTest()
 
 function drawScore()
 {
+	ctx.save();
+	
 	var points = sumPoints();
 	var size = 4;
 	
@@ -351,48 +359,20 @@ function drawScore()
 
 	ctx.font = h*size + "px Arial";
 	ctx.fillStyle = "Black";
+	
+	ctx.shadowBlur = 2*h;
+	ctx.shadowColor = "rgba(255, 255, 255, 0.75)";
 
 	if(points < 2) ctx.fillText(points + " " + _('BM_1PT'), (2*h), (2*h));
 	else ctx.fillText(points + " " + _('BM_2PT'), (2*h), (2*h));
-}
-
-function drawStat()
-{
-	//outline
-		ctx.beginPath();
-			ctx.strokeStyle = "Black";
-			ctx.rect((wp*25), (hp*10), (wp*50), (hp*80));
-			ctx.moveTo((wp*25+(0.1*wp*75)), (hp*10));
-			ctx.rect((wp*25+(0.1*wp*50)), (hp*10), (wp*40), (hp*16));
-		ctx.stroke();
 	
-	//txt
-		var size = 4;
-		ctx.textAlign = "center";
-		ctx.textBaseline = "middle";
-	
-		ctx.font = hp*size + "px Arial";
-		ctx.fillStyle = "Black";
-
-		//score
-		ctx.font = (hp*16*0.75) + "px Arial";
-		ctx.fillText(sumPoints(), (W/2), (18*hp));
-		
-		//50
-		ctx.font = (hp*16*0.75) + "px Arial";
-		ctx.fillText(sumPoints(50) + " × 50", (37.5*wp), (48*hp));//100(50÷100)(100÷400)+25
-		
-		//100
-		ctx.font = (hp*16*0.75) + "px Arial";
-		ctx.fillText(sumPoints(100) + " × 100", (62.5*wp), (48*hp));
-		
-		//300
-		ctx.font = (hp*16*0.75) + "px Arial";
-		ctx.fillText(sumPoints(300) + " × 300", (W/2), (69*hp));//100(80÷100)(2×80÷300)+26
+	ctx.restore();
 }
 
 function drawInfo(txt)
 {
+	ctx.save();
+	
 	var points = sumPoints();
 	var size = 2;
 
@@ -405,6 +385,8 @@ function drawInfo(txt)
 	ctx.fillStyle = "Black";
 
 	ctx.fillText(txt, (2*h), (H-2*h));
+	
+	ctx.restore();
 }
 
 var H, W;	//total size (including outside the gamefield)
