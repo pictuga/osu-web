@@ -2,7 +2,6 @@ var canvas, ctx;
 var color, hc;
 
 var circleSize, time = 0;
-var timer = false;
 
 var osu_file, osu_raw, osu_id;
 var player;
@@ -86,6 +85,7 @@ function initBeatMap()
 			canvas.unbind();
 			$(window).unbind();
 			$(document.body).unbind();
+			$(player).unbind();
 		
 		//new
 			canvas.mousedown(checkHit);
@@ -97,6 +97,9 @@ function initBeatMap()
 			$(window).blur(pause);
 		
 			$(document.body).bind('ontouchmove', function (e) { e.preventDefault(); });
+			
+			$(player).bind('playing', autoUpdateBeatMap);
+			//$(player).bind('suspend error ended', pause);
 	
 	//addons
 		runAddons("initBeatMap");
@@ -107,43 +110,13 @@ function initBeatMap()
 		
 		player.currentTime = 0;
 		player.play();
-		
-		if(!timer) autoUpdateBeatMap();
 }
 
 function autoUpdateBeatMap()
 {
-	timer = true;
 	updateBeatMap();
-	
-	if(!player.ended)
-	{
-		setTimeout(
-			function()
-			{
-				try//solves some issues // ugly workaround I know
-				{
-					setTimeout("autoUpdateBeatMap();", 1000/fps);
-				}
-				catch(e)
-				{
-					log('updateBeatMap failure', e);
-				}
-			}
-		, 0);
-	}
-	else
-	{
-		//"end"
-			timer = false;
-			alert(_('BM_END'));
-			runAddons("end");
-		
-		//reset events
-			canvas.unbind();
-			$(window).unbind('blur');
-			$(document.body).unbind();
-	}
+	if(player.ended || player.paused) return pause();
+	setTimeout("autoUpdateBeatMap();", 1000/fps);
 }
 
 var tps = 0;
