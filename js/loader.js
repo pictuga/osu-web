@@ -44,6 +44,16 @@ function loader()
 	
 	loader.prototype.start = function()
 	{
+		//check that the file isn't already loaded !
+		for(var i in load)
+		{
+			if(load[i].url == this.url)
+			{
+				//
+			}
+		}
+		
+		//if not, ddl it
 		this.id = (load.push(this)-1);
 		var id = this.id;
 		
@@ -139,7 +149,7 @@ function checkFail()
 {
 	for(i in load)
 	{
-		if(load[i].state != 2) log(i);
+		if(load[i].state != 2) log(i, load[i].type, load[i].url);
 	}
 }
 

@@ -86,7 +86,7 @@ function initBeatMap()
 		//new
 			$(canvas).mousedown(checkHit);
 			$(canvas).mouseup(function() { window.onmousemove = null; });
-			$(canvas).bind('oncontextmenu', function(e){ e.preventDefault(); });
+			$(canvas).bind('contextmenu', function(e){ e.preventDefault(); });
 		
 			$(window).keydown(checkKey);
 			$(window).resize(resizeBeatMap);

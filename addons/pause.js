@@ -14,6 +14,8 @@
 	{
 		switchOnOff : function()
 		{
+			if(player.ended) return false;
+			
 			if(player.paused)
 			{
 				removejWindow();

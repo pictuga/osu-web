@@ -1,11 +1,11 @@
 <h1>osu! web / unstable</h1>
 
 <strong>What's new here ?</strong>
-beatmaps sorted
-slider timing is *way* better
+fixed iOS support (iOS users have to click on the loader when hanging)
+uses less ressouces when not playing (pause / end)
 
 <strong>What bugs here ?</strong>
-spinners
+nothing ?
 
 <strong>Soon...</strong>
 settings
