@@ -1,23 +1,23 @@
 @font-face
 {
-  font-family: 'Arial';
-  font-style: italic;
-  font-weight: normal;
-  src: local('Ubuntu Italic'), local('Ubuntu-Italic.woff'), url('font/italic') format('woff');
+	font-family: 'Arial';
+	font-style: italic;
+	font-weight: normal;
+	src: local('Ubuntu Italic'), local('Ubuntu-Italic.woff'), url('font/italic') format('woff');
 }
 @font-face
 {
-  font-family: 'Arial';
-  font-style: normal;
-  font-weight: bold;
-  src: local('Ubuntu Bold'), local('Ubuntu-Bold'), url('font/bold.woff') format('woff');
+	font-family: 'Arial';
+	font-style: normal;
+	font-weight: bold;
+	src: local('Ubuntu Bold'), local('Ubuntu-Bold'), url('font/bold.woff') format('woff');
 }
 @font-face
 {
-  font-family: 'Arial';
-  font-style: normal;
-  font-weight: normal;
-  src: local('Ubuntu'), url('font/regular.woff') format('woff');
+	font-family: 'Arial';
+	font-style: normal;
+	font-weight: normal;
+	src: local('Ubuntu'), url('font/regular.woff') format('woff');
 }
 
 body, html
@@ -27,8 +27,6 @@ body, html
 	
 	margin : 0;
 	padding : 0;
-	
-	cursor: url("cursor.png") 32 32, auto;
 }
 
 html > *
@@ -42,6 +40,20 @@ html > *
 {
 	overflow : hidden;
 	font-family: Arial, serif;
+	cursor: url("cursor.png") 32 32, auto;
+}
+
+body
+{
+	background-repeat : no-repeat;
+	background-position : center center;
+	background-attachment : fixed;
+	background-size: 100%;
+}
+
+canvas
+{
+	margin : auto;
 }
 
 h1
@@ -55,16 +67,6 @@ h2
 	border-bottom : 1px dotted gray;
 	font-size : 1em;
 	text-indent : 10%;
-}
-
-canvas
-{
-	margin : auto;
-	
-	background-repeat : no-repeat;
-	background-position : center center;
-	background-attachment : fixed;
-	background-size: 100%;
 }
 
 .key

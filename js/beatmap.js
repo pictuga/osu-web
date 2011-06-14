@@ -1,9 +1,13 @@
 var canvas, ctx, color, hc;
-var circleSize, time = 0, fps = 50;
+var circleSize, time = 0;
 var osu_file, osu_raw, osu_id, player;
 
 function initBeatMap()
 {
+	//reset
+		$('#pdiv').remove();
+		hc = [];
+	
 	//init
 		osu_file = parseOSU(osu_raw);
 		osu_file.Metadata.id = osu_id;
@@ -14,16 +18,14 @@ function initBeatMap()
 		return false;
 	}
 	
-	//reset
-		hc = [];
-	
 	//<canvas>
 		if(!$('#canvas').size())
 			$('<canvas id="canvas"/>').appendTo(document.body);
 		
-		canvas = $('#canvas');
-		if(!canvas.get(0).getContext) return false;
-		ctx = canvas.get(0).getContext("2d");
+		canvas = $('#canvas').get(0);
+		
+		if(!canvas.getContext) return false;
+		ctx = canvas.getContext("2d");
 	
 	//couleurs
 		//orange green blue red
@@ -76,15 +78,15 @@ function initBeatMap()
 	
 	//events
 		//reset
-			canvas.unbind();
+			$(canvas).unbind();
 			$(window).unbind();
 			$(document.body).unbind();
 			$(player).unbind();
 		
 		//new
-			canvas.mousedown(checkHit);
-			canvas.mouseup(function() { window.onmousemove = null; });
-			canvas.bind('oncontextmenu', function(e){ e.preventDefault(); });
+			$(canvas).mousedown(checkHit);
+			$(canvas).mouseup(function() { window.onmousemove = null; });
+			$(canvas).bind('oncontextmenu', function(e){ e.preventDefault(); });
 		
 			$(window).keydown(checkKey);
 			$(window).resize(resizeBeatMap);
@@ -124,6 +126,11 @@ function keepUpdateBeatMap()
 		ctx.clear();
 		if(player.ended)
 		{
+			$(canvas).unbind();
+			$(window).unbind('resize blur');
+			$(document.body).unbind();
+			$(player).unbind();
+			
 			pickBeatMap();
 		}
 		else	pause();
@@ -134,7 +141,7 @@ function keepUpdateBeatMap()
 	else
 	{
 		updateBeatMap();
-		setTimeout(keepUpdateBeatMap, 1000/fps);
+		setTimeout(keepUpdateBeatMap, 5);
 	}
 }
 
@@ -434,8 +441,8 @@ function resizeBeatMap(e)
 	}
 	else	ratio = false;
 	
-	canvas.attr("width", W);
-	canvas.attr("height", H);
+	$(canvas).attr("width", W);
+	$(canvas).attr("height", H);
 	
 	//addons
 	updateBeatMap();
