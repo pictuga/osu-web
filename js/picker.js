@@ -47,6 +47,12 @@ function pickBeatMap()
 						player = array.data;
 					}
 					mp3.start();
+					
+					$('#loader').click({id: mp3.id}, function(event)
+					{
+						load[event.data.id].data.load();
+						$('#loader').unbind();
+					});
 				}
 				bm.start();
 			});

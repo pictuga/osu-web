@@ -114,7 +114,7 @@ function autoUpdateBeatMap()
 	if(!ON)
 	{
 		ON = true;
-		keepUpdateBeatMap();
+		setTimeout(keepUpdateBeatMap, 0);
 	}
 }
 
@@ -181,7 +181,6 @@ function updateBeatMap()
 		
 		drawProgress();
 		drawScore();
-		//drawTest();
 		
 		drawInfo('FPS ⋅ ' + Math.floor(1000 / Math.abs(new Date().getMilliseconds() - tps)));
 		tps = new Date().getMilliseconds();
@@ -339,17 +338,6 @@ function drawProgress()
 			ctx.closePath();
 		ctx.fill();
 	}
-}
-
-function drawTest()
-{
-	var taux = (time % 1000)/10;
-	ctx.fillStyle = "blue";
-	ctx.fillRect(0, 0, 2.5*wp, taux*hp);
-	
-	var taux = (new Date().getMilliseconds() % 1000)/10;
-	ctx.fillStyle = "blue";
-	ctx.fillRect(2.5*wp, 0, 2.5*wp, taux*hp);
 }
 
 function drawScore()
