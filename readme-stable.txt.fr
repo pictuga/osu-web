@@ -16,25 +16,25 @@
 
 D'accord, je vais essayer de vous expliquer ce que vous êtes sensés faire ici.
 
-L'idée principale est de cliquer sur les cercles qui apparaissent, en rythme avec la musique, au bont moment. Il y a aussi des "sliders" sur lesquels vous devez faire glisser la balle. Vous pouvez aussi rencontrer des "spinners". Vous devez cliquer dessus et tourner aussi vite que possible !
+L'idée principale est de cliquer sur les cercles qui apparaissent, en rythme avec la musique, au bon moment. Il y a aussi des "sliders" sur lesquels vous devez faire glisser la balle. Vous pouvez aussi rencontrer des "spinners". Vous devez cliquer dessus et tourner aussi vite que possible !
 
 Ça peut avoir l'air facile, mais ça peut devenir dur et sympa. Si c'est trop facile à votre goût, choisissez des beatmaps ayant "insane" ou "hard" dans le nom ;)
 
 Ce site est une version en html5/javascript de osu!
-osu! est un jeu disponible uniquement pour Windows. Ce site a pour but de diffuser le jeu vers d'autres platformes (linux & c), et à therme aux smartphones.
+osu! est un jeu disponible uniquement pour Windows. Ce site a pour but de diffuser le jeu vers d'autres platformes (linux & c), et à terme aux smartphones.
 Le jeu est gratuit, mais nous acceptons les dons !
 
-<strong>Ce site est encore en développement et peut ne pas fonctionner de temps à autre.</strong>
+<strong>Ce site est encore en développement et peut ne pas fonctionner de temps à autres.</strong>
 
 <h2>Raccourcis</h2>
 
 <span class='key'>F11</span><strong>plein-écran</strong> sur de nombreux navigateurs
 
 <span class='key'>r</span><strong>redémarrer</strong> la partie
-<span class='key'>m</span><strong>mute</strong> the game
+<span class='key'>m</span><strong>couper</strong> le son
 <span class='key'>p</span>mettre la partie en <strong>pause</strong>
 <span class='key'>c</span><strong>choisir</strong> une autre beatmap
-<span class='key'>q</span><strong>fermer</strong> le pop-up
+<span class='key'>q</span><strong>fermer</strong> la pop-up
 
 <span class='key'>h</span><strong>voir</strong> à nouveau cette page
 
@@ -65,6 +65,6 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program.  If not, see &lt;<a href='http://www.gnu.org/licenses/' title='http://www.gnu.org/licenses/'>http://www.gnu.org/licenses/</a>&gt;.
 
-→ Source Code : <strong>bzr clone http://pictuga.tk/unstable/</strong>
+→ Code source : <strong>bzr clone http://osu-web.tk/unstable/</strong>
 
-NB. The original osu! game (for Windows) is NOT OpenSource.
+N.B. : La version originale du jeu osu! (pour Windows) n'est PAS OpenSource.

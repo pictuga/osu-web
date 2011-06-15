@@ -11,6 +11,7 @@ function pickBeatMap()
 		
 		var osz = $('<div/>', {html: beatmap[id].title}).appendTo(pdiv);
 		
+		beatmap[id].version.sort();
 		for(i in beatmap[id].version)
 		{
 			var osu = $('<div/>', {html: (beatmap[id].version[i] != '') ? beatmap[id].version[i] : '[no name]'}).appendTo(osz);

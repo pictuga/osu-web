@@ -317,7 +317,17 @@ function loadReadme()
 	bm.callback = function(array)
 	{
 		readme = array.data.replace(/\s*(<\/?h[0-9]+>)\s*/gi, "$1").replace(/\n/gi, "<br />");
-		$('<div/>', {id: "pdiv", html: readme}).insertBefore('#loader');
+		$('<div/>', {id: "pdiv", html: readme})
+			.append
+			(
+				$('<div class="adsense"/>')
+				.append
+				(
+					$('#adsense iframe')
+					.clone()
+				)
+			)
+			.insertBefore('#loader');
 	}
 	bm.start();
 }

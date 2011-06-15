@@ -87,6 +87,11 @@ h2
 	border : none;
 }
 
+#adsense
+{
+	display : none;
+}
+
 /******************************************** loader ********************************************/
 
 #pdiv + #loader, #pdiv + progress

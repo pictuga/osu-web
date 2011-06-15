@@ -85,14 +85,18 @@ function initBeatMap()
 		
 		//new
 			$(canvas).mousedown(checkHit);
-			$(canvas).mouseup(function() { window.onmousemove = null; });
-			$(canvas).bind('contextmenu', function(e){ e.preventDefault(); });
+			$(canvas).mouseup(function() { $(window).unbind('.slide') });
+			
+			$(canvas).bind('touchstart', checkHit);
+			$(canvas).bind('touchend', function() { $(window).unbind('.slide') });
+			
+			$(canvas).bind('contextmenu', prevent);
 		
 			$(window).keydown(checkKey);
 			$(window).resize(resizeBeatMap);
 			$(window).blur(pause);
 		
-			$(document.body).bind('ontouchmove', function (e) { e.preventDefault(); });
+			//$(document.body).bind('touchmove', prevent);
 			
 			$(player).bind('playing', autoUpdateBeatMap);
 	
@@ -105,6 +109,11 @@ function initBeatMap()
 		
 		player.currentTime = 0;
 		player.play();
+}
+
+function prevent(event)
+{
+	event.preventDefault();
 }
 
 var ON = false;
@@ -191,10 +200,18 @@ function checkHit(e)
 {
 	var click_time = time;
 	
-	if (e == null) e = window.event;
+	if(e.type == 'touchstart' && e.originalEvent.touches.length == 1)
+	{
+		$(canvas).unbind('mousedown');
 		
-	var mouseX = e.clientX;
-	var mouseY = e.clientY;
+		var mouseX = e.originalEvent.touches[0].clientX;
+		var mouseY = e.originalEvent.touches[0].clientY;
+	}
+	else
+	{
+		var mouseX = e.clientX;
+		var mouseY = e.clientY;
+	}
 	
 	if(ratio)
 	{
@@ -216,13 +233,15 @@ function checkHit(e)
 		
 		if(hc[key].Type == "slider" && isIn(time, hc[key].time-1500, hc[key].endTime) && hc[key].checkSlide(mouseX, mouseY))
 		{
-			window.onmousemove = checkSlide;
+			$(window).bind('mousemove.slide', checkSlide);
+			$(window).bind('touchmove.slide', checkSlide);
 			break;
 		}
 		
 		if(hc[key].Type == "spinner" && isIn(time, hc[key].time, hc[key].endTime))//spinner
 		{
-			window.onmousemove = checkSpin;
+			$(window).bind('mousemove.slide', checkSpin);
+			$(window).bind('touchmove.slide', checkSpin);
 			hc[key].checkSpin(mouseX, mouseY);
 			break;
 		}
@@ -236,8 +255,16 @@ function checkSlide(e)
 {
 	if (e == null) e = window.event;
 		
-	var mouseX = e.clientX;
-	var mouseY = e.clientY;
+	if(e.type == 'touchstart' && e.originalEvent.touches.length == 1)
+	{
+		var mouseX = e.originalEvent.touches[0].clientX;
+		var mouseY = e.originalEvent.touches[0].clientY;
+	}
+	else
+	{
+		var mouseX = e.clientX;
+		var mouseY = e.clientY;
+	}
 	
 	if(ratio)
 	{
@@ -267,8 +294,11 @@ function checkSpin(e)
 {
 	if (e == null) e = window.event;
 		
-	var mouseX = e.clientX;
-	var mouseY = e.clientY;
+	if(e.type == 'touchstart' && e.originalEvent.touches.length == 1)
+	{
+		var mouseX = e.originalEvent.touches[0].clientX;
+		var mouseY = e.originalEvent.touches[0].clientY;
+	}
 	
 	if(ratio)
 	{

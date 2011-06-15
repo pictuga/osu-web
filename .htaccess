@@ -43,6 +43,27 @@ AddLanguage fr-fr .fr
 AddLanguage fr-be .fr
 AddLanguage fr-ca .fr
 
+AddLanguage es .es
+AddLanguage es-es .es
+AddLanguage es-ar .es
+AddLanguage es-bo .es
+AddLanguage es-cl .es
+AddLanguage es-co .es
+AddLanguage es-cr .es
+AddLanguage es-do .es
+AddLanguage es-sv .es
+AddLanguage es-ec .es
+AddLanguage es-gt .es
+AddLanguage es-hn .es
+AddLanguage es-mx .es
+AddLanguage es-ni .es
+AddLanguage es-pa .es
+AddLanguage es-py .es
+AddLanguage es-pe .es
+AddLanguage es-pr .es
+AddLanguage es-uy .es
+AddLanguage es-ve .es
+
 DefaultLanguage en
 LanguagePriority en fr
 ForceLanguagePriority Prefer Fallback
