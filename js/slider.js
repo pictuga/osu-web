@@ -4,8 +4,8 @@ function distanceFromPoints(array)
 	
 	for(i = 1; i <= array.length - 1; i++)
 	{
-		x = (array[i][0]-array[i-1][0]);
-		y = (array[i][1]-array[i-1][1]);
+		var x = (array[i][0]-array[i-1][0]);
+		var y = (array[i][1]-array[i-1][1]);
 		
 		distance += (Math.sqrt(x*x+y*y));
 	}

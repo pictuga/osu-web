@@ -80,19 +80,16 @@ function initBeatMap()
 		//reset
 			$(canvas).unbind();
 			$(window).unbind();
-			$(document.body).unbind();
 			$(player).unbind();
 		
 		//new
-			$(canvas).mousedown(checkHit);
-			$(canvas).mouseup(function(e){ $(window).unbind('.slide')});
+			$(canvas).bind('mousedown', checkHit);
+			$(canvas).bind('mouseup', unbind);
 			
 			$(canvas).bind('touchstart', checkHit);
-			$(canvas).bind('touchend', function(e)
-			{
-				$(window).unbind('.slide');
-				$(document.body).bind('touchmove', prevent);
-			});
+			$(canvas).bind('touchend', unbind);
+			
+			$(canvas).bind('contextmenu', prevent);
 			
 			$(window).keydown(checkKey);
 			$(window).resize(resizeBeatMap);
@@ -111,6 +108,11 @@ function initBeatMap()
 		
 		player.currentTime = 0;
 		player.play();
+}
+
+function unbind()
+{
+	$(canvas).unbind('.slide');
 }
 
 function prevent(event)
@@ -137,14 +139,19 @@ function keepUpdateBeatMap()
 		ctx.clear();
 		if(player.ended)
 		{
+			log('ended');
+			
 			$(canvas).unbind();
-			$(window).unbind('resize blur');
-			$(document.body).unbind();
+			$(window).unbind('resize blur touchmove');
 			$(player).unbind();
 			
 			pickBeatMap();
 		}
-		else	pause();
+		else
+		{
+			log('paused');
+			pause();
+		}
 		
 		ON = false;
 		return;
@@ -235,17 +242,15 @@ function checkHit(e)
 		
 		if(hc[key].Type == "slider" && isIn(time, hc[key].time-1500, hc[key].endTime) && hc[key].checkSlide(mouseX, mouseY))
 		{
-			$(window).unbind('touchmove');
-			$(window).bind('mousemove.slide', checkSlide);
-			$(window).bind('touchmove.slide', checkSlide);
+			$(canvas).bind('mousemove.slide', checkSlide);
+			$(canvas).bind('touchmove.slide', checkSlide);
 			break;
 		}
 		
 		if(hc[key].Type == "spinner" && isIn(time, hc[key].time, hc[key].endTime))//spinner
 		{
-			$(window).unbind('touchmove');
-			$(window).bind('mousemove.slide', checkSpin);
-			$(window).bind('touchmove.slide', checkSpin);
+			$(canvas).bind('mousemove.slide', checkSpin);
+			$(canvas).bind('touchmove.slide', checkSpin);
 			hc[key].checkSpin(mouseX, mouseY);
 			break;
 		}
