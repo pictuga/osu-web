@@ -304,6 +304,11 @@ function checkSpin(e)
 		var mouseX = e.originalEvent.touches[0].clientX;
 		var mouseY = e.originalEvent.touches[0].clientY;
 	}
+	else
+	{
+		var mouseX = e.clientX;
+		var mouseY = e.clientY;
+	}
 	
 	if(ratio)
 	{
