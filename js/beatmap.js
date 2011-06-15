@@ -85,18 +85,20 @@ function initBeatMap()
 		
 		//new
 			$(canvas).mousedown(checkHit);
-			$(canvas).mouseup(function() { $(window).unbind('.slide') });
+			$(canvas).mouseup(function(e){ $(window).unbind('.slide')});
 			
 			$(canvas).bind('touchstart', checkHit);
-			$(canvas).bind('touchend', function() { $(window).unbind('.slide') });
+			$(canvas).bind('touchend', function(e)
+			{
+				$(window).unbind('.slide');
+				$(document.body).bind('touchmove', prevent);
+			});
 			
-			$(canvas).bind('contextmenu', prevent);
-		
 			$(window).keydown(checkKey);
 			$(window).resize(resizeBeatMap);
 			$(window).blur(pause);
-		
-			//$(document.body).bind('touchmove', prevent);
+			
+			$(window).bind('touchmove', prevent);
 			
 			$(player).bind('playing', autoUpdateBeatMap);
 	
@@ -233,6 +235,7 @@ function checkHit(e)
 		
 		if(hc[key].Type == "slider" && isIn(time, hc[key].time-1500, hc[key].endTime) && hc[key].checkSlide(mouseX, mouseY))
 		{
+			$(window).unbind('touchmove');
 			$(window).bind('mousemove.slide', checkSlide);
 			$(window).bind('touchmove.slide', checkSlide);
 			break;
@@ -240,6 +243,7 @@ function checkHit(e)
 		
 		if(hc[key].Type == "spinner" && isIn(time, hc[key].time, hc[key].endTime))//spinner
 		{
+			$(window).unbind('touchmove');
 			$(window).bind('mousemove.slide', checkSpin);
 			$(window).bind('touchmove.slide', checkSpin);
 			hc[key].checkSpin(mouseX, mouseY);
@@ -253,9 +257,7 @@ function checkHit(e)
 
 function checkSlide(e)
 {
-	if (e == null) e = window.event;
-		
-	if(e.type == 'touchstart' && e.originalEvent.touches.length == 1)
+	if(e.type == 'touchmove' && e.originalEvent.touches.length == 1)
 	{
 		var mouseX = e.originalEvent.touches[0].clientX;
 		var mouseY = e.originalEvent.touches[0].clientY;
@@ -292,9 +294,7 @@ function checkSlide(e)
 
 function checkSpin(e)
 {
-	if (e == null) e = window.event;
-		
-	if(e.type == 'touchstart' && e.originalEvent.touches.length == 1)
+	if(e.type == 'touchmove' && e.originalEvent.touches.length == 1)
 	{
 		var mouseX = e.originalEvent.touches[0].clientX;
 		var mouseY = e.originalEvent.touches[0].clientY;
