@@ -22,7 +22,10 @@ AddType application/x-web-app-manifest+json .webapp
 
 #lang
 AddDefaultCharset UTF-8
+DefaultType text/plain
 Options +MultiViews
+
+AddType text/plain en es fr
 
 AddLanguage en .en
 AddLanguage en-gb .en
@@ -65,5 +68,5 @@ AddLanguage es-uy .es
 AddLanguage es-ve .es
 
 DefaultLanguage en
-LanguagePriority en fr
+LanguagePriority en es fr
 ForceLanguagePriority Prefer Fallback
