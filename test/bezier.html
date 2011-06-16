@@ -2,7 +2,6 @@
 <html>
 	<head>
 		<title>bezier</title>
-		<meta charset="UTF-8" />
 		<script src="../js/curves.js"></script>
 		<script src="../js/slider.js"></script>
 	</head>
@@ -10,18 +9,18 @@
 	<body>
 		<canvas width="500" height="500"></canvas>
 		<script>
-var log = console.log;
-var points = [];
-var ctx = document.getElementsByTagName("canvas")[0].getContext("2d");
-document.getElementsByTagName("canvas")[0].onclick = function(e)
-{
-	points.push([e.clientX, e.clientY]);
+			var log = console.log;
+			var points = [];
+			var ctx = document.getElementsByTagName("canvas")[0].getContext("2d");
+			document.getElementsByTagName("canvas")[0].onclick = function(e)
+			{
+				points.push([e.clientX, e.clientY]);
 	
-	var bezier = new Bezier(points);
-	ctx.clearRect(0,0, ctx.canvas.width, ctx.canvas.height);
-	bezier.draw(ctx);
-	bezier.drawCP(ctx);
-}
+				var bezier = new Bezier(points);
+				ctx.clearRect(0,0, ctx.canvas.width, ctx.canvas.height);
+				bezier.draw(ctx);
+				bezier.drawCP(ctx);
+			}
 		</script>
 	</body>
 </html>

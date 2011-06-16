@@ -33,20 +33,31 @@ CanvasRenderingContext2D.prototype.circle = function(x, y, radius)
 	this.arc(x, y, radius, 0, Math.PI*2, 0);
 }
 
-CanvasRenderingContext2D.prototype.drawImageAngle = function(image, x, y, angle)//angle + center
+CanvasRenderingContext2D.prototype.drawImageAngle = function(image, x, y, angle, coeff)
 {
+	if(typeof coeff != 'undefined' && coeff != 1)
+	{
+		var width = image.width * coeff;
+		var height = image.height * coeff;
+	}
+	else
+	{
+		var width = image.width;
+		var height = image.height;
+	}
+	
 	if(typeof angle != 'undefined' && mainMesure(angle) != 0)
 	{
 		this.save();
 		
 		this.translate(x, y);
 		this.rotate(angle);
-		this.drawImage(image, -image.width/2, -image.height/2);
+		this.drawImage(image, -width/2, -height/2, width, height);
 		
 		this.restore();
 	}
 	else
 	{
-		this.drawImage(image, (x - image.width/2), (y - image.height/2));
+		this.drawImage(image, (x - width/2), (y - height/2), width, height);
 	}
 }

@@ -74,7 +74,6 @@ function initBeatMap()
 	
 	//values (circleSize...)
 		circleSize = 64 * (1 - 0.7*((osu_file.Difficulty.CircleSize-5)/5)) / 2;
-		//beatLength & sliderSpeed → updateValues()
 	
 	//events
 		//reset
@@ -89,12 +88,12 @@ function initBeatMap()
 			$(canvas).bind('touchstart', checkHit);
 			$(canvas).bind('touchend', unbind);
 			
-			$(canvas).bind('contextmenu', prevent);
 			
 			$(window).keydown(checkKey);
 			$(window).resize(resizeBeatMap);
 			$(window).blur(pause);
 			
+			$(canvas).bind('contextmenu', prevent);
 			$(window).bind('touchmove', prevent);
 			
 			$(player).bind('playing', autoUpdateBeatMap);
@@ -118,6 +117,7 @@ function unbind()
 function prevent(event)
 {
 	event.preventDefault();
+	return false;
 }
 
 var ON = false;
@@ -473,7 +473,6 @@ function resizeBeatMap(e)
 	$(canvas).attr("height", H);
 	
 	//addons
-	updateBeatMap();
 	runAddons("resizeBeatMap");
 }
 

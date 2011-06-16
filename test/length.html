@@ -1,129 +1,129 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" >
+<!DOCTYPE html>
+<html>
 	<head>
 		<title>osu! test</title>
 	</head>
 	<body>
-		<script style="text/javascript">
-		var color = "Yellow";
-		var points = [];
+		<script>
+			var color = "Yellow";
+			var points = [];
 		
-		function distanceFromPoints(array)
-		{
-			var distance = 0;
-		
-			for(i = 1; i <= array.length - 1; i++)
+			function distanceFromPoints(array)
 			{
-				x = (array[i][0]-array[i-1][0]);
-				y = (array[i][1]-array[i-1][1]);
-			
-				distance += (Math.sqrt(x*x+y*y));
-			}
+				var distance = 0;
 		
-			return distance;
-		}
-	
-		function angleFromPoints(x1, y1, x2, y2)
-		{
-			return Math.atan((y2-y1)/(x2-x1));
-		}
-
-		function cartFromPol(r, teta)
-		{
-			x2 = (r*Math.cos(teta));
-			y2 = (r*Math.sin(teta));
-	
-			return [x2, y2];
-		}
-		
-		function pointAtDistance(array, distance)
-		{
-			var current_distance = 0,
-				last_distance = 0;
-		
-			if(distanceFromPoints(array) < distance) return array[array.length-1];
-			if(distance == 0) return array[0];
-		
-			for(i = 0; i <= array.length - 2; i++)
-			{
-				x = (array[i][0]-array[i+1][0]);
-				y = (array[i][1]-array[i+1][1]);
-			
-				new_distance = (Math.sqrt(x*x+y*y));
-				current_distance += new_distance;
-			
-				if(distance <= current_distance) break;
-			}
-		
-			current_distance -= new_distance;
-		
-			if(distance == current_distance) var coord = [array[i][0], array[i][1]];
-			else
-			{
-				var angle = angleFromPoints(array[i+1][0], array[i+1][1], array[i][0], array[i][1]);
-				var cart = cartFromPol((distance - current_distance), angle);
-			
-				if(array[i][0] >= array[i+1][0])
+				for(i = 1; i <= array.length - 1; i++)
 				{
-					var coord = [(array[i][0]-cart[0]), (array[i][1]-cart[1])];
-					color = "Red";
+					x = (array[i][0]-array[i-1][0]);
+					y = (array[i][1]-array[i-1][1]);
+			
+					distance += (Math.sqrt(x*x+y*y));
 				}
+		
+				return distance;
+			}
+	
+			function angleFromPoints(x1, y1, x2, y2)
+			{
+				return Math.atan((y2-y1)/(x2-x1));
+			}
+
+			function cartFromPol(r, teta)
+			{
+				x2 = (r*Math.cos(teta));
+				y2 = (r*Math.sin(teta));
+	
+				return [x2, y2];
+			}
+		
+			function pointAtDistance(array, distance)
+			{
+				var current_distance = 0,
+					last_distance = 0;
+		
+				if(distanceFromPoints(array) < distance) return array[array.length-1];
+				if(distance == 0) return array[0];
+		
+				for(i = 0; i <= array.length - 2; i++)
+				{
+					x = (array[i][0]-array[i+1][0]);
+					y = (array[i][1]-array[i+1][1]);
+			
+					new_distance = (Math.sqrt(x*x+y*y));
+					current_distance += new_distance;
+			
+					if(distance <= current_distance) break;
+				}
+		
+				current_distance -= new_distance;
+		
+				if(distance == current_distance) var coord = [array[i][0], array[i][1]];
 				else
 				{
-				 	var coord = [(array[i][0]+cart[0]), (array[i][1]+cart[1])];
-				 	color = "Blue";
+					var angle = angleFromPoints(array[i+1][0], array[i+1][1], array[i][0], array[i][1]);
+					var cart = cartFromPol((distance - current_distance), angle);
+			
+					if(array[i][0] >= array[i+1][0])
+					{
+						var coord = [(array[i][0]-cart[0]), (array[i][1]-cart[1])];
+						color = "Red";
+					}
+					else
+					{
+					 	var coord = [(array[i][0]+cart[0]), (array[i][1]+cart[1])];
+					 	color = "Blue";
+					}
 				}
+		
+				return coord;
 			}
 		
-			return coord;
-		}
-		
-		function test(dist)
-		{
-			/*var points =
-			[
-				[376,152],[416,176],[416,216],[368,248]
-			]*/
-		
-			var at = pointAtDistance(points, dist);
-			//console.log(at);
-			
-			var ctx = document.getElementById("canvas").getContext("2d");
-		
-			ctx.beginPath();
-			ctx.strokeStyle = "Green";
-			for(var i = 0; i <= (points.length-1); i++)
+			function test(dist)
 			{
-				if(i == 0)	ctx.moveTo(points[i][0], points[i][1]);
-				else 		ctx.lineTo(points[i][0], points[i][1]);
+				/*var points =
+				[
+					[376,152],[416,176],[416,216],[368,248]
+				]*/
+		
+				var at = pointAtDistance(points, dist);
+				//console.log(at);
+			
+				var ctx = document.getElementById("canvas").getContext("2d");
+		
+				ctx.beginPath();
+				ctx.strokeStyle = "Green";
+				for(var i = 0; i <= (points.length-1); i++)
+				{
+					if(i == 0)	ctx.moveTo(points[i][0], points[i][1]);
+					else 		ctx.lineTo(points[i][0], points[i][1]);
+				}
+				ctx.stroke();
+		
+				ctx.beginPath();
+				ctx.strokeStyle = color;
+					ctx.arc(at[0], at[1], 20, 0, Math.PI*2, 0);
+				ctx.stroke();
+			
+				//if(dist <= distanceFromPoints(points)) setTimeout("test(" + (dist+1) + ");", 10);
+				setTimeout("test(" + (dist+5) + ");", 10);
 			}
-			ctx.stroke();
-		
-			ctx.beginPath();
-			ctx.strokeStyle = color;
-				ctx.arc(at[0], at[1], 20, 0, Math.PI*2, 0);
-			ctx.stroke();
 			
-			//if(dist <= distanceFromPoints(points)) setTimeout("test(" + (dist+1) + ");", 10);
-			setTimeout("test(" + (dist+5) + ");", 10);
-		}
-			
-		window.onload = function()
-		{
-			//test(0);
-			window.onclick = addPoint;
-		}
+			window.onload = function()
+			{
+				//test(0);
+				window.onclick = addPoint;
+			}
 		
-		function addPoint(e)
-		{
-			if (e == null) e = window.event;
+			function addPoint(e)
+			{
+				if (e == null) e = window.event;
 		
-			var mouseX = e.clientX;
-			var mouseY = e.clientY;
+				var mouseX = e.clientX;
+				var mouseY = e.clientY;
 			
-			points.push([mouseX, mouseY]);
-			if(points.length == 2) test(0);
-		}
+				points.push([mouseX, mouseY]);
+				if(points.length == 2) test(0);
+			}
 		</script>
 		<canvas id="canvas" width=500 height=500>
 	</body>

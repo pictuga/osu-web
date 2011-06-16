@@ -1,3 +1,5 @@
+allow from all
+
 #index
 Options +Indexes
 DirectoryIndex index
