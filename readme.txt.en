@@ -1,8 +1,12 @@
 <h1>osu! web / unstable</h1>
 
 <strong>What's new here ?</strong>
-fixed iOS support (iOS users have to click on the loader when hanging)
 uses less ressouces when not playing (pause / end)
+iPhone:
+- images scaled down
+- now loads (gotta click on the loader, once you selected your beatmap)
+- uses touch events
+- shitty frame rate
 
 <strong>What bugs here ?</strong>
 nothing ?
@@ -14,6 +18,5 @@ settings
 .osz import
 
 <strong>TODO</strong>
-scale images
 improve design
 scoring (sliders, spinners, combo multiplier...)
