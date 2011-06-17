@@ -207,15 +207,13 @@ hitCircle.prototype.drawObject = function()
 	switch(this.Type)
 	{
 		case "circle":
-			var size = circleSize;
-			
 			ctx.save();
 				ctx.globalCompositeOperation = "destination-over";
 	
 				ctx.textAlign = "center";
 				ctx.textBaseline = "middle";
 	
-				ctx.font = hs*size + "px Arial";
+				ctx.font = hs*circleSize + "px Arial";
 				ctx.fillStyle = "rgba(255,255,255," + alpha + ")";
 	
 				ctx.fillText(this.comboKey, this.x*ws, this.y*hs);
@@ -227,13 +225,13 @@ hitCircle.prototype.drawObject = function()
 				//inner
 				ctx.beginPath();
 					ctx.fillStyle = rgba;
-					ctx.circle(this.x*ws, this.y*hs, hs*size*0.95);
+					ctx.circle(this.x*ws, this.y*hs, hs*circleSize*0.95);
 				ctx.fill();
 	
 				//outter
 				ctx.beginPath();
 					ctx.fillStyle = "rgba(200,200,200," + alpha + ")";
-					ctx.circle(this.x*ws, this.y*hs, hs*size);
+					ctx.circle(this.x*ws, this.y*hs, hs*circleSize);
 				ctx.fill();
 			ctx.restore();
 		break;
@@ -251,24 +249,22 @@ hitCircle.prototype.drawObject = function()
 						{
 							var xy = (this.repeat % 2 == 1) ? this.sliderLast : [this.x, this.y];
 							var image = pic["reversearrow"];
-							ctx.drawImageAngle(image, xy[0]*ws, xy[1]*hs);
+							ctx.drawImageScaled(image, xy[0]*ws, xy[1]*hs);
 						}
 					}
 					else
 					{
 						var xy = this.sliderLast;
 						var image = pic["reversearrow"];
-						ctx.drawImageAngle(image, xy[0]*ws, xy[1]*hs);
+						ctx.drawImageScaled(image, xy[0]*ws, xy[1]*hs);
 					}
 				}
 		
 			//circle combo
-				var size = circleSize;
-		
 				ctx.textAlign = "center";
 				ctx.textBaseline = "middle";
 	
-				ctx.font = hs*size + "px Arial";
+				ctx.font = hs*circleSize + "px Arial";
 				ctx.fillStyle = "rgba(255,255,255," + alpha + ")";
 	
 				ctx.fillText(this.comboKey, this.x*ws, this.y*hs);
@@ -280,17 +276,17 @@ hitCircle.prototype.drawObject = function()
 				//inner
 				ctx.beginPath();
 					ctx.fillStyle = rgba;
-					ctx.circle(this.x*ws, this.y*hs, hs*size*0.95);
+					ctx.circle(this.x*ws, this.y*hs, hs*circleSize*0.95);
 				ctx.fill();
 	
 				//outter
 				ctx.beginPath();
 					ctx.fillStyle = "rgba(200,200,200," + alpha + ")";
-					ctx.circle(this.x*ws, this.y*hs, hs*size);
+					ctx.circle(this.x*ws, this.y*hs, hs*circleSize);
 				ctx.fill();
 		
 			//inner
-				ctx.lineWidth = hs*(size*0.95)*2;
+				ctx.lineWidth = hs*(circleSize*0.95)*2;
 				ctx.lineCap = "round"; 
 				ctx.lineJoin = "round";
 	
@@ -306,7 +302,7 @@ hitCircle.prototype.drawObject = function()
 				ctx.stroke();
 		
 			//outter
-				ctx.lineWidth = hs*size*2;
+				ctx.lineWidth = hs*circleSize*2;
 				ctx.lineCap = "round"; 
 				ctx.lineJoin = "round";
 	
@@ -481,7 +477,7 @@ hitCircle.prototype.drawBall = function()
 			var image = pic["sliderb" + i];
 			ctx.save();
 				ctx.globalCompositeOperation = "source-over";
-				ctx.drawImageAngle(image, at[0]*hs, at[1]*ws, at[2]);
+				ctx.drawImageScaled(image, at[0]*hs, at[1]*ws, at[2]);
 			ctx.restore();
 	}
 }
@@ -491,7 +487,7 @@ hitCircle.prototype.drawScore = function()
 	var image = pic["hit" + this.score];
 	ctx.save();
 	ctx.globalCompositeOperation = "destination-over";
-	ctx.drawImageAngle(image, this.x*ws, this.y*hs);
+	ctx.drawImageScaled(image, this.x*ws, this.y*hs);
 	ctx.restore();
 }
 

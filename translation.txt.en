@@ -1,4 +1,4 @@
-BM_PAUS=Pause - Hit "P" to restart the game
+BM_PAUS=Pause - Hit "P" to continue the game
 BM_PICK=Pick a beatmap
 EP_WARN=This beatmap contains scenes with rapidly flashing colours.\nPlease take caution if you are affected by epilepsy.\n\tCancel → Pick another beatmap
 OSU_WEB=osu! web

@@ -42,6 +42,7 @@ CanvasRenderingContext2D.prototype.drawImageAngle = function(image, x, y, angle,
 	}
 	else
 	{
+		coeff = 1;
 		var width = image.width;
 		var height = image.height;
 	}
@@ -52,12 +53,24 @@ CanvasRenderingContext2D.prototype.drawImageAngle = function(image, x, y, angle,
 		
 		this.translate(x, y);
 		this.rotate(angle);
-		this.drawImage(image, -width/2, -height/2, width, height);
+		
+		if(coeff != 1)	this.drawImage(image, -width/2, -height/2, width, height);
+		else		this.drawImage(image, -width/2, -height/2);
 		
 		this.restore();
 	}
 	else
 	{
-		this.drawImage(image, (x - width/2), (y - height/2), width, height);
+		if(coeff != 1)	this.drawImage(image, (x - width/2), (y - height/2), width, height);
+		else		this.drawImage(image, (x - width/2), (y - height/2));
 	}
+}
+
+CanvasRenderingContext2D.prototype.drawImageScaled = function(image, x, y, angle)
+{
+	var height = image.height * circleSize*hs*2 / pic["sliderb0"].height
+	var coeff = height / image.height;
+	
+	if(typeof angle == 'undefined') angle = 0;
+	this.drawImageAngle(image, x, y, angle, coeff);
 }
