@@ -1,6 +1,43 @@
 var canvas, ctx, color, hc;
 var circleSize, time = 0;
-var osu_file, osu_raw, osu_id, player;
+var osu_file, osu_raw, osu_id, osu_verion, player;
+
+function loadBeatMap(id, version)
+{
+	osu_id		= id;
+	osu_version	= version;
+				
+	newLoader();
+	loaded = initBeatMap;
+	
+	var bm = new loader();
+	bm.url = BEATMAP + id + "/" + beatmap[id].artist + " - " + beatmap[id].title + " (" + beatmap[id].creator + ") [" + version + "].osu";
+	bm.type = "ajax";
+	bm.callback = function(array)
+	{
+		osu_raw  = array.data;
+		osu_file = parseOSU(array.data);
+		osu_file.Metadata.id = osu_id;
+		
+		loadStoryBoard();
+		
+		var mp3 = new loader();
+		mp3.url = [BEATMAP + osu_id + "/" + osu_file.General.AudioFilename, BEATMAP + "conv/" + osu_id + ".ogg"];
+		mp3.type = "audio";
+		mp3.callback = function(array)
+		{
+			player = array.data;
+		}
+		mp3.start();
+		
+		$('#loader').click({id: mp3.id}, function(event)
+		{
+			load[event.data.id].data.load();
+			$('#loader').unbind();
+		});
+	}
+	bm.start();
+}
 
 function initBeatMap()
 {

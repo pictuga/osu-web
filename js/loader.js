@@ -3,8 +3,6 @@ var loadID = [];
 
 function newLoader()
 {
-	//use an array with key of first loader()
-	//is array is empty, it means that it's the first one out there
 	loadID.push(load.length);
 }
 

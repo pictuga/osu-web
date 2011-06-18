@@ -1,10 +1,10 @@
 var BEATMAP = "/beatmap/";
 var readme;
 
-$(document).ready(function()
+window.onload = function()
 {
 	setTimeout("main();", 0);
-});
+}
 
 var main = function()
 {
