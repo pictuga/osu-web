@@ -6,14 +6,14 @@ function drawStoryBoard()
 	
 	for(i in osu_file.Events)
 	{
-		if(osu_file.Events[i][0] == 'Sprite')//fixe
+		switch(osu_file.Events[i][0])
 		{
-			//Sprite,Background,Centre,"sprogbg.jpg",320,240
-			var image = sb[osu_file.Events[i][3]];
-			//FIXME needs doc !
+			case 'Sprite':
+				//Sprite,Background,Centre,"sprogbg.jpg",320,240
+				var image = sb[osu_file.Events[i][3]];
+				//FIXME needs doc !
+			break;
 		}
-		
-		//+ animations
 	}
 }
 
@@ -23,19 +23,22 @@ function initStoryBoard()
 	
 	for(i in osu_file.Events)
 	{
-		if(osu_file.Events[i][0] == 3)//color
+		switch(osu_file.Events[i][0])
 		{
-			$(document.body).css('backgroundColor', "rgb(" + osu_file.Events[i][2] + "," + osu_file.Events[i][3] + "," + osu_file.Events[i][4] + ")");
-		}
-		
-		if(osu_file.Events[i][0] == 0)//background
-		{
-			if(osu_file.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'jpg'
-			|| osu_file.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'jpeg'
-			|| osu_file.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'png')
-			$(document.body).css('backgroundImage', "url('" + BEATMAP + osu_file.Metadata.id + "/" + osu_file.Events[i][2] + "')");
+			case 3:
+				//color
+				$(document.body).css('backgroundColor', "rgb(" + osu_file.Events[i][2] + "," + osu_file.Events[i][3] + "," + osu_file.Events[i][4] + ")");
+			break;
+				
+			case 0:
+				//background
+				if(osu_file.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'jpg'
+				|| osu_file.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'jpeg'
+				|| osu_file.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'png')
+				$(document.body).css('backgroundImage', "url('" + BEATMAP + osu_file.Metadata.id + "/" + osu_file.Events[i][2] + "')");
 			
-			else log(osu_file.Events[i][2]);
+				else log(osu_file.Events[i][2]);
+			break;
 		}
 	}
 }

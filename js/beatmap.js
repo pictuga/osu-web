@@ -385,36 +385,52 @@ function sumPoints(type)
 
 function drawProgress()
 {
-	//draws a "camembert" with progress
-	if(!isNaN(player.duration) && player.duration != 0)
+	if(isNaN(player.duration) || player.duration == 0) return false;
+	
+	var size = 4;
+	var dl = (typeof player.buffered == 'object') ? (player.buffered.end(0) / player.duration) : 1;
+	var taux = (player.currentTime / player.duration);
+	
+	//param
+	ctx.save();
+	ctx.globalCompositeOperation = "source-over";
+
+	//reset
+	ctx.lineWidth = 1;
+	ctx.lineCap = "butt";
+
+	//background (dl)
+	ctx.beginPath();
+		ctx.fillStyle = "rgb(225,225,225)";
+		ctx.arc((W-h*(size+2)), (h*(size+2)), (h*size), (-Math.PI/2), (Math.PI*2*dl)-(Math.PI/2), 0);
+		ctx.lineTo((W-h*(size+2)), (h*(size+2)));
+		ctx.closePath();
+	ctx.fill();
+	
+	//camembert (taux)
+	ctx.beginPath();
+		ctx.fillStyle = "rgb(200,200,200)";
+		ctx.arc((W-h*(size+2)), (h*(size+2)), (h*size), (-Math.PI/2), (Math.PI*2*taux)-(Math.PI/2), 0);
+		ctx.lineTo((W-h*(size+2)), (h*(size+2)));
+		ctx.closePath();
+	ctx.fill();
+	
+	//breaks
+	for(i in osu_file.Events)
 	{
-		var size = 4;
-		var dl = (typeof player.buffered == 'object') ? (player.buffered.end(0) / player.duration) : 1;
-		var taux = (player.currentTime / player.duration);
-	
-		//param
-		ctx.globalCompositeOperation = "source-over";
-	
-		//reset
-		ctx.lineWidth = 1;
-		ctx.lineCap = "butt";
-	
-		//background (dl)
-		ctx.beginPath();
-			ctx.fillStyle = "rgb(225,225,225)";
-			ctx.arc((W-h*(size+2)), (h*(size+2)), (h*size), (-Math.PI/2), (Math.PI*2*dl)-(Math.PI/2), 0);
-			ctx.lineTo((W-h*(size+2)), (h*(size+2)));
-			ctx.closePath();
-		ctx.fill();
+		if(osu_file.Events[i][0] != 2) continue;
 		
-		//camembert (taux)
+		var start	= osu_file.Events[i][1]/1000 / player.duration;
+		var end		= osu_file.Events[i][2]/1000 / player.duration;
+		
 		ctx.beginPath();
-			ctx.fillStyle = "rgb(200,200,200)";
-			ctx.arc((W-h*(size+2)), (h*(size+2)), (h*size), (-Math.PI/2), (Math.PI*2*taux)-(Math.PI/2), 0);
-			ctx.lineTo((W-h*(size+2)), (h*(size+2)));
-			ctx.closePath();
-		ctx.fill();
+			ctx.strokeStyle = "rgba(0,0,0,0.75)";
+			ctx.lineWidth = 1;
+			ctx.arc((W-h*(size+2)), (h*(size+2)), (h*size), (Math.PI*2*start)-(Math.PI/2), (Math.PI*2*end)-(Math.PI/2), 0);
+		ctx.stroke();
 	}
+	
+	ctx.restore();
 }
 
 function drawScore()
