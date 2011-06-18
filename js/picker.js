@@ -23,6 +23,7 @@ function pickBeatMap()
 				
 				$('#pdiv').remove();
 				
+				newLoader();
 				loaded = initBeatMap;
 				
 				var bm = new loader();

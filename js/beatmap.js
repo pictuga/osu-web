@@ -396,7 +396,7 @@ function drawScore()
 	ctx.fillStyle = "Black";
 	
 	ctx.shadowBlur = 2*h;
-	ctx.shadowColor = "rgba(255, 255, 255, 0.75)";
+	ctx.shadowColor = "white";
 
 	if(points < 2) ctx.fillText(points + " " + _('BM_1PT'), (2*h), (2*h));
 	else ctx.fillText(points + " " + _('BM_2PT'), (2*h), (2*h));
