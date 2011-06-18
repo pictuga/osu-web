@@ -1,4 +1,12 @@
 var load = [];
+var loadID = [];
+
+function newLoader()
+{
+	//use an array with key of first loader()
+	//is array is empty, it means that it's the first one out there
+	loadID.push(load.length);
+}
 
 function loader()
 {
@@ -131,14 +139,14 @@ var loaded = function()
 function checkLoad()
 {
 	var counter = 0;
-	for(i in load)
-	{
+	var start = loadID.length ? loadID.slice(-1)[0] : 0;
+
+	for(i = start; i < load.length; i++)
 		if(load[i].state == 2) counter++;
-	}
 	
-	showLoader(counter/load.length*100);
+	showLoader(counter / (load.length-start) *100);
 	
-	if(counter == load.length)
+	if(counter == load.length-start)
 	{
 		$('#loader').remove();
 		loaded();
@@ -157,11 +165,10 @@ function showLoader(progress)
 {
 	if(!$('#loader').size())
 		$('<div id="loader"/>')
-		.append( $('<div/>').append('<input type="button"/>') )
+		.append($('<div/>'))
 		.appendTo(document.body);
 	
 	$('#loader div').css('width', progress + "%");
-	$('#loader input').val(Math.ceil(progress) + "%");
 }
 
 //////////////////////////////////////////
