@@ -3,6 +3,7 @@ var sb = {};//contains Storyboard images
 function drawStoryBoard()
 {
 	return;
+	//TODO finish this
 	
 	for(i in osu_file.Events)
 	{
@@ -11,7 +12,6 @@ function drawStoryBoard()
 			case 'Sprite':
 				//Sprite,Background,Centre,"sprogbg.jpg",320,240
 				var image = sb[osu_file.Events[i][3]];
-				//FIXME needs doc !
 			break;
 		}
 	}

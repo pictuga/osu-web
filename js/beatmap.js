@@ -204,42 +204,40 @@ var tps = 0;
 
 function updateBeatMap()
 {
+	if(player.ended) return;
 	ctx.clear();
 	
-	if(!player.ended)
+	//addons
+	time = player.currentTime * 1000;
+	runAddons("updateBeatMap");
+	
+	if(ratio)
 	{
-		//addons
-		time = player.currentTime * 1000;
-		runAddons("updateBeatMap");
+		ctx.save();
 		
-		if(ratio)
-		{
-			ctx.save();
-			
-			diff_height = 0;
-			diff_width = 0;
-			
-			if(4*H < 3*W)
-				diff_width = W/2 - (4/3 * H)/2;
-			else if(4*H > 3*W)
-				diff_height = H/2 - (3/4 * W)/2;
-			
-			ctx.translate(diff_width, diff_height);
-		}
+		diff_height = 0;
+		diff_width = 0;
 		
-		for(key in hc)
-			hc[key].draw();//← decides what to do
+		if(4*H < 3*W)
+			diff_width = W/2 - (4/3 * H)/2;
+		else if(4*H > 3*W)
+			diff_height = H/2 - (3/4 * W)/2;
 		
-		drawStoryBoard();
-		
-		if(ratio) ctx.restore();
-		
-		drawProgress();
-		drawScore();
-		
-		drawInfo('FPS ⋅ ' + Math.floor(1000 / Math.abs(new Date().getMilliseconds() - tps)));
-		tps = new Date().getMilliseconds();
+		ctx.translate(diff_width, diff_height);
 	}
+	
+	for(key in hc)
+		hc[key].draw();
+	
+	drawStoryBoard();
+	
+	if(ratio) ctx.restore();
+	
+	drawProgress();
+	drawScore();
+	
+	drawInfo('FPS ⋅ ' + Math.floor(1000 / Math.abs(new Date().getMilliseconds() - tps)));
+	tps = new Date().getMilliseconds();
 }
 
 function checkHit(e)
