@@ -1,0 +1,62 @@
+62: pictuga 2011-06-21 clean up
+61: pictuga 2011-06-18 breaks displayed on progress indicator
+60: pictuga 2011-06-18 moved pieces of code
+59: pictuga 2011-06-18 various
+58: pictuga 2011-06-18 progress can now "start over"
+57: pictuga 2011-06-18 moved css to one file
+56: pictuga 2011-06-17 updated unstable readme, pushed to stable
+55: pictuga 2011-06-17 image are now scaled, fixed en translation, clean up
+54: pictuga 2011-06-16 clean up, started image scaling (still need to find *how* to implement it
+53: pictuga 2011-06-15 fixed encoding
+52: pictuga 2011-06-15 copy-paste failure fixed
+51: pictuga 2011-06-15 fixed stuff (which were - i think) related to a firefox bug
+50: pictuga 2011-06-15 iOS now supports sliders and spinners
+49: pictuga 2011-06-15 TODO
+48: pictuga 2011-06-15 spanish translation, trying to put some ads, improving iOS compatibility
+47: pictuga 2011-06-14 1
+46: pictuga 2011-06-14 fixed iOS support (user has click on loader to start game), removed drawTest
+45: pictuga 2011-06-14 var canvas is now a DOM element, moved background to <body> (no longer need to resize canvas when paused), improved events support
+44: pictuga 2011-06-14 fonts now self-hosted, removed useless stat screen (at the end of a beatmap), score now visible on black background (use white shadow)
+43: pictuga 2011-06-13 tries to keep only one "process" rendering
+42: pictuga 2011-06-13 translation + test fix
+41: pictuga 2011-06-13 stops rendering when paused
+40: pictuga 2011-06-13 fixed curves issues on restart, upper limit for fps (could get to 333 on ff5 \!), better use of jQuery event handlers
+39: pictuga 2011-06-13 fixed - for good - hitcircles stacks
+38: pictuga 2011-06-13 remove window when resuming
+37: pictuga 2011-06-13 fixed sliders when .osu is uncorrect, fixed music playing when picking another beatmap
+36: pictuga 2011-06-13 fixed stuff, sliders still hate chromium
+35: pictuga 2011-06-13 removed too much things last commit :p
+34: pictuga 2011-06-12 removed now-useless code
+33: pictuga 2011-06-12 sliders *do* respect sliderLength (timing) but are not cut off/grown to fit sliderLength, indicator now works with sliders
+32: pictuga 2011-06-12 sliders "work", but need to respect sliderLength, still crashes on spinners
+31: pictuga 2011-06-12 before changing some stuff about sliders
+30: pictuga 2011-06-12 improved translation server side
+29: pictuga 2011-06-12 updated readme since we moved to self hosted bzr
+28: pictuga 2011-06-12 once more, I forgot to do bzr add...
+27: pictuga 2011-06-12 added /files (fix), sort beatmaps by title, facebook button is now an <img> (no longer an <iframe>, but no longer interactive, but better for privacy), fixed fr translation
+26: pictuga 2011-06-11 fixed translations (forgot to do bzr add), moved to stable, translated home readme to french
+25: pictuga 2011-06-11 translations support, "use strict", improved indicator
+24: pictuga 2011-06-11 moving to jQuery, twitter paypal flattr button hosted locally (still need to get rid of facebook <iframe>
+23: pictuga 2011-06-11 1st version using jQuery
+22: pictuga 2011-06-09 clean up loader, latest before redesign
+21: pictuga 2011-06-09 cross domain now works (see http://pictuga.tk/osu-web/ which uses http://osu-web.tk/ beatmaps), fixed ajax, fixed folder listing
+20: pictuga 2011-06-09 fixed bold font in webkit (using google font api), clean up of ajax code (need to check it with IE9), can now eaily change /beatmap location (see main.js)
+19: pictuga 2011-06-08 added nautilus script
+18: pictuga 2011-06-08 no longer caching everything
+17: pictuga 2011-06-01 latest before jQuery
+16: pictuga 2011-05-30 eye-candy loader, fixed cursor in webkit, beginning of points between hitobjects
+15: pictuga 2011-05-29 fixed iOS support
+14: pictuga 2011-05-26 typo
+13: pictuga 2011-05-25 better image rotation
+12: pictuga 2011-05-25 hitCircle class to own file, use of ctx.save() and restore()
+11: pictuga 2011-05-20 fixed typo
+10: pictuga 2011-05-20 catmull + HitObject.Type
+9: pictuga 2011-05-20 added some test files; before catmull integration
+8: pictuga 2011-05-15 bezier curves are now working (but code could be more efficient)
+7: pictuga 2011-05-13 bezier library: can now find point at given distance
+6: pictuga 2011-05-13 first version of bezier library
+5: pictuga 2011-04-17 .htaccess added∕fixed
+4: pictuga 2011-04-16 added htaccess, dotted file
+3: pictuga 2011-04-16 clean up 2
+2: pictuga 2011-04-16 clean up 1
+1: pictuga 2011-04-16 1st unstable
