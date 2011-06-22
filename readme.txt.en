@@ -1,22 +1,70 @@
-<h1>osu! web / unstable</h1>
+<h1>osu! web</h1>
 
-<strong>What's new here ?</strong>
-uses less ressouces when not playing (pause / end)
-iPhone:
-- images scaled down
-- now loads (gotta click on the loader, once you selected your beatmap)
-- uses touch events
-- shitty frame rate
+<a href="https://www.facebook.com/pages/Osu-web/108368515907391"><img src="files/facebook.png" /></a><a href="http://twitter.com/share?text=osu! web – osu! for browsers&url=http://osu-web.tk/&via=pictuga"><img src="files/twitter.png" /></a><a href="http://flattr.com/thing/178671/osu-web"><img src="files/flattr.png" /></a><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ECGPQVTWBY22L&item_name=osu%21%20web&currency_code=USD"><img src="files/paypal.png" /></a>
 
-<strong>What bugs here ?</strong>
-nothing ?
+<h2>HELP !!!</h2>
 
-<strong>Soon...</strong>
-settings
+ - Turn on your speakers
+ - Read this
+ - Click on the button at the bottom of the page
+ - Select a beatmap
+ - Enjoy :)
 
-<strong>Ideas ?</strong>
-.osz import
+<strong>If you don't know which beatmap to choose, we suggest "Bad Apple" → "Easy"</strong> ;)
 
-<strong>TODO</strong>
-improve design
-scoring (sliders, spinners, combo multiplier...)
+<h2>Still lost ?</h2>
+
+Okay, I'll try to explain you what your are supposed to do here.
+
+The main idea is to click on circles that appear, in rhythm with the music, at the right time. There are also "sliders" on which you have to drag the ball. You can also meet "spinners". You have to click and turn as fast as possible !
+
+That sounds easy, but it can be really hard and fun at the same time. If it's too easy for you, choose beatmaps with "insane" or "hard" in the name ;)
+
+This website is a html5/javascript version of osu!
+osu! itself is only available for Windows platform. This website aims to spread the game to other platform (linux & co), and later mobile devices.
+The game is free, but we do accept donations !
+
+<strong>This website is still in developement and may not work from time to time.</strong>
+
+<h2>Shortcuts</h2>
+
+<span class='key'>F11</span><strong>fullscreen</strong> on a lot of modern browsers
+
+<span class='key'>r</span><strong>restart</strong> the game
+<span class='key'>m</span><strong>mute</strong> the game
+<span class='key'>p</span><strong>pause</strong> the game
+<span class='key'>c</span><strong>pick</strong> another beatmap
+<span class='key'>q</span><strong>close</strong> pop-up windows
+
+<span class='key'>h</span><strong>show</strong> this page again
+
+<span class='key'>d</span>display <strong>debug</strong> information
+<span class='key'>i</span>see default <strong>skin</strong>
+
+<h2>About us</h2>
+
+Made by <a href='http://pictuga.tk/' title='TheCaméléon'>TheCaméléon</a> → <a href='http://twitter.com/pictuga' title='@pictuga'>twitter</a>
+<a href='http://www.pictuga.tk/fiche-305.html' title='Project page'>Project page</a> - <a href='http://osu.ppy.sh/forum/viewtopic.php?t=36805' title='Forum'>Forum</a> 
+
+Special thanks to Clemaister and anybody who helped the project !
+
+<a href='http://www.pictuga.tk/fiche-363.html' title='We are looking for devs !'>Contribute</a>
+<a href='http://legtux.org/' title='LegTux'>Web host</a> - <a href='http://my.dot.tk/cgi-bin/amb/landing.dottk?nr=340864::8640520::1' title='.tk'>Domain name registrar</a>
+
+<a href='http://osu.ppy.sh/' title='osu.ppy.sh'>osu! official website</a>
+
+dev version <a href="unstable/">here</a> (for test purpose only)
+
+<h2>License information</h2>
+
+License GPL 3
+
+Copyright (C) 2010 TheCaméléon
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along with this program.  If not, see &lt;<a href='http://www.gnu.org/licenses/' title='http://www.gnu.org/licenses/'>http://www.gnu.org/licenses/</a>&gt;.
+
+→ Source Code : <strong>bzr clone http://osu-web.tk/unstable/</strong>
+
+NB. The original osu! game (for Windows) is NOT OpenSource.
