@@ -6,6 +6,11 @@ function log()
 		console.log(arguments.length == 1 ? arguments[0] : arguments);
 }
 
+function newLine(str)
+{
+	return str.replace(/\r\n/g, "\n");
+}
+
 function isFunction(prop)
 {
     return (typeof prop == 'function');

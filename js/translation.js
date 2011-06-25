@@ -23,7 +23,7 @@ function loadTranslation()
 
 function parseTranslation(input)
 {
-	input = input.newLine.split('\n').slice(0, -1);
+	input = input.split('\n').slice(0, -1);
 	for(var i in input)
 	{
 		var line = input[i].split('=', 2);

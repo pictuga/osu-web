@@ -111,7 +111,7 @@ function loader()
 					{
 						if(xhr.status == 200)
 						{
-							load[id].data = xhr.responseText;
+							load[id].data = newLine(xhr.responseText);
 							load[id].done();
 						}
 						else if(xhr.status >= 400)
@@ -321,7 +321,7 @@ function loadReadme()
 	bm.type = "ajax";
 	bm.callback = function(array)
 	{
-		readme = array.data.newLine.replace(/\s*(<\/?h[0-9]+>)\s*/gi, "$1").replace(/\n/gi, "<br />");
+		readme = array.data.replace(/\s*(<\/?h[0-9]+>)\s*/gi, "$1").replace(/\n/gi, "<br />");
 		$('<div/>', {id: "pdiv", html: readme})
 			.append
 			(
