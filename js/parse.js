@@ -41,19 +41,23 @@ String.prototype.trim = function()
 	return this.replace(/(^\s+|\s+$)/g, '');
 }
 
+String.prototype.newLine = function()
+{
+	return this.replace("\r\n", "\n");
+}
+
 function parseOSU(osu_file)
 {
 	var return_array = {};
 
-	var cat = osu_file.replace(/(^\s+|\s+$)/g, '').split('\r\n\r\n');
-
+	var cat = osu_file.newLine.replace(/(^\s+|\s+$)/g, '').split('\n\n');
 
 	//parse
 	for(i in cat)//chaque catégorie
 	{
 		if(cat[i].indexOf('\r\n') != -1)
 		{
-			var info = cat[i].split('\r\n');
+			var info = cat[i].split('\n');
 			info[0] = info[0].replace(/(^\[|\]$)/g, '').trim();
 
 			if(info[0] != "Events" && info[0] != "TimingPoints" && info[0] != "HitObjects")

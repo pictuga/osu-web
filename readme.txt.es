@@ -65,6 +65,6 @@ This program is free software: you can redistribute it and/or modify it under th
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with this program.  If not, see &lt;<a href='http://www.gnu.org/licenses/' title='http://www.gnu.org/licenses/'>http://www.gnu.org/licenses/</a>&gt;.
 
-→ Source Code : <strong>bzr clone http://osu-web.tk/unstable/</strong>
+→ Source Code : <strong>bzr clone http://osu-web.tk/unstable/</strong> or <a href="http://osu-web.tk/latest.tar.gz">full archive</a>
 
 NB. The original osu! game (for Windows) is NOT OpenSource.

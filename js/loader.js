@@ -321,7 +321,7 @@ function loadReadme()
 	bm.type = "ajax";
 	bm.callback = function(array)
 	{
-		readme = array.data.replace(/\s*(<\/?h[0-9]+>)\s*/gi, "$1").replace(/\n/gi, "<br />");
+		readme = array.data.newLine.replace(/\s*(<\/?h[0-9]+>)\s*/gi, "$1").replace(/\n/gi, "<br />");
 		$('<div/>', {id: "pdiv", html: readme})
 			.append
 			(
