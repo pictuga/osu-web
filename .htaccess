@@ -21,6 +21,7 @@ Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
 
 #mime-type
 AddType application/x-web-app-manifest+json .webapp
+AddType text/cache-manifest .manifest
 
 #lang
 AddDefaultCharset UTF-8
