@@ -1,0 +1,6 @@
+#! /bin/sh
+cd -P ~/osu
+echo -n ""  > cache.manifest
+cat cache.manifest.origin >> cache.manifest
+find | grep -Fv /. | grep -v php | sed 's/^.\///g' | sed '1d' | sed 's/.txt..\+/.txt/g' | uniq >> cache.manifest
+date -R | sed 's/^/# /g' >> cache.manifest
