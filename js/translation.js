@@ -21,8 +21,11 @@ function loadTranslation()
 	tr.start();
 }
 
+var µ = {};
+
 function parseTranslation(input)
 {
+	var TRANSLATION = {};
 	input = input.split('\n').slice(0, -1);
 	for(var i in input)
 	{
@@ -30,11 +33,5 @@ function parseTranslation(input)
 		TRANSLATION[line[0]] = line[1].replace(/\\n/g, "\n").replace(/\\t/g, "\t");
 		//↑ dirty, but works
 	}
-}
-
-var TRANSLATION = {};
-
-function _(key)
-{
-	return TRANSLATION[key];
+	µ = TRANSLATION;
 }

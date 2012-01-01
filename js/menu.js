@@ -6,5 +6,5 @@ function pause()
 
 function menu()
 {
-	alert(_('BM_PAUS'));
+	alert(µ.BM_PAUS);
 }

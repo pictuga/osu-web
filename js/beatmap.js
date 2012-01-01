@@ -49,7 +49,7 @@ function initBeatMap()
 		osu_file = parseOSU(osu_raw);
 		osu_file.Metadata.id = osu_id;
 	
-	if(osu_file.General.EpilepsyWarning == 1 && !window.confirm(_('EP_WARN')))
+	if(osu_file.General.EpilepsyWarning == 1 && !window.confirm(µ.EP_WARN))
 	{
 		pickBeatMap();
 		return false;
@@ -449,8 +449,8 @@ function drawScore()
 	ctx.shadowBlur = 2*h;
 	ctx.shadowColor = "white";
 
-	if(points < 2) ctx.fillText(points + " " + _('BM_1PT'), (2*h), (2*h));
-	else ctx.fillText(points + " " + _('BM_2PT'), (2*h), (2*h));
+	if(points < 2) ctx.fillText(points + " " + µ.BM_1PT, (2*h), (2*h));
+	else ctx.fillText(points + " " + µ.BM_2PT, (2*h), (2*h));
 	
 	ctx.restore();
 }

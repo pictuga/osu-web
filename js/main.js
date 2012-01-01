@@ -12,7 +12,7 @@ var main = function()
 	{
 		var button = document.createElement("input");
 		button.type = "button";
-		button.value = _('BM_PICK') + " →";
+		button.value = µ.BM_PICK + " →";
 		button.onclick = function(){pickBeatMap()};
 		document.getElementById("pdiv").appendChild(button);
 	}

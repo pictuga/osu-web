@@ -9,17 +9,19 @@
 	</body>
 	
 	<script>
-		var audio = document.createElement("audio");
-		audio.oncanplaythrough = function()
-		{
-			alert('oO');
-			this.oncanplaythrough = undefined;
-			console.log(this.oncanplaythrough);
-		}
-		audio.src = "http://osu-web.tk/beatmap/conv/9407.ogg";
-		audio.controls = "true";
-		document.body.appendChild(audio);
+		log = console.log;
+		
+		var audio = new Audio("http://osu-web.tk/beatmap/conv/9407.ogg");
 		audio.load();
+		audio.play();
+		
+		var New;
+		function More()
+		{
+			New = new Audio(audio);
+			New.load();
+			New.play();
+		}
 	</script>
 	
 </html>
