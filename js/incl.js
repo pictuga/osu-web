@@ -31,19 +31,18 @@ function listFolder(folder)
 
 	$('<div/>', {html: index}).find('a').each(function()
 	{
-		var fullurl = decodeURI($(this).attr('href'));
-	
-		if(fullurl.indexOf('?') == -1 && $(this).html() != "Parent Directory" && $(this).html() != " Parent Directory" && typeof $(this).html() != 'undefined')
+		var url = decodeURI(this.getAttribute('href'));
+		if(url[0] != '?' && url[0] != "/")
 		{
 			var info = {};
 		
-			info.url =	fullurl.split('/').slice((fullurl[fullurl.length-1] != "/") ? -1 : -2).join('/');
-			info.basename = (info.url[info.url.length-1] != "/")
+			info.url =	url;
+			info.basename = (info.url.slice(-1) != "/")
 				? (info.url.indexOf('.') != -1)
 					? info.url.split('.').slice(0, -1).join('.')
 					: info.url
 				: info.url.split('/')[0];
-			info.ext =	(info.url[info.url.length-1] != '/')
+			info.ext =	(info.url.slice(-1) != '/')
 				? (info.url.indexOf('.') != -1)
 					? info.url.split('.').slice(-1)[0].toLowerCase()
 					: ''
@@ -79,6 +78,5 @@ function listFolder(folder)
 
 		result_array = temp;
 	}
-	
 	return result_array;
 }
