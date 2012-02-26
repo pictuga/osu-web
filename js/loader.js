@@ -8,8 +8,8 @@ function newLoader()
 
 function loader()
 {
-	this.state = 0;// 0 empty // 1 en cours // 2 fini
-	this.type = null; //img/js/ajax/folder/audio // /video?
+	this.state = 0;		// 0 empty / 1 wip / 2 done / 3 fail
+	this.type = null;	// img / js / ajax / folder / audio
 	this.url = null;
 	
 	this.data = null;
@@ -231,7 +231,7 @@ function loadImages()
 
 function loadJS()
 {
-	var js_array = ['beatmap', 'hitcircle', 'addons', 'slider', 'spinner', 'picker', 'sb', 'menu', 'curves', 'settings', 'translation', 'sort'];
+	var js_array = ['beatmap', 'hitcircle', 'addons', 'slider', 'spinner', 'picker', 'sb', 'menu', 'curves', 'settings', 'translation'];
 	
 	for(key in js_array)
 	{
