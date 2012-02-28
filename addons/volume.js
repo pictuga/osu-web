@@ -2,11 +2,11 @@
 {
 	Metadata : 
 	{
-		//idées prises des paquets deb "man deb-control"
+		//idÃ©es prises des paquets deb "man deb-control"
 		
 		Package : "volume",
-		Maintainer : "TheCaméléon",
-		Description : "Règle le son depuis le menu",
+		Maintainer : "TheCamÃ©lÃ©on",
+		Description : "RÃ¨gle le son depuis le menu",
 		Homepage : "http://pictuga.com/"
 		//Depends
 		//Conflicts
@@ -17,16 +17,16 @@
 	
 	Functions : 
 	{
-		//dés-active le greffon
+		//dÃ©s-active le greffon
 		switchOn : function(){},
 		switchOff : function(){},
 		
-		//fonctions pré-existantes
+		//fonctions prÃ©-existantes
 		initBeatMap : function(){},
 		updateBeatMap : function(){},
 		resizeBeatMap : function(){},
 		
-		//événements du jeu
+		//Ã©vÃ©nements du jeu
 		end : function(){},
 		
 		//events
