@@ -2,64 +2,56 @@
 
 <a href="https://www.facebook.com/osu.web/"><img src="image/facebook.png" /></a><a href="http://twitter.com/share?text=osu! web – osu! for browsers&url=http://osu-web.com/&via=pictuga"><img src="image/twitter.png" /></a><a href="http://flattr.com/thing/178671/osu-web"><img src="image/flattr.png" /></a><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ECGPQVTWBY22L&item_name=osu%21%20web&currency_code=USD"><img src="image/paypal.png" /></a>
 
-<h2>À L'AIDE !!!</h2>
+<div class="slider">
+	<div data-title="À L'AIDE !!!" class="diapo">
+		 - Allumez vos haut-parleurs
+		 - Lisez ceci
+		 - Cliquez sur le bouton en bas de page
+		 - Choisissez une beatmap
+		 - Appréciez :)
 
- - Allumez vos haut-parleurs
- - Lisez ceci
- - Cliquez sur le bouton en bas de page
- - Choisissez une beatmap
- - Appréciez :)
+		<strong>Si vous ne savez pas quelle beatmap choisir, nous vous recommandons "Bad Apple" → "Easy"</strong> ;)
+	</div>
 
-<strong>Si vous ne savez pas quelle beatmap choisir, nous vous recommandons "Bad Apple" → "Easy"</strong> ;)
+	<div data-title="Toujours perdu ?" class="diapo">
+		D'accord, je vais essayer de vous expliquer ce que vous êtes sensés faire ici.
 
-<h2>Toujours perdu ?</h2>
+		L'idée principale est de cliquer sur les cercles qui apparaissent, en rythme avec la musique, au bon moment. Il y a aussi des "sliders" sur lesquels vous devez faire glisser la balle. Vous pouvez aussi rencontrer des "spinners". Vous devez cliquer dessus et tourner aussi vite que possible !
 
-D'accord, je vais essayer de vous expliquer ce que vous êtes sensés faire ici.
+		Ça peut avoir l'air facile, mais ça peut devenir dur et sympa. Si c'est trop facile à votre goût, choisissez des beatmaps ayant "insane" ou "hard" dans le nom ;)
 
-L'idée principale est de cliquer sur les cercles qui apparaissent, en rythme avec la musique, au bon moment. Il y a aussi des "sliders" sur lesquels vous devez faire glisser la balle. Vous pouvez aussi rencontrer des "spinners". Vous devez cliquer dessus et tourner aussi vite que possible !
+		Ce site est une version en html5/javascript de osu!
+		osu! est un jeu disponible uniquement pour Windows. Ce site a pour but de diffuser le jeu vers d'autres platformes (linux & c), et à terme aux smartphones.
+		Le jeu est gratuit, mais nous acceptons les dons !
 
-Ça peut avoir l'air facile, mais ça peut devenir dur et sympa. Si c'est trop facile à votre goût, choisissez des beatmaps ayant "insane" ou "hard" dans le nom ;)
+		<strong>Ce site est encore en développement et peut ne pas fonctionner de temps à autres.</strong>
+	</div>
 
-Ce site est une version en html5/javascript de osu!
-osu! est un jeu disponible uniquement pour Windows. Ce site a pour but de diffuser le jeu vers d'autres platformes (linux & c), et à terme aux smartphones.
-Le jeu est gratuit, mais nous acceptons les dons !
+	<div data-title="Raccourcis" class="diapo">
+		<span class='key'>F11</span><strong>plein-écran</strong> sur de nombreux navigateurs
 
-<strong>Ce site est encore en développement et peut ne pas fonctionner de temps à autres.</strong>
+		<span class='key'>r</span><strong>redémarrer</strong> la partie
+		<span class='key'>m</span><strong>couper</strong> le son
+		<span class='key'>p</span>mettre la partie en <strong>pause</strong>
+		<span class='key'>c</span><strong>choisir</strong> une autre beatmap
+		<span class='key'>q</span><strong>fermer</strong> la pop-up
 
-<h2>Raccourcis</h2>
+		<span class='key'>h</span><strong>voir</strong> à nouveau cette page
 
-<span class='key'>F11</span><strong>plein-écran</strong> sur de nombreux navigateurs
+		<span class='key'>d</span>afficher des informations de <strong>debug</strong>
+		<span class='key'>i</span>voir le <strong>skin</strong> par défaut
+	</div>
 
-<span class='key'>r</span><strong>redémarrer</strong> la partie
-<span class='key'>m</span><strong>couper</strong> le son
-<span class='key'>p</span>mettre la partie en <strong>pause</strong>
-<span class='key'>c</span><strong>choisir</strong> une autre beatmap
-<span class='key'>q</span><strong>fermer</strong> la pop-up
+	<div data-title="À propos de nous" class="diapo">
+		Fait par <a href='http://pictuga.com/' title='TheCaméléon'>TheCaméléon</a> → <a href='http://twitter.com/pictuga' title='@pictuga'>twitter</a>
+		<a href='http://www.pictuga.com/fiche-305.html' title='Project page'>Page du projet</a> - <a href='http://osu.ppy.sh/forum/viewtopic.php?t=36805' title='Forum'>Forum</a> 
 
-<span class='key'>h</span><strong>voir</strong> à nouveau cette page
+		Remerciements à Clemaister et à tous ceux qui ont aidé le projet !
 
-<span class='key'>d</span>afficher des informations de <strong>debug</strong>
-<span class='key'>i</span>voir le <strong>skin</strong> par défaut
+		<a href='http://www.pictuga.com/fiche-363.html' title='On recherche des devs !'>Contribuer</a> – <a href='http://osu.ppy.sh/' title='osu.ppy.sh'>site officiel osu!</a>
 
-<h2>À propos de nous</h2>
-
-Fait par <a href='http://pictuga.com/' title='TheCaméléon'>TheCaméléon</a> → <a href='http://twitter.com/pictuga' title='@pictuga'>twitter</a>
-<a href='http://www.pictuga.com/fiche-305.html' title='Project page'>Page du projet</a> - <a href='http://osu.ppy.sh/forum/viewtopic.php?t=36805' title='Forum'>Forum</a> 
-
-Remerciements à Clemaister et à tous ceux qui ont aidé le projet !
-
-<a href='http://www.pictuga.com/fiche-363.html' title='On recherche des devs !'>Contribuer</a> – <a href='http://osu.ppy.sh/' title='osu.ppy.sh'>site officiel osu!</a>
-
-<h2>License information</h2>
-
-License GPL 3
-
-Copyright (C) 2010 TheCaméléon
-
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-You should have received a copy of the GNU General Public License along with this program.  If not, see &lt;<a href='http://www.gnu.org/licenses/' title='http://www.gnu.org/licenses/'>http://www.gnu.org/licenses/</a>&gt;.
-
-→ Code source : <strong>bzr clone http://bzr.pictuga.com/osu-web/</strong> or <a href="http://osu-web.com/latest.tar.gz">full archive</a>
-
-N.B. : La version originale du jeu osu! (pour Windows) n'est PAS OpenSource.
+		License GPL 3 – Copyright (C) 2010 TheCaméléon
+		→ Code source : <strong>bzr clone http://bzr.pictuga.com/osu-web/</strong> or <a href="http://osu-web.com/latest.tar.gz">full archive</a>
+		N.B. : La version originale du jeu osu! (pour Windows) n'est PAS OpenSource.
+	</div>
+</div>

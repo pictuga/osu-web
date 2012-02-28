@@ -76,6 +76,16 @@ h2
 	text-indent : 10%;
 }
 
+#readme div[data-title]:before
+{
+	content : attr(data-title);
+	border-bottom : 1px dotted gray;
+	font-size : 1em;
+	text-indent : 10%;
+	display : block;
+	padding-bottom : 1em;
+}
+
 .key
 {
 	width : 5%;
