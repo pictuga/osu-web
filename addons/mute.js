@@ -4,7 +4,7 @@
 		Package : "mute",
 		Maintainer : "TheCaméléon",
 		Description : "Coupe le son",
-		Homepage : "http://pictuga.tk/"
+		Homepage : "http://pictuga.com/"
 	},
 	
 	Running : false,

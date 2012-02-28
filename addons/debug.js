@@ -6,7 +6,7 @@
 		Package : "debug",
 		Maintainer : "TheCaméléon",
 		Description : "Affiche diverses informations de debug",
-		Homepage : "http://pictuga.tk/"
+		Homepage : "http://pictuga.com/"
 		//Depends
 		//Conflicts
 	},

@@ -4,7 +4,7 @@
 		Package : "pause",
 		Maintainer : "TheCaméléon",
 		Description : "Play / Pause",
-		Homepage : "http://pictuga.tk/"
+		Homepage : "http://pictuga.com/"
 	},
 	
 	Running : false,

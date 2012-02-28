@@ -7,7 +7,7 @@
 		Package : "volume",
 		Maintainer : "TheCaméléon",
 		Description : "Règle le son depuis le menu",
-		Homepage : "http://pictuga.tk/"
+		Homepage : "http://pictuga.com/"
 		//Depends
 		//Conflicts
 	},

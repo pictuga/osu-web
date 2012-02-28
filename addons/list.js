@@ -6,7 +6,7 @@
 		Package : "list",
 		Maintainer : "TheCaméléon",
 		Description : "Liste les beatmap pour copier-coller sur le forum osu!",
-		Homepage : "http://pictuga.tk/"
+		Homepage : "http://pictuga.com/"
 		//Depends
 		//Conflicts
 	},

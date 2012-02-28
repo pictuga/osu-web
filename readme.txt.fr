@@ -43,12 +43,12 @@ Le jeu est gratuit, mais nous acceptons les dons !
 
 <h2>À propos de nous</h2>
 
-Fait par <a href='http://pictuga.tk/' title='TheCaméléon'>TheCaméléon</a> → <a href='http://twitter.com/pictuga' title='@pictuga'>twitter</a>
-<a href='http://www.pictuga.tk/fiche-305.html' title='Project page'>Page du projet</a> - <a href='http://osu.ppy.sh/forum/viewtopic.php?t=36805' title='Forum'>Forum</a> 
+Fait par <a href='http://pictuga.com/' title='TheCaméléon'>TheCaméléon</a> → <a href='http://twitter.com/pictuga' title='@pictuga'>twitter</a>
+<a href='http://www.pictuga.com/fiche-305.html' title='Project page'>Page du projet</a> - <a href='http://osu.ppy.sh/forum/viewtopic.php?t=36805' title='Forum'>Forum</a> 
 
 Remerciements à Clemaister et à tous ceux qui ont aidé le projet !
 
-<a href='http://www.pictuga.tk/fiche-363.html' title='On recherche des devs !'>Contribuer</a>
+<a href='http://www.pictuga.com/fiche-363.html' title='On recherche des devs !'>Contribuer</a>
 <a href='http://legtux.org/' title='LegTux'>Hébergeur</a> - <a href='http://my.dot.tk/cgi-bin/amb/landing.dottk?nr=340864::8640520::1' title='.tk'>Domain name registrar</a>
 
 <a href='http://osu.ppy.sh/' title='osu.ppy.sh'>site officiel osu!</a>

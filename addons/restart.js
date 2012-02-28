@@ -4,7 +4,7 @@
 		Package : "restart",
 		Maintainer : "TheCaméléon",
 		Description : "Touche r",
-		Homepage : "http://pictuga.tk/"
+		Homepage : "http://pictuga.com/"
 	},
 	
 	Running : false,

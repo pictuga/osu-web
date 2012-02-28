@@ -4,7 +4,7 @@
 		Package : "pick",
 		Maintainer : "TheCaméléon",
 		Description : "Touche c",
-		Homepage : "http://pictuga.tk/"
+		Homepage : "http://pictuga.com/"
 	},
 	
 	Running : false,
