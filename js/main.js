@@ -8,14 +8,6 @@ window.onload = function()
 
 var main = function()
 {
-	loaded = function()
-	{
-		var button = document.createElement("input");
-		button.type = "button";
-		button.value = µ.BM_PICK + " →";
-		button.onclick = function(){pickBeatMap()};
-		document.getElementById("pdiv").appendChild(button);
-	}
-	
+	loaded = function(){ $('<input/>', {type: 'button', value: µ.BM_PICK + ' →'}).click(pickBeatMap).appendTo('#pdiv'); }	
 	loadAll();
 }
