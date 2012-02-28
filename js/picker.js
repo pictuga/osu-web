@@ -1,7 +1,7 @@
 function pickBeatMap()
 {
 	var div_rm = $('<div/>', {id : 'readme', html : readme}).appendTo(document.body);
-	var picker = $('<div/>', {id : 'picker'}).prependTo(div_rm);
+	var picker = $('<div/>', {id : 'picker'}).appendTo(document.body);
 	
 	var out = sortBeatmap();
 	for(var i in out)

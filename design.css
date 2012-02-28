@@ -135,7 +135,7 @@ progress + div
 
 #readme
 {
-	width : 100%;
+	width : 50%;
 	height : 100%;
 	
 	position : fixed;
@@ -148,8 +148,13 @@ progress + div
 #picker
 {
 	width : 50%;
-	overflow : visible;
-	float : right;
+	height : 100%;
+	
+	position : fixed;
+	top : 0;
+	right : 0;
+	
+	overflow : auto;
 }
 
 	#picker > div
@@ -219,4 +224,74 @@ progress + div
 
 	background-color : white;
 	cursor : default;
+}
+
+/******************************************** slider ********************************************/
+
+#slider
+{
+	overflow : hidden;
+	-moz-transition :	all 150ms ease-in;
+	-webkit-transition :	all 150ms ease-in;
+	-o-transition :		all 150ms ease-in;
+	position : relative;
+	width : 100%;
+}
+#slider:hover #mask
+{
+	-moz-animation-play-state	: paused;
+	-webkit-animation-play-state	: paused;
+}
+#slider #mask
+{
+	height : 100%;
+	width : 400%;
+	padding : 0;
+	margin : 0;
+	-moz-animation :	slide-animation 30s infinite;
+	-webkit-animation :	slide-animation 30s infinite;
+	position : relative;
+	left : 0px;
+	overflow:hidden;
+}
+#slider .diapo
+{
+	display : inline;
+	width : 25%;
+	height : 100%;
+	margin : 0;
+	padding : 0;
+	float : left;
+	position : relative;
+}
+
+@-webkit-keyframes slide-animation
+{
+	20%	{left : 0;}
+
+	25%	{left : -100%;}
+	45%	{left : -100%;}
+
+	50%	{left : -200%;}
+	70%	{left : -200%;}
+
+	75%	{left : -300%;}
+	98%	{left : -300%;}
+
+	100%	{left : 0;}
+}
+@-moz-keyframes slide-animation
+{
+	20%	{left : 0;}
+
+	25%	{left : -100%;}
+	45%	{left : -100%;}
+
+	50%	{left : -200%;}
+	70%	{left : -200%;}
+
+	75%	{left : -300%;}
+	98%	{left : -300%;}
+
+	100%	{left : 0;}
 }
