@@ -17,11 +17,5 @@ var main = function()
 		document.getElementById("pdiv").appendChild(button);
 	}
 	
-	loadJS();
-	loadImages();
-	loadBeatMap();
-	loadReadme();
-	
-	//loadAddons(); → moved to loadJS();
-	//loadSound(); → buggy for now (once more)
+	loadAll();
 }

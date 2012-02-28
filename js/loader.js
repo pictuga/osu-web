@@ -171,6 +171,17 @@ function showLoader(progress)
 
 //////////////////////////////////////////
 
+function loadAll()
+{
+	loadJS();
+	loadImages();
+	loadBeatMap();
+	loadReadme();
+	
+	//loadAddons(); → moved to loadJS();
+	//loadSound(); → buggy for now (once more)
+}
+
 function loadAddons()
 {
 	var addon_loader = new loader();
