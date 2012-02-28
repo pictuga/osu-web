@@ -48,12 +48,7 @@ Fait par <a href='http://pictuga.com/' title='TheCaméléon'>TheCaméléon</a> �
 
 Remerciements à Clemaister et à tous ceux qui ont aidé le projet !
 
-<a href='http://www.pictuga.com/fiche-363.html' title='On recherche des devs !'>Contribuer</a>
-<a href='http://legtux.org/' title='LegTux'>Hébergeur</a> - <a href='http://my.dot.tk/cgi-bin/amb/landing.dottk?nr=340864::8640520::1' title='.tk'>Domain name registrar</a>
-
-<a href='http://osu.ppy.sh/' title='osu.ppy.sh'>site officiel osu!</a>
-
-version de développement <a href="unstable/">ici</a>
+<a href='http://www.pictuga.com/fiche-363.html' title='On recherche des devs !'>Contribuer</a> – <a href='http://osu.ppy.sh/' title='osu.ppy.sh'>site officiel osu!</a>
 
 <h2>License information</h2>
 
