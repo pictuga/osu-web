@@ -231,28 +231,40 @@ function loadImages()
 
 function loadJS()
 {
-	var js_array = ['beatmap', 'hitcircle', 'addons', 'slider', 'spinner', 'picker', 'sb', 'menu', 'curves', 'settings', 'translation'];
-	
-	for(key in js_array)
+	var js_head = [];
+	$('head').find('script').each(function()
 	{
-		var new_js = new loader();
-		new_js.url = "js/" + js_array[key] + ".js";
-		new_js.type = "js";
-		new_js.extra.basename = js_array[key];
-		new_js.callback = function(array)
-		{
-			switch(array.extra.basename)
+		js_head.push(this.getAttribute('src').split('/').slice(-1)[0]);
+	});
+	
+	var js_loader = new loader();
+	js_loader.url = "js";
+	js_loader.type = "folder";
+	js_loader.callback = function(array)
+	{
+		for(key in array.data)
+			if(js_head.indexOf(array.data[key]) == -1)
 			{
-				case "addons":
-					loadAddons();
-					break;
-				case "translation":
-					loadTranslation();
-					break;
+				var new_js = new loader();
+				new_js.url = "js/" + array.data[key];
+				new_js.type = "js";
+				new_js.extra.filename = array.data[key];
+				new_js.callback = function(array)
+				{
+					switch(array.extra.filename)
+					{
+						case "addons.js":
+							loadAddons();
+							break;
+						case "translation.js":
+							loadTranslation();
+							break;
+					}
+				}
+				new_js.start();
 			}
-		}
-		new_js.start();
 	}
+	js_loader.start();
 }
 
 var beatmap = {};
