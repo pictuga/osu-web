@@ -145,28 +145,31 @@ function checkLoad()
 	showLoader(counter / (load.length-start) *100);
 	
 	if(counter == load.length-start)
-	{
-		$('#loader').remove();
-		loaded();
-	}
+		endLoader();
 }
 
 function checkFail()
 {
 	for(i in load)
-	{
-		if(load[i].state != 2) log(i, load[i].type, load[i].url);
-	}
+		if(load[i].state != 2)
+			log(i, load[i].type, load[i].url);
 }
 
-function showLoader(progress)
+function showLoader(percent)
 {
-	if(!$('#loader').size())
-		$('<div id="loader"/>')
-		.append($('<div/>'))
-		.appendTo(document.body);
-	
-	$('#loader div').css('width', progress + "%");
+	if(!$('progress').length)
+	{
+		$('<progress/>', {value : 0, max : 100}).appendTo(document.body);
+		$('<div/>').appendTo(document.body);
+	}
+	$('progress').attr('value', percent);
+}
+
+function endLoader()
+{
+	$('progress + img').remove();
+	$('progress').remove();
+	loaded();
 }
 
 //////////////////////////////////////////
@@ -174,7 +177,7 @@ function showLoader(progress)
 function loadAll()
 {
 	loadJS();
-	loadImages();
+	loadSkin();
 	loadBeatMap();
 	loadReadme();
 	
@@ -211,19 +214,19 @@ function loadAddons()
 
 var pic = {};
 
-function loadImages()
+function loadSkin()
 {
-	var pic_loader = new loader();
-	pic_loader.url = "image";
-	pic_loader.type = "folder";
-	pic_loader.extra.param = "full";
-	pic_loader.callback = function(array)
+	var skin_loader = new loader();
+	skin_loader.url = "skin";
+	skin_loader.type = "folder";
+	skin_loader.extra.param = "full";
+	skin_loader.callback = function(array)
 	{
 		array = array.data;
 		
 		for(key in array)
 		{
-			var url = "image/" + array[key].url;
+			var url = "skin/" + array[key].url;
 			var basename = array[key].basename;
 			
 			var new_pic = new loader();
@@ -237,7 +240,7 @@ function loadImages()
 			new_pic.start();
 		}
 	}
-	pic_loader.start();
+	skin_loader.start();
 }
 
 function loadJS()
@@ -345,17 +348,6 @@ function loadReadme()
 	bm.callback = function(array)
 	{
 		readme = array.data.replace(/\s*(<\/?h[0-9]+>)\s*/gi, "$1").replace(/\n/gi, "<br />");
-		$('<div/>', {id: "pdiv", html: readme})
-			.append
-			(
-				$('<div class="adsense"/>')
-				.append
-				(
-					$('#adsense iframe')
-					.clone()
-				)
-			)
-			.insertBefore('#loader');
 	}
 	bm.start();
 }

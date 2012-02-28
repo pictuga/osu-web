@@ -1,15 +1,13 @@
 function pickBeatMap()
 {
-	$('#pdiv').remove();
-	
-	var pdiv = $('<div id="pdiv"/>').appendTo(document.body);
+	var div_rm = $('<div/>', {id : 'readme', html : readme}).appendTo(document.body);
+	var picker = $('<div/>', {id : 'picker'}).prependTo(div_rm);
 	
 	var out = sortBeatmap();
 	for(var i in out)
 	{
 		var id = out[i];
-		
-		var osz = $('<div/>', {html: beatmap[id].title}).appendTo(pdiv);
+		var osz = $('<div/>', {html: beatmap[id].title}).appendTo(picker);
 		
 		for(i in beatmap[id].version)
 		{
@@ -18,7 +16,8 @@ function pickBeatMap()
 			
 			osu.click({id: id, version: version}, function(event)
 			{
-				$('#pdiv').remove();
+				$('#picker').remove();
+				$('#readme').remove();
 				loadBeatMap(event.data.id, event.data.version);
 			});
 		}
