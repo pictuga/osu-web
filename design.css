@@ -63,6 +63,58 @@ canvas
 	margin : auto;
 }
 
+#adsense
+{
+	display : none;
+}
+
+/******************************************** loader ********************************************/
+
+progress
+{
+	width : 80%;
+	height : 5%;
+	
+	position : fixed;
+	top : 80%;
+	left : 10%;
+}
+
+progress + div
+{
+	position : fixed;
+	width : 100%;
+	height : 100%;
+	background-image : url(logo.png);
+	background-position : center 28.75%;
+	background-repeat : no-repeat;
+}
+
+/******************************************** readme ********************************************/
+
+#readme
+{
+	width : 50%;
+	height : 100%;
+	
+	position : fixed;
+	top : 0;
+	left : 0;
+	
+	overflow : auto;
+}
+
+#share
+{
+    margin : auto;
+    text-align : center;
+}
+
+    #share img
+    {
+        margin : 0 1% 0 0;
+    }
+
 h1
 {
 	text-align : center;
@@ -104,46 +156,7 @@ h2
 	border : none;
 }
 
-#adsense
-{
-	display : none;
-}
-
-/******************************************** loader ********************************************/
-
-progress
-{
-	width : 80%;
-	height : 5%;
-	
-	position : fixed;
-	top : 80%;
-	left : 10%;
-}
-
-progress + div
-{
-	position : fixed;
-	width : 100%;
-	height : 100%;
-	background-image : url(logo.png);
-	background-position : center 28.75%;
-	background-repeat : no-repeat;
-}
-
 /******************************************** picker ********************************************/
-
-#readme
-{
-	width : 50%;
-	height : 100%;
-	
-	position : fixed;
-	top : 0;
-	left : 0;
-	
-	overflow : auto;
-}
 
 #picker
 {
@@ -165,17 +178,17 @@ progress + div
 		margin-top : 1%;
 		padding : 1%;
 		position : relative;
-		width : 90%;
+		width : 95%;
 		float : right;
-		transition : width 0.3s ease-in 0.3ms;
-		-moz-transition : width 0.3s ease-in 0.3ms;
-		-webkit-transition : width 0.3s ease-in 0.3ms;
+		transition : background-color 0.3s ease-in;
+		-moz-transition : background-color 0.3s ease-in;
+		-webkit-transition : background-color 0.3s ease-in;
 	}
 	
 		#picker > div:hover
 		{
 			font-weight : bold;
-			width : 95%;
+			background-color : silver;
 		}
 		
 		#picker > div:hover > div

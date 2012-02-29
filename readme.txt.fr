@@ -1,6 +1,6 @@
 <h1>osu! web</h1>
 
-<a href="https://www.facebook.com/osu.web/"><img src="image/facebook.png" /></a><a href="http://twitter.com/share?text=osu! web – osu! for browsers&url=http://osu-web.com/&via=pictuga"><img src="image/twitter.png" /></a><a href="http://flattr.com/thing/178671/osu-web"><img src="image/flattr.png" /></a><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ECGPQVTWBY22L&item_name=osu%21%20web&currency_code=USD"><img src="image/paypal.png" /></a>
+<div id="share"><a href="https://www.facebook.com/osu.web/"><img src="image/facebook.png" /></a><a href="http://twitter.com/share?text=osu! web – osu! for browsers&url=http://osu-web.com/&via=pictuga"><img src="image/twitter.png" /></a><a href="http://flattr.com/thing/178671/osu-web"><img src="image/flattr.png" /></a><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ECGPQVTWBY22L&item_name=osu%21%20web&currency_code=USD"><img src="image/paypal.png" /></a></div>
 
 <div id="slider"><div id="mask">
 	<div data-title="À L'AIDE !!!" class="diapo">
