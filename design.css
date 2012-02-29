@@ -159,12 +159,23 @@ progress + div
 
 	#picker > div
 	{
-		border-bottom : 1px solid gray;
+		border : 1px solid silver;
+		border-right : 0;
+		border-radius : 10px 0 0 10px;
+		margin-top : 1%;
+		padding : 1%;
+		position : relative;
+		width : 90%;
+		float : right;
+		transition : width 0.3s ease-in 0.3ms;
+		-moz-transition : width 0.3s ease-in 0.3ms;
+		-webkit-transition : width 0.3s ease-in 0.3ms;
 	}
 	
 		#picker > div:hover
 		{
 			font-weight : bold;
+			width : 95%;
 		}
 		
 		#picker > div:hover > div
@@ -181,20 +192,6 @@ progress + div
 		{
 			font-weight : bold;
 		}
-	
-	#picker #button, #picker input, #picker button
-	{
-		bottom : 1.25%;
-		margin : auto;
-		position : fixed;
-		
-		width : 80%;
-		height : 7.5%;
-		display : block;
-		
-		text-align : center;
-		border : 1px solid gray;
-	}
 
 /******************************************** jWindow ********************************************/
 
