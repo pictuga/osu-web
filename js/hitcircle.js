@@ -147,9 +147,7 @@ hitCircle.prototype.update = function()
 	{
 		case "slider":
 			if(this.sliderCount > 1)
-			{
 				this.repeat = Math.ceil((time-this.time) / this.t);//starts at 1
-			}
 		break;
 	}
 }
@@ -244,14 +242,12 @@ hitCircle.prototype.drawObject = function()
 				if(this.sliderCount > 1)
 				{
 					if(time > this.time)
-					{
 						if(this.sliderCount > this.repeat)
 						{
 							var xy = (this.repeat % 2 == 1) ? this.sliderLast : [this.x, this.y];
 							var image = pic["reversearrow"];
 							ctx.drawImageScaled(image, xy[0]*ws, xy[1]*hs);
 						}
-					}
 					else
 					{
 						var xy = this.sliderLast;
@@ -564,12 +560,8 @@ hitCircle.prototype.checkSlide = function(mouseX, mouseY)
 hitCircle.prototype.checkSpin = function(mouseX, mouseY)
 {
 	if(this.spinPoints.length >= 1)
-	{
 		if(this.spinPoints[this.spinPoints.length-1] != [mouseX, mouseY])
-		{
 			this.spinPoints.push([mouseX, mouseY]);
-		}
-	}
 	else this.spinPoints.push([mouseX, mouseY]);
 }
 
@@ -577,13 +569,9 @@ hitCircle.prototype.color = function()
 {
 	var key = this.combo % color.length;
 	if(arguments[0])
-	{
 		return "rgba(" + color[key][0] + ", " + color[key][1] + ", " + color[key][2] + ", " + arguments[0] + ")";
-	}
 	else
-	{
 		return "rgb(" + color[key][0] + ", " + color[key][1] + ", " + color[key][2] + ")";
-	}
 }
 
 hitCircle.prototype.playSound = function()
