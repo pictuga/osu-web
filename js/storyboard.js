@@ -2,88 +2,94 @@ var sb = {};//contains Storyboard images
 
 //FIXME no worky, make it a class, inside BeatMap(), with property linking to BeatMap class
 
-function drawStoryBoard()
+function Storyboard(game)
+{
+	this.data	= {};
+	this.game	= game;
+}
+
+Storyboard.prototype.draw = function()
 {
 	return;
 	//TODO finish this
 	
-	for(i in osu_file.Events)
+	for(i in this.game.osu.Events)
 	{
-		switch(osu_file.Events[i][0])
+		switch(this.game.osu.Events[i][0])
 		{
 			case 'Sprite':
 				//Sprite,Background,Centre,"sprogbg.jpg",320,240
-				var image = sb[osu_file.Events[i][3]];
+				var image = this.data[this.game.osu.Events[i][3]];
 			break;
 		}
 	}
 }
 
-function initStoryBoard()
+Storyboard.prototype.init = function()
 {
-	return;
 	$(document.body).css('background', '');
 	
-	for(i in osu_file.Events)
+	for(i in this.game.osu.Events)
 	{
-		switch(osu_file.Events[i][0])
+		switch(this.game.osu.Events[i][0])
 		{
 			case 3:
 				//color
-				$(document.body).css('backgroundColor', "rgb(" + osu_file.Events[i][2] + "," + osu_file.Events[i][3] + "," + osu_file.Events[i][4] + ")");
+				$(document.body).css('backgroundColor', "rgb(" + this.game.osu.Events[i][2] + "," + this.game.osu.Events[i][3] + "," + this.game.osu.Events[i][4] + ")");
 			break;
 				
 			case 0:
 				//background
-				if(osu_file.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'jpg'
-				|| osu_file.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'jpeg'
-				|| osu_file.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'png')
-				$(document.body).css('backgroundImage', "url('" + Setting.Path.BeatMap + osu_file.Metadata.id + "/" + osu_file.Events[i][2] + "')");
+				if(this.game.osu.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'jpg'
+				|| this.game.osu.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'jpeg'
+				|| this.game.osu.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'png')
+				$(document.body).css('backgroundImage', "url('" + Setting.Path.BeatMap + this.game.osu.Metadata.id + "/" + this.game.osu.Events[i][2] + "')");
 			
-				else log(osu_file.Events[i][2]);
+				else log(this.game.osu.Events[i][2]);
 			break;
 		}
 	}
 }
 
-function loadStoryBoard()
+Storyboard.prototype.load = function()
 {
-	return;
-	var id = osu_file.Metadata.id;
+	var id = this.game.osu.Metadata.id;
 	
-	for(i in osu_file.Events)
+	for(i in this.game.osu.Events)
 	{
-		if(	osu_file.Events[i][0] == 0//if background
+		if(	this.game.osu.Events[i][0] == 0//if background
 			&&
 			(
-				osu_file.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'jpg'
-				|| osu_file.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'jpeg'
-				|| osu_file.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'png'
+				this.game.osu.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'jpg'
+				|| this.game.osu.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'jpeg'
+				|| this.game.osu.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'png'
 			)// ↑ if image (≠ movie)
 		)
 		{
 			var img = new loader();
-			img.url = Setting.Path.BeatMap + id + "/" + osu_file.Events[i][2];
+			img.url = Setting.Path.BeatMap + id + "/" + this.game.osu.Events[i][2];
 			img.type = "img";
+			//just load, will be triggered with url via css
 			img.start();
 		}
 		
-		else if(osu_file.Events[i][0] ==  'Sprite'
+		else if(this.game.osu.Events[i][0] ==  'Sprite'
 			&&
 			(
-				osu_file.Events[i][3].split('.').slice(-1)[0].toLowerCase() == 'jpg'
-				|| osu_file.Events[i][3].split('.').slice(-1)[0].toLowerCase() == 'jpeg'
-				|| osu_file.Events[i][3].split('.').slice(-1)[0].toLowerCase() == 'png'
+				this.game.osu.Events[i][3].split('.').slice(-1)[0].toLowerCase() == 'jpg'
+				|| this.game.osu.Events[i][3].split('.').slice(-1)[0].toLowerCase() == 'jpeg'
+				|| this.game.osu.Events[i][3].split('.').slice(-1)[0].toLowerCase() == 'png'
 			)
 		)
 		{
 			var img = new loader();
-			img.url = Setting.Path.BeatMap + id + "/" + osu_file.Events[i][3];
+			img.url = Setting.Path.BeatMap + id + "/" + this.game.osu.Events[i][3];
 			img.type = "img";
-			img.extra.basename = osu_file.Events[i][3];
+			img.extra.basename = this.game.osu.Events[i][3];
+			img.extra.self = this;
 			img.callback = function(array)
 			{
-				sb[array.extra.basename] = array.data;
+				array.extra.self.data[array.extra.basename] = array.data;
 			}
 			img.start();
 		}

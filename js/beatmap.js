@@ -49,6 +49,8 @@ function BeatMap(id, version)
 	this.raw
 	this.player
 	
+	this.storyboard	= new Storyboard(this);
+	
 	//size
 	this.HH,	this.WW		//total size (including outside the gamefield)(H, W)
 	this.H,		this.W		//total percentage (including outside the gamefield)(no ratio)(hp, wp)
@@ -87,7 +89,7 @@ BeatMap.prototype.load = function()
 		self.osu = parseOSU(self.raw);
 		self.osu.Metadata.id = self.id;
 		
-		loadStoryBoard();
+		self.storyboard.load();
 		
 		var mp3 = new loader();
 		mp3.url = [	Setting.Path.BeatMap + self.id + "/" + self.osu.General.AudioFilename,
@@ -191,7 +193,7 @@ BeatMap.prototype.init = function()
 		runAddons("initBeatMap");
 	
 	//start the game
-		initStoryBoard();
+		this.storyboard.init();
 		this.resize();
 		
 		this.player.currentTime = 0;
@@ -289,7 +291,7 @@ BeatMap.prototype.update = function()
 	for(key in this.hc)
 		this.hc[key].draw();
 	
-	drawStoryBoard();
+	this.storyboard.draw();
 	
 	if(this.ratio) this.ctx.restore();
 	
@@ -328,12 +330,14 @@ BeatMap.prototype.checkHit = function(e)
 	mouseX = mouseX / this.ws;
 	mouseY = mouseY / this.hs;
 	
+	loop:
 	for(key in this.hc)
 		switch(this.hc[key].Type)
 		{
 			case "circle":
 				if(isIn(click_time, this.hc[key].time-1500, this.hc[key].time+100) && !this.hc[key].clic)
-					if(this.hc[key].checkHit(mouseX, mouseY)) break;
+					if(this.hc[key].checkHit(mouseX, mouseY))
+						break loop;
 			break;
 		
 			case "slider":
@@ -341,8 +345,9 @@ BeatMap.prototype.checkHit = function(e)
 				{
 					$(this.canvas).bind('mousemove.slide', function(e){Game.checkSlide(e)});
 					$(this.canvas).bind('touchmove.slide', function(e){Game.checkSlide(e)});
-					break;
+					break loop;
 				}
+			break;
 		
 			case "spinner":
 				if(isIn(this.time, this.hc[key].time, this.hc[key].endTime))
@@ -350,8 +355,9 @@ BeatMap.prototype.checkHit = function(e)
 					$(this.canvas).bind('mousemove.slide', function(e){Game.checkSpin(e)});
 					$(this.canvas).bind('touchmove.slide', function(e){Game.checkSpin(e)});
 					this.hc[key].checkSpin(mouseX, mouseY);
-					break;
+					break loop;
 				}
+			break;
 		}
 	
 	e.preventDefault();
@@ -616,5 +622,3 @@ function checkKey(e)
 		}
 	}
 }
-
-//FIXME checkHit(), checkSlide(), checkSpin(), checkKey()
