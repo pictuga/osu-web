@@ -1,7 +1,3 @@
-var sb = {};//contains Storyboard images
-
-//FIXME no worky, make it a class, inside BeatMap(), with property linking to BeatMap class
-
 function Storyboard(game)
 {
 	this.data	= {};
