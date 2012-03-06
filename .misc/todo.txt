@@ -3,3 +3,4 @@ TODO
 multi-skin picker (skin/)
 beatmap multi-server
 double render
+fix slider

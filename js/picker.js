@@ -1,24 +1,23 @@
 function pickBeatMap()
 {
-	var div_rm = $('<div/>', {id : 'readme', html : readme}).appendTo(document.body);
+	var div_rm = $('<div/>', {id : 'readme', html : Setting.ReadMe}).appendTo(document.body);
 	var picker = $('<div/>', {id : 'picker'}).appendTo(document.body);
 	
 	var out = sortBeatmap();
 	for(var i in out)
 	{
 		var id = out[i];
-		var osz = $('<div/>', {html: beatmap[id].title}).appendTo(picker);
+		var osz = $('<div/>', {html: Data.BeatMap[id].title}).appendTo(picker);
 		
-		for(i in beatmap[id].version)
+		for(i in Data.BeatMap[id].version)
 		{
-			var version = beatmap[id].version[i];
+			var version = Data.BeatMap[id].version[i];
 			var osu = $('<div/>', {html: (version != '') ? version : '[no name]'}).appendTo(osz);
-			
 			osu.click({id: id, version: version}, function(event)
 			{
 				$('#picker').remove();
 				$('#readme').remove();
-				loadBeatMap(event.data.id, event.data.version);
+				new BeatMap(event.data.id, event.data.version);
 			});
 		}
 	}
@@ -30,10 +29,10 @@ function sortBeatmap()
 	var names = [];
 	var out = [];
 	
-	for(var id in beatmap)
+	for(var id in Data.BeatMap)
 	{
-		ids[beatmap[id].title.toLowerCase()] = id;
-		names.push(beatmap[id].title.toLowerCase());
+		ids[Data.BeatMap[id].title.toLowerCase()] = id;
+		names.push(Data.BeatMap[id].title.toLowerCase());
 	}
 	
 	names.sort();

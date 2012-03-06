@@ -212,12 +212,10 @@ function loadAddons()
 	addon_loader.start();
 }
 
-var pic = {};
-
 function loadSkin()
 {
 	var skin_loader = new loader();
-	skin_loader.url = "skin";
+	skin_loader.url = Setting.Path.Skin;
 	skin_loader.type = "folder";
 	skin_loader.extra.param = "full";
 	skin_loader.callback = function(array)
@@ -226,7 +224,7 @@ function loadSkin()
 		
 		for(key in array)
 		{
-			var url = "skin/" + array[key].url;
+			var url = Setting.Path.Skin + array[key].url;
 			var basename = array[key].basename;
 			
 			var new_pic = new loader();
@@ -235,7 +233,7 @@ function loadSkin()
 			new_pic.type = "img";
 			new_pic.callback = function(array)
 			{
-				pic[array.extra.basename] = array.data;
+				Data.Skin[array.extra.basename] = array.data;
 			}
 			new_pic.start();
 		}
@@ -281,21 +279,17 @@ function loadJS()
 	js_loader.start();
 }
 
-var beatmap = {};
-
 function loadBeatMap()
 {
 	//list osz (folders)
 	var ls = new loader();
-	ls.url = BEATMAP;
+	ls.url = Setting.Path.BeatMap;
 	ls.type = "folder";
 	ls.extra.param = "full";
 	ls.callback = function(array)
 	{
 		for(i in array.data)
 		{
-			if(array.data[i].url == "conv/") continue;
-			
 			//check
 			var id = array.data[i].basename;
 			
@@ -318,20 +312,20 @@ function loadBeatMap()
 				{
 					//list levels
 					var id = array.url.replace(/^.+\/([0-9]+)\/.*$/gi, "$1");
-					if(typeof beatmap[id] == 'undefined')
+					if(typeof Data.BeatMap[id] == 'undefined')
 					{
-						beatmap[id] = {};
-						beatmap[id].version = [];
+						Data.BeatMap[id] = {};
+						Data.BeatMap[id].version = [];
 					}
 					
 					var more    = osu[j].basename.replace(/^(.*) \(.*?\).*$/g, "$1").split(' - ', 2);
 					
-					beatmap[id].artist	= more[0];
-					beatmap[id].title	= more[1];
-					var version		= osu[j].basename.replace(/^.*\[(.*?)\]$/g, "$1");
-					beatmap[id].creator	= osu[j].basename.replace(/^.*\((.*?)\).*$/g, "$1");
+					Data.BeatMap[id].artist	= more[0];
+					Data.BeatMap[id].title	= more[1];
+						var version	= osu[j].basename.replace(/^.*\[(.*?)\]$/g, "$1");
+					Data.BeatMap[id].creator= osu[j].basename.replace(/^.*\((.*?)\).*$/g, "$1");
 					
-					beatmap[id].version.push(version);
+					Data.BeatMap[id].version.push(version);
 				}
 			}
 			osz.start();
@@ -347,17 +341,15 @@ function loadReadme()
 	bm.type = "ajax";
 	bm.callback = function(array)
 	{
-		readme = array.data.replace(/\s*(<\/?h[0-9]+>)\s*/gi, "$1").replace(/\n/gi, "<br />");
+		Setting.ReadMe = array.data.replace(/\s*(<\/?h[0-9]+>)\s*/gi, "$1").replace(/\n/gi, "<br />");
 	}
 	bm.start();
 }
 
-var sounds = {};
-
 function loadSound()
 {
 	var sd = new loader();
-	sd.url = "sound/";
+	sd.url = Setting.Path.Sound;
 	sd.type = "folder";
 	sd.extra.param = 'ext full';
 	sd.callback = function(array)
@@ -369,12 +361,13 @@ function loadSound()
 			var basename = array.mp3[i].basename;
 			
 			var mp3 = new loader();
-			mp3.url = ["sound/" + basename + '.mp3', "sound/" + basename + '.ogg'];
+			mp3.url = [	Setting.Path.Sound + basename + '.mp3',
+					Setting.Path.Sound + basename + '.ogg'];
 			mp3.extra.basename = basename;
 			mp3.type = "audio";
 			mp3.callback = function(array)
 			{
-				sounds[array.extra.basename] = array.data;
+				Data.Sound[array.extra.basename] = array.data;
 			}
 			mp3.start();
 		}

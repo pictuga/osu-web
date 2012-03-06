@@ -1,5 +1,3 @@
-window.alert = function(txt){newjWindow(txt)};
-
 function log()
 {
 	if(window.console)
@@ -73,7 +71,7 @@ CanvasRenderingContext2D.prototype.drawImageAngle = function(image, x, y, angle,
 
 CanvasRenderingContext2D.prototype.drawImageScaled = function(image, x, y, angle)
 {
-	var height = image.height * circleSize*hs*2 / pic["sliderb0"].height
+	var height = image.height * Game.circleSize*Game.hs*2 / Data.Skin["sliderb0"].height
 	var coeff = height / image.height;
 	
 	if(typeof angle == 'undefined') angle = 0;

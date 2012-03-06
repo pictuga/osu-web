@@ -1,72 +1,127 @@
-var canvas, ctx, color, hc;
-var circleSize, time = 0;
-var osu_file, osu_raw, osu_id, osu_verion, player;
-
-function loadBeatMap(id, version)
+//http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+(function ()
 {
-	osu_id		= id;
-	osu_version	= version;
-				
+	var lastTime = 0;
+	var vendors = ['ms', 'moz', 'webkit', 'o'];
+	for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x)
+	{
+		window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+		window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
+	}
+
+	if (!window.requestAnimationFrame) window.requestAnimationFrame = function (callback, element)
+	{
+		var currTime = new Date().getTime();
+		var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+		var id = window.setTimeout(function ()
+		{
+			callback(currTime + timeToCall);
+		}, timeToCall);
+		lastTime = currTime + timeToCall;
+		return id;
+	};
+
+	if (!window.cancelAnimationFrame) window.cancelAnimationFrame = function (id)
+	{
+		clearTimeout(id);
+	};
+}());
+
+function BeatMap(id, version)
+{
+	//id
+	this.id		= id;
+	this.version	= version;
+	this.url	= Setting.Path.BeatMap + this.id + "/" + Data.BeatMap[this.id].artist + " - " + 
+		Data.BeatMap[this.id].title + " (" + Data.BeatMap[this.id].creator + ") [" + version + "].osu";
+	
+	//canvas
+	this.canvas;
+	this.ctx	// + previous ?
+	
+	//game values
+	this.color
+	this.hc		= [];
+
+	this.circleSize
+	this.time	= 0;
+	this.osu
+	this.raw
+	this.player
+	
+	//size
+	this.HH,	this.WW		//total size (including outside the gamefield)(H, W)
+	this.H,		this.W		//total percentage (including outside the gamefield)(no ratio)(hp, wp)
+	
+	this.hh,	this.ww		//gamefield size (+ ratio)(Hr, Wr)
+	this.h,		this.w;		//percentage (+ ratio)(h, w)
+
+	this.hs,	this.ws;	//beatmaps coordinates (ratio of course)(MOST USED SO FAR)(thrown to global namespace)
+	this.ratio	= false;	//→ ratio has to be changed
+	
+	Game = this;
+	Games.push(Game);
+	this.load();
+}
+
+BeatMap.prototype.load = function()
+{
 	newLoader();
-	loaded = initBeatMap;
+	loaded = (function(self)
+		{
+			return	function()
+				{
+					self.init();
+				}
+		})(this);
 	
 	var bm = new loader();
-	bm.url = BEATMAP + id + "/" + beatmap[id].artist + " - " + beatmap[id].title + " (" + beatmap[id].creator + ") [" + version + "].osu";
+	bm.url = this.url;
 	bm.type = "ajax";
+	bm.extra.self = this;
 	bm.callback = function(array)
 	{
-		osu_raw  = array.data;
-		osu_file = parseOSU(array.data);
-		osu_file.Metadata.id = osu_id;
+		self = array.extra.self;
+		
+		self.raw  = array.data;
+		self.osu = parseOSU(self.raw);
+		self.osu.Metadata.id = self.id;
 		
 		loadStoryBoard();
 		
 		var mp3 = new loader();
-		mp3.url = [BEATMAP + osu_id + "/" + osu_file.General.AudioFilename, BEATMAP + "conv/" + osu_id + ".ogg"];
+		mp3.url = [	Setting.Path.BeatMap + self.id + "/" + self.osu.General.AudioFilename,
+				Setting.Path.Conv + self.id + ".ogg"];
 		mp3.type = "audio";
+		mp3.extra.self = self;
 		mp3.callback = function(array)
 		{
-			player = array.data;
+			array.extra.self.player = array.data;
 		}
 		mp3.start();
 		
-		$('#loader').click({id: mp3.id}, function(event)
-		{
-			load[event.data.id].data.load();
-			$('#loader').unbind();
-		});
+		//iOS stuff to include to make sure mp3s are loaded
 	}
 	bm.start();
 }
 
-function initBeatMap()
+BeatMap.prototype.init = function()
 {
-	//reset
-		$('#pdiv').remove();
-		hc = [];
+	if(this.osu.General.EpilepsyWarning)
+		window.alert(µ.EP_WARN)
 	
-	//init
-		osu_file = parseOSU(osu_raw);
-		osu_file.Metadata.id = osu_id;
-	
-	if(osu_file.General.EpilepsyWarning == 1 && !window.confirm(µ.EP_WARN))
-	{
-		pickBeatMap();
-		return false;
-	}
-	
-	//<canvas>
-		if(!$('#canvas').size())
-			$('<canvas id="canvas"/>').appendTo(document.body);
+	//canvas
+		if(!$('canvas').length)
+			$('<canvas/>').appendTo(document.body);
 		
-		canvas = $('#canvas').get(0);
+		this.canvas = $('canvas').get(0);
 		
-		if(!canvas.getContext) return false;
-		ctx = canvas.getContext("2d");
+		if(!this.canvas.getContext) return false;
+		this.ctx = this.canvas.getContext("2d");
 	
-	//couleurs
+	//color
 		//orange green blue red
-		color =
+		this.color =
 		[
 			[255,	165,	0],
 			[0,	255,	0],
@@ -75,112 +130,105 @@ function initBeatMap()
 		];
 		
 		var i = 0;
-		for(key in osu_file.Colours)
+		for(key in this.osu.Colours)
 		{
-			color[i] = osu_file.Colours[key];
+			this.color[i] = this.osu.Colours[key];
 			i++;
 		}
 	
 	//creates an array with all the hitObjects
 		var comboKey = 1;	//numéro DANS le combo
 		var combo = 0;		//numéro DU combo (sur tous)
-	
-		for(key in osu_file.HitObjects)
+		
+		var prev = false;
+		for(key in this.osu.HitObjects)
 		{
-			var new_hc = new hitCircle(key, osu_file.HitObjects[key]);
+			var hc = new hitCircle(key, prev, this.osu.HitObjects[key]);
 			
-			if(new_hc.type == 4 || new_hc.type == 5 || new_hc.type == 6)
+			if(hc.type == 4 || hc.type == 5 || hc.type == 6)
 			{
 				//new combo
 				if(key != 0) combo++;//solves issue if 1st hitObject
 
-				new_hc.comboKey = 1;
-				new_hc.combo = combo;
+				hc.comboKey = 1;
+				hc.combo = combo;
 
 				comboKey = 2;
 			}
 			else
 			{
-				new_hc.comboKey = comboKey;
-				new_hc.combo = combo;
+				hc.comboKey = comboKey;
+				hc.combo = combo;
 				comboKey++;
 			}
 			
-			hc.push(new_hc);
+			this.hc.push(hc);
+			prev = hc;
 		}
 	
 	//values (circleSize...)
-		circleSize = 64 * (1 - 0.7*((osu_file.Difficulty.CircleSize-5)/5)) / 2;
+		this.circleSize = 64 * (1 - 0.7*((this.osu.Difficulty.CircleSize-5)/5)) / 2;
 	
 	//events
-		//reset
-			$(canvas).unbind();
-			$(window).unbind();
-			$(player).unbind();
-		
 		//new
-			$(canvas).bind('mousedown', checkHit);
-			$(canvas).bind('mouseup', unbind);
+			$(this.canvas).bind('mousedown',	function(e){Game.checkHit(e)});
+			$(this.canvas).bind('mouseup',		function(){Game.unbind()});
 			
-			$(canvas).bind('touchstart', checkHit);
-			$(canvas).bind('touchend', unbind);
+			$(this.canvas).bind('touchstart',	function(e){Game.checkHit(e)});
+			$(this.canvas).bind('touchend',		function(){Game.unbind()});
 			
 			
-			$(window).keydown(checkKey);
-			$(window).resize(resizeBeatMap);
+			$(this.window).keydown(function(){Game.checkKey()});
+			$(window).resize(function(){Game.resize()});
 			$(window).blur(pause);
 			
-			$(canvas).bind('contextmenu', prevent);
+			$(this.canvas).bind('contextmenu', prevent);
 			$(window).bind('touchmove', prevent);
 			
-			$(player).bind('playing', autoUpdateBeatMap);
+			$(this.player).bind('playing', function(){Game.autoUpdateBeatMap()});
 	
 	//addons
 		runAddons("initBeatMap");
 	
 	//start the game
 		initStoryBoard();
-		resizeBeatMap();
+		this.resize();
 		
-		player.currentTime = 0;
-		player.play();
+		this.player.currentTime = 0;
+		this.player.play();
 }
 
-function unbind()
+BeatMap.prototype.end = function()
 {
-	$(canvas).unbind('.slide');
+	//unbind
+	//reset
+	//remove DOM stuff
 }
 
-function prevent(event)
+BeatMap.prototype.unbind = function()//FIXME remove?
+{
+	$(this.canvas).unbind('.slide');
+}
+
+function prevent(event)//FIXME required ?
 {
 	event.preventDefault();
 	return false;
 }
 
-var ON = false;
-function autoUpdateBeatMap()
+BeatMap.prototype.autoUpdateBeatMap = function()
 {
-	updateBeatMap();
-	if(!ON)
-	{
-		ON = true;
-		setTimeout(keepUpdateBeatMap, 0);
-	}
-}
-
-function keepUpdateBeatMap()
-{
-	if(player.ended || player.paused)
+	if(this.player.ended || this.player.paused)
 	{
 		log('ended');
-		ctx.clear();
-		if(player.ended)
+		this.ctx.clear();
+		if(this.player.ended)
 		{
 			log('ended');
 			
-			$(canvas).unbind();
+			$(this.canvas).unbind();
+			$(this.player).unbind();
 			$(window).unbind('resize blur touchmove');
-			$(player).unbind();
 			
 			pickBeatMap();
 		}
@@ -190,63 +238,75 @@ function keepUpdateBeatMap()
 			pause();
 		}
 		
-		ON = false;
 		return;
 	}
 	else
 	{
-		updateBeatMap();
-		setTimeout(keepUpdateBeatMap, 5);
+		requestAnimationFrame((function(self)
+			{
+				return	function()
+					{
+						self.autoUpdateBeatMap();
+					}
+			})(this));
+		this.update();
 	}
 }
 
 var tps = 0;
-
-function updateBeatMap()
+var time, ctx, w, h, circleSize;
+BeatMap.prototype.update = function()
 {
-	if(player.ended) return;
-	ctx.clear();
+	if(this.player.ended) return;
+	this.ctx.clear();
+	
+	this.time = this.player.currentTime * 1000;
 	
 	//addons
-	time = player.currentTime * 1000;
 	runAddons("updateBeatMap");
 	
-	if(ratio)
+	if(this.ratio)
 	{
-		ctx.save();
+		this.ctx.save();
 		
 		diff_height = 0;
 		diff_width = 0;
 		
-		if(4*H < 3*W)
-			diff_width = W/2 - (4/3 * H)/2;
-		else if(4*H > 3*W)
-			diff_height = H/2 - (3/4 * W)/2;
+		if(4*this.HH < 3*this.WW)
+			diff_width  = this.WW/2 - (4/3 * this.HH)/2;
+		else if(4*HH > 3*WW)
+			diff_height = this.HH/2 - (3/4 * this.WW)/2;
 		
-		ctx.translate(diff_width, diff_height);
+		this.ctx.translate(diff_width, diff_height);
 	}
 	
-	for(key in hc)
-		hc[key].draw();
+	ctx	= this.ctx;
+	w	= this.ws;
+	h	= this.hs;
+	time	= this.time;
+	circleSize = this.circleSize;
+	
+	for(key in this.hc)
+		this.hc[key].draw();
 	
 	drawStoryBoard();
 	
-	if(ratio) ctx.restore();
+	if(this.ratio) this.ctx.restore();
 	
-	drawProgress();
-	drawScore();
+	this.drawProgress();
+	this.drawScore();
 	
-	drawInfo('FPS ⋅ ' + Math.floor(1000 / Math.abs(new Date().getMilliseconds() - tps)));
+	this.drawInfo('FPS ⋅ ' + Math.floor(1000 / Math.abs(new Date().getMilliseconds() - tps)));
 	tps = new Date().getMilliseconds();
 }
 
-function checkHit(e)
+BeatMap.prototype.checkHit = function(e)
 {
-	var click_time = time;
+	var click_time = this.time;
 	
 	if(e.type == 'touchstart' && e.originalEvent.touches.length == 1)
 	{
-		$(canvas).unbind('mousedown');
+		$(this.canvas).unbind('mousedown');
 		
 		var mouseX = e.originalEvent.touches[0].clientX;
 		var mouseY = e.originalEvent.touches[0].clientY;
@@ -257,45 +317,47 @@ function checkHit(e)
 		var mouseY = e.clientY;
 	}
 	
-	if(ratio)
+	if(this.ratio)
 	{
-		if(4*H < 3*W)
-			mouseX -= (W - (4/3 * H))/2;
-		else if(4*H > 3*W)
-			mouseY -= (H - (3/4 * W))/2;
+		if(4*this.HH < 3*this.WW)
+			mouseX -= (this.WW - (4/3 * this.HH))/2;
+		else if(4*this.HH > 3*this.WW)
+			mouseY -= (this.HH - (3/4 * this.WW))/2;
 	}
 	
-	mouseX = mouseX / ws;
-	mouseY = mouseY / hs;
+	mouseX = mouseX / this.ws;
+	mouseY = mouseY / this.hs;
 	
-	for(key in hc)
-	{
-		if(hc[key].Type == "circle" && isIn(click_time, hc[key].time-1500, hc[key].time+100) && !hc[key].clic)//hitcircle
+	for(key in this.hc)
+		switch(this.hc[key].Type)
 		{
-			if(hc[key].checkHit(mouseX, mouseY)) break;
-		}
-		
-		if(hc[key].Type == "slider" && isIn(time, hc[key].time-1500, hc[key].endTime) && hc[key].checkSlide(mouseX, mouseY))
-		{
-			$(canvas).bind('mousemove.slide', checkSlide);
-			$(canvas).bind('touchmove.slide', checkSlide);
+			case "circle":
+				if(isIn(click_time, this.hc[key].time-1500, this.hc[key].time+100) && !this.hc[key].clic)
+					if(this.hc[key].checkHit(mouseX, mouseY)) break;
 			break;
-		}
 		
-		if(hc[key].Type == "spinner" && isIn(time, hc[key].time, hc[key].endTime))//spinner
-		{
-			$(canvas).bind('mousemove.slide', checkSpin);
-			$(canvas).bind('touchmove.slide', checkSpin);
-			hc[key].checkSpin(mouseX, mouseY);
-			break;
+			case "slider":
+				if(isIn(this.time, this.hc[key].time-1500, this.hc[key].endTime) && this.hc[key].checkSlide(mouseX, mouseY))
+				{
+					$(this.canvas).bind('mousemove.slide', function(e){Game.checkSlide(e)});
+					$(this.canvas).bind('touchmove.slide', function(e){Game.checkSlide(e)});
+					break;
+				}
+		
+			case "spinner":
+				if(isIn(this.time, this.hc[key].time, this.hc[key].endTime))
+				{
+					$(this.canvas).bind('mousemove.slide', function(e){Game.checkSpin(e)});
+					$(this.canvas).bind('touchmove.slide', function(e){Game.checkSpin(e)});
+					this.hc[key].checkSpin(mouseX, mouseY);
+					break;
+				}
 		}
-	}
 	
-	//désactiver le clic
 	e.preventDefault();
 }
 
-function checkSlide(e)
+BeatMap.prototype.checkSlide = function(e)
 {
 	if(e.type == 'touchmove' && e.originalEvent.touches.length == 1)
 	{
@@ -308,31 +370,28 @@ function checkSlide(e)
 		var mouseY = e.clientY;
 	}
 	
-	if(ratio)
+	if(this.ratio)
 	{
-		if(4*H < 3*W)
-			mouseX -= (W - (4/3 * H))/2;
-		else if(4*H > 3*W)
-			mouseY -= (H - (3/4 * W))/2;
+		if(4*this.HH < 3*this.WW)
+			mouseX -= (this.WW - (4/3 * this.HH))/2;
+		else if(4*this.HH > 3*this.WW)
+			mouseY -= (this.HH - (3/4 * this.WW))/2;
 	}
 	
-	mouseX = mouseX / ws;
-	mouseY = mouseY / hs;
+	mouseX = mouseX / this.ws;
+	mouseY = mouseY / this.hs;
 	
-	for(key in hc)
-	{
-		if(hc[key].Type == "slider" && hc[key].checkSlide(mouseX, mouseY))
+	for(key in this.hc)
+		if(this.hc[key].Type == "slider" && this.hc[key].checkSlide(mouseX, mouseY))
 		{
-			hc[key].slidePoints.push([mouseX, mouseY]);
+			this.hc[key].slidePoints.push([mouseX, mouseY]);
 			break;
 		}
-	}
 	
-	//disables click
 	e.preventDefault();
 }
 
-function checkSpin(e)
+BeatMap.prototype.checkSpin = function(e)
 {
 	if(e.type == 'touchmove' && e.originalEvent.touches.length == 1)
 	{
@@ -345,183 +404,172 @@ function checkSpin(e)
 		var mouseY = e.clientY;
 	}
 	
-	if(ratio)
+	if(this.ratio)
 	{
-		if(4*H < 3*W)
-			mouseX -= (W - (4/3 * H))/2;
-		else if(4*H > 3*W)
-			mouseY -= (H - (3/4 * W))/2;
+		if(4*this.HH < 3*this.WW)
+			mouseX -= (this.WW - (4/3 * this.HH))/2;
+		else if(4*this.HH > 3*this.WW)
+			mouseY -= (this.HH - (3/4 * this.WW))/2;
 	}
 	
-	mouseX = mouseX / ws;
-	mouseY = mouseY / hs;
+	mouseX = mouseX / this.ws;
+	mouseY = mouseY / this.hs;
 	
-	for(key in hc)
-	{
-		if(hc[key].Type == "spinner" && isIn(time, hc[key].time, hc[key].endTime))
+	for(key in this.hc)
+		if(this.hc[key].Type == "spinner" && isIn(this.time, this.hc[key].time, this.hc[key].endTime))
 		{
-			hc[key].checkSpin(mouseX, mouseY);
+			this.hc[key].checkSpin(mouseX, mouseY);
 			break;
 		}
-	}
 	
-	//disables click
 	e.preventDefault();
 }
 
-function sumPoints(type)
+BeatMap.prototype.sumPoints = function(type)
 {
 	var sum = 0;
-	for(key in hc)
+	for(key in this.hc)
 	{
-		if(!type) sum += hc[key].score;
-		else if (hc[key].score == type) sum ++;
+		if(!type) sum += this.hc[key].score;
+		else if (this.hc[key].score == type) sum ++;
 	}
 	
 	return sum;
 }
 
-function drawProgress()
+BeatMap.prototype.drawProgress = function()
 {
-	if(isNaN(player.duration) || player.duration == 0) return false;
+	if(isNaN(this.player.duration) || this.player.duration == 0) return false;
 	
 	var size = 4;
-	var dl = (typeof player.buffered == 'object') ? (player.buffered.end(0) / player.duration) : 1;
-	var taux = (player.currentTime / player.duration);
+	var dl = (typeof this.player.buffered == 'object') ? (this.player.buffered.end(0) / this.player.duration) : 1;
+	var taux = (this.player.currentTime / this.player.duration);
+	
+	var center = {x: (this.WW-this.h*(size+2)), y:(this.h*(size+2))};
+	var radius = this.h*size;
 	
 	//param
-	ctx.save();
-	ctx.globalCompositeOperation = "source-over";
+	this.ctx.save();
+	this.ctx.globalCompositeOperation = "source-over";
 
 	//reset
-	ctx.lineWidth = 1;
-	ctx.lineCap = "butt";
+	this.ctx.lineWidth = 1;
+	this.ctx.lineCap = "butt";
 
 	//background (dl)
-	ctx.beginPath();
-		ctx.fillStyle = "rgb(225,225,225)";
-		ctx.arc((W-h*(size+2)), (h*(size+2)), (h*size), (-Math.PI/2), (Math.PI*2*dl)-(Math.PI/2), 0);
-		ctx.lineTo((W-h*(size+2)), (h*(size+2)));
-		ctx.closePath();
-	ctx.fill();
+	this.ctx.beginPath();
+		this.ctx.fillStyle = "rgb(225,225,225)";
+		this.ctx.arc(center.x, center.y, radius, (-Math.PI/2), (Math.PI*2*dl)-(Math.PI/2), 0);
+		this.ctx.lineTo(center.x, center.y);
+		this.ctx.closePath();
+	this.ctx.fill();
 	
 	//camembert (taux)
-	ctx.beginPath();
-		ctx.fillStyle = "rgb(200,200,200)";
-		ctx.arc((W-h*(size+2)), (h*(size+2)), (h*size), (-Math.PI/2), (Math.PI*2*taux)-(Math.PI/2), 0);
-		ctx.lineTo((W-h*(size+2)), (h*(size+2)));
-		ctx.closePath();
-	ctx.fill();
+	this.ctx.beginPath();
+		this.ctx.fillStyle = "rgb(200,200,200)";
+		this.ctx.arc(center.x, center.y, radius, (-Math.PI/2), (Math.PI*2*taux)-(Math.PI/2), 0);
+		this.ctx.lineTo(center.x, center.y);
+		this.ctx.closePath();
+	this.ctx.fill();
 	
 	//breaks
-	for(i in osu_file.Events)
+	for(i in this.osu.Events)
 	{
-		if(osu_file.Events[i][0] != 2) continue;
+		if(this.osu.Events[i][0] != 2) continue;
 		
-		var start	= osu_file.Events[i][1]/1000 / player.duration;
-		var end		= osu_file.Events[i][2]/1000 / player.duration;
+		var start	= this.osu.Events[i][1]/1000 / this.player.duration;
+		var end		= this.osu.Events[i][2]/1000 / this.player.duration;
 		
-		ctx.beginPath();
-			ctx.strokeStyle = "rgba(0,0,0,0.75)";
-			ctx.lineWidth = 1;
-			ctx.arc((W-h*(size+2)), (h*(size+2)), (h*size), (Math.PI*2*start)-(Math.PI/2), (Math.PI*2*end)-(Math.PI/2), 0);
-		ctx.stroke();
+		this.ctx.beginPath();
+			this.ctx.strokeStyle = "rgba(0,0,0,0.75)";
+			this.ctx.lineWidth = 1;
+			this.ctx.arc(center.x, center.y, radius, (Math.PI*2*start)-(Math.PI/2), (Math.PI*2*end)-(Math.PI/2), 0);
+		this.ctx.stroke();
 	}
 	
-	ctx.restore();
+	this.ctx.restore();
 }
 
-function drawScore()
+BeatMap.prototype.drawScore = function()
 {
-	ctx.save();
+	this.ctx.save();
 	
-	var points = sumPoints();
+	var points = this.sumPoints();
 	var size = 4;
 	
-	ctx.globalCompositeOperation = "source-over";
+	this.ctx.globalCompositeOperation = "source-over";
 			
-	ctx.textAlign = "left";
-	ctx.textBaseline = "top";
+	this.ctx.textAlign = "left";
+	this.ctx.textBaseline = "top";
 
-	ctx.font = h*size + "px Arial";
-	ctx.fillStyle = "Black";
+	this.ctx.font = this.h*size + "px Arial";
+	this.ctx.fillStyle = "Black";
 	
-	ctx.shadowBlur = 2*h;
-	ctx.shadowColor = "white";
+	this.ctx.shadowBlur = 2*this.h;
+	this.ctx.shadowColor = "white";
 
-	if(points < 2) ctx.fillText(points + " " + µ.BM_1PT, (2*h), (2*h));
-	else ctx.fillText(points + " " + µ.BM_2PT, (2*h), (2*h));
+	if(points < 2)	this.ctx.fillText(points + " " + µ.BM_1PT, (2*this.h), (2*this.h));
+	else		this.ctx.fillText(points + " " + µ.BM_2PT, (2*this.h), (2*this.h));
 	
-	ctx.restore();
+	this.ctx.restore();
 }
 
-function drawInfo(txt)
+BeatMap.prototype.drawInfo = function(txt)
 {
-	ctx.save();
+	this.ctx.save();
+	this.ctx.globalCompositeOperation = "source-over";
 	
-	var points = sumPoints();
 	var size = 2;
-
-	ctx.globalCompositeOperation = "source-over";
 		
-	ctx.textAlign = "left";
-	ctx.textBaseline = "bottom";
+	this.ctx.textAlign = "left";
+	this.ctx.textBaseline = "bottom";
 
-	ctx.font = h*size + "px Arial";
-	ctx.fillStyle = "Black";
+	this.ctx.font = this.H*size + "px Arial";
+	this.ctx.fillStyle = "Black";
 
-	ctx.fillText(txt, (2*h), (H-2*h));
+	this.ctx.fillText(txt, (2*this.H), (this.HH-2*this.H));
 	
-	ctx.restore();
+	this.ctx.restore();
 }
 
-var H, W;	//total size (including outside the gamefield)
-var hp, wp;	//total percentage (including outside the gamefield)(no ratio)
-
-var Hr, Wr;	//gamefield size (+ ratio)
-var h, w;	//percentage (+ ratio)
-
-var hs, ws;	//beatmaps coordinates (ratio of course)(MOST USED SO FAR)
-var ratio = false;//→ ratio has to be changed
-
-function resizeBeatMap(e)
+BeatMap.prototype.resize = function()
 {
-	W = window.innerWidth;
-	H = window.innerHeight;
+	this.WW = window.innerWidth;
+	this.HH = window.innerHeight;
 	
-	wp = (W/100);
-	hp = (H/100);
+	this.W = (this.WW/100);
+	this.H = (this.HH/100);
 	
-	ws = (W/512); //512
-	hs = (H/384); //384
+	this.ws = (this.WW/512); //512
+	this.hs = (this.HH/384); //384
 	// 512÷384 = 800÷600 = 4÷3
 	
-	Hr = H;
-	Wr = W;
+	this.hh = this.HH;
+	this.ww = this.WW;
 	
-	h = hp;
-	w = wp;
+	this.h = this.H;
+	this.w = this.W;
 	
-	if(4*H < 3*W)
+	if(4*this.HH < 3*this.WW)
 	{
-		ws = (4/3 * H) / 512;
-		Wr = (4/3 * H);
+		this.ws = (4/3 * this.HH) / 512;
+		this.ww = (4/3 * this.HH);
 		
-		w = (4/3 * hp);
-		ratio = true;
+		this.w = (4/3 * this.H);
+		this.ratio = true;
 	}
-	else if(4*H > 3*W)
+	else if(4*this.HH > 3*this.WW)
 	{
-		hs = (3/4 * W) / 384;
-		Hr = (3/4 * W);
+		this.hs = (3/4 * this.WW) / 384;
+		this.hh = (3/4 * this.WW);
 		
-		h = (3/4 * wp);
-		ratio = true;
+		this.h = (3/4 * this.W);
+		this.ratio = true;
 	}
-	else	ratio = false;
+	else	this.ratio = false;
 	
-	$(canvas).attr("width", W);
-	$(canvas).attr("height", H);
+	$(this.canvas).attr("width",		this.WW);
+	$(this.canvas).attr("height",	this.HH);
 	
 	//addons
 	runAddons("resizeBeatMap");
@@ -540,14 +588,6 @@ function checkKey(e)
 	{
 		case "q":
 			removejWindow();
-			break;
-		case "i":
-			var txt = "";
-			for(key in pic)
-			{
-				txt += "<img src='/images/" + key + ".png' title='" + key + "' />";
-			}
-			alert(txt);
 			break;
 	}
 	
@@ -576,3 +616,5 @@ function checkKey(e)
 		}
 	}
 }
+
+//FIXME checkHit(), checkSlide(), checkSpin(), checkKey()

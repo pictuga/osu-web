@@ -35,7 +35,6 @@
 		<span class='key'>h</span><strong>ver</strong> de nuevo esta página
 
 		<span class='key'>d</span>ver informaciones de<strong>debug</strong>
-		<span class='key'>i</span>ver el<strong>skin</strong> por defecto
 	</div><div data-title="Sobre nosotros" class="diapo">
 		Hecho por <a href='http://pictuga.com/' title='TheCaméléon'>TheCaméléon</a> → <a href='http://twitter.com/pictuga' title='@pictuga'>twitter</a>
 		<a href='http://www.pictuga.com/fiche-305.html' title='Project page'>Página del proyecto</a> - <a href='http://osu.ppy.sh/forum/viewtopic.php?t=36805' title='Forum'>Forum</a> 

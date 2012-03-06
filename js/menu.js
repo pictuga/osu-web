@@ -1,10 +1,10 @@
 function pause()
 {
-	player.pause();
+	Game.player.pause();
 	menu();
 }
 
 function menu()
 {
-	alert(µ.BM_PAUS);
+	log(µ.BM_PAUS);
 }

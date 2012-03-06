@@ -1,5 +1,24 @@
-var BEATMAP = "/beatmap/";
-var readme;
+var DefaultSetting =
+{
+	Path:	{
+		BeatMap:	"/beatmap/",
+		Conv:		"/conv/",
+		Skin:		"/skin/",
+		Sound:		"/sound/"
+		},
+	ReadMe:	""
+}
+var Setting = DefaultSetting;
+
+var Data = 
+{
+	BeatMap:	{},
+	Skin:		{},
+	Sound:		{}
+}
+
+var Games = [];
+var Game;
 
 window.onload = function()
 {

@@ -1,7 +1,7 @@
-function hitCircle(id, input)//class
+function hitCircle(id, prev, input)//class
 {
-	this.id = parseInt(id);//used for stacks
-	this.previous = this.id ? hc[this.id-1] : false;
+	this.id		= parseInt(id);//used for stacks
+	this.previous	= prev;
 	
 	//init
 	
@@ -114,30 +114,32 @@ hitCircle.prototype.calcSlider = function()
 	//beatLength inherited only once (cannot inherit from inherited values)
 	//beatLength in ms
 	
-	var i = osu_file.TimingPoints.length-1;
-	while(i >= 0 && this.time < osu_file.TimingPoints[i][0])
+	var osu = Game.osu;
+	
+	var i = osu.TimingPoints.length-1;
+	while(i >= 0 && this.time < osu.TimingPoints[i][0])
 		i--;
 	
 	i = Math.max(i, 0);
 	
-	if(osu_file.TimingPoints[i][1] < 0)
+	if(osu.TimingPoints[i][1] < 0)
 	{
 		//inherited
 		var li = i;
-		while(i >= 0 && osu_file.TimingPoints[li][1] < 0)
+		while(i >= 0 && osu.TimingPoints[li][1] < 0)
 			li--;
 		
 		li = Math.max(li, 0);
 		
-		var speed = osu_file.Difficulty.SliderMultiplier * ( 100 / osu_file.TimingPoints[li][1] );
+		var speed = osu.Difficulty.SliderMultiplier * ( 100 / osu.TimingPoints[li][1] );
 		
-		this.beatLength = osu_file.TimingPoints[i][1] / ( -100 * osu_file.TimingPoints[li][1] );
-		this.sliderSpeed = -100 * speed / osu_file.TimingPoints[i][1];
+		this.beatLength = osu.TimingPoints[i][1] / ( -100 * osu.TimingPoints[li][1] );
+		this.sliderSpeed = -100 * speed / osu.TimingPoints[i][1];
 	}
 	else
 	{
-		this.beatLength = osu_file.TimingPoints[i][1];
-		this.sliderSpeed = osu_file.Difficulty.SliderMultiplier * ( 100 / this.beatLength );
+		this.beatLength = osu.TimingPoints[i][1];
+		this.sliderSpeed = osu.Difficulty.SliderMultiplier * ( 100 / this.beatLength );
 	}
 }
 
@@ -211,10 +213,10 @@ hitCircle.prototype.drawObject = function()
 				ctx.textAlign = "center";
 				ctx.textBaseline = "middle";
 	
-				ctx.font = hs*circleSize + "px Arial";
+				ctx.font = h*circleSize + "px Arial";
 				ctx.fillStyle = "rgba(255,255,255," + alpha + ")";
 	
-				ctx.fillText(this.comboKey, this.x*ws, this.y*hs);
+				ctx.fillText(this.comboKey, this.x*w, this.y*h);
 		
 				//reset
 				ctx.lineWidth = 1;
@@ -223,13 +225,13 @@ hitCircle.prototype.drawObject = function()
 				//inner
 				ctx.beginPath();
 					ctx.fillStyle = rgba;
-					ctx.circle(this.x*ws, this.y*hs, hs*circleSize*0.95);
+					ctx.circle(this.x*w, this.y*h, h*circleSize*0.95);
 				ctx.fill();
 	
 				//outter
 				ctx.beginPath();
 					ctx.fillStyle = "rgba(200,200,200," + alpha + ")";
-					ctx.circle(this.x*ws, this.y*hs, hs*circleSize);
+					ctx.circle(this.x*w, this.y*h, h*circleSize);
 				ctx.fill();
 			ctx.restore();
 		break;
@@ -245,14 +247,14 @@ hitCircle.prototype.drawObject = function()
 						if(this.sliderCount > this.repeat)
 						{
 							var xy = (this.repeat % 2 == 1) ? this.sliderLast : [this.x, this.y];
-							var image = pic["reversearrow"];
-							ctx.drawImageScaled(image, xy[0]*ws, xy[1]*hs);
+							var image = Data.Skin["reversearrow"];
+							ctx.drawImageScaled(image, xy[0]*w, xy[1]*h);
 						}
 					else
 					{
 						var xy = this.sliderLast;
-						var image = pic["reversearrow"];
-						ctx.drawImageScaled(image, xy[0]*ws, xy[1]*hs);
+						var image = Data.Skin["reversearrow"];
+						ctx.drawImageScaled(image, xy[0]*w, xy[1]*h);
 					}
 				}
 		
@@ -260,10 +262,10 @@ hitCircle.prototype.drawObject = function()
 				ctx.textAlign = "center";
 				ctx.textBaseline = "middle";
 	
-				ctx.font = hs*circleSize + "px Arial";
+				ctx.font = h*circleSize + "px Arial";
 				ctx.fillStyle = "rgba(255,255,255," + alpha + ")";
 	
-				ctx.fillText(this.comboKey, this.x*ws, this.y*hs);
+				ctx.fillText(this.comboKey, this.x*w, this.y*h);
 		
 				//reset
 				ctx.lineWidth = 1;
@@ -272,17 +274,17 @@ hitCircle.prototype.drawObject = function()
 				//inner
 				ctx.beginPath();
 					ctx.fillStyle = rgba;
-					ctx.circle(this.x*ws, this.y*hs, hs*circleSize*0.95);
+					ctx.circle(this.x*w, this.y*h, h*circleSize*0.95);
 				ctx.fill();
 	
 				//outter
 				ctx.beginPath();
 					ctx.fillStyle = "rgba(200,200,200," + alpha + ")";
-					ctx.circle(this.x*ws, this.y*hs, hs*circleSize);
+					ctx.circle(this.x*w, this.y*h, h*circleSize);
 				ctx.fill();
 		
 			//inner
-				ctx.lineWidth = hs*(circleSize*0.95)*2;
+				ctx.lineWidth = h*(circleSize*0.95)*2;
 				ctx.lineCap = "round"; 
 				ctx.lineJoin = "round";
 	
@@ -291,14 +293,14 @@ hitCircle.prototype.drawObject = function()
 	
 				for(var i = 0; i <= (this.curveData.length-1); i++)
 				{
-					if(i == 0)	ctx.moveTo(this.x*ws,this.y*hs);
-					else 		ctx.lineTo(this.curveData[i][0]*ws,this.curveData[i][1]*hs);
+					if(i == 0)	ctx.moveTo(this.x*w,this.y*h);
+					else 		ctx.lineTo(this.curveData[i][0]*w,this.curveData[i][1]*h);
 				}
 	
 				ctx.stroke();
 		
 			//outter
-				ctx.lineWidth = hs*circleSize*2;
+				ctx.lineWidth = h*circleSize*2;
 				ctx.lineCap = "round"; 
 				ctx.lineJoin = "round";
 	
@@ -307,8 +309,8 @@ hitCircle.prototype.drawObject = function()
 	
 				for(var i = 0; i <= (this.curveData.length-1); i++)
 				{
-					if(i == 0)	ctx.moveTo(this.x*ws,this.y*hs);
-					else 		ctx.lineTo(this.curveData[i][0]*ws, this.curveData[i][1]*hs);
+					if(i == 0)	ctx.moveTo(this.x*w,this.y*h);
+					else 		ctx.lineTo(this.curveData[i][0]*w, this.curveData[i][1]*h);
 				}
 	
 				ctx.stroke();
@@ -326,8 +328,8 @@ hitCircle.prototype.drawObject = function()
 				ctx.strokeStyle = "Blue";
 				for(i in this.spinPoints)
 				{
-					if(i == 0)	ctx.moveTo(this.spinPoints[i][0]*ws, this.spinPoints[i][1]*hs);
-					else 		ctx.lineTo(this.spinPoints[i][0]*ws, this.spinPoints[i][1]*hs);
+					if(i == 0)	ctx.moveTo(this.spinPoints[i][0]*w, this.spinPoints[i][1]*h);
+					else 		ctx.lineTo(this.spinPoints[i][0]*w, this.spinPoints[i][1]*h);
 				}
 				ctx.stroke();
 				ctx.restore();
@@ -336,13 +338,13 @@ hitCircle.prototype.drawObject = function()
 			if(isIn(time, this.time, this.endTime))
 			{
 				//frame
-				var image = pic["spinner-background"];
-				ctx.drawImageAngle(image, (Wr/2), (Hr/2));
+				var image = Data.Skin["spinner-background"];
+				ctx.drawImageAngle(image, (w*512/2), (h*384/2));
 			}
 		
 			if(this.spinPoints.length >= 2)
 			{
-				var image = pic["spinner-circle"];
+				var image = Data.Skin["spinner-circle"];
 			
 				var angle1 =  angleWithCenter(this.spinPoints[0]);
 				var angle2 =  angleWithCenter(this.spinPoints[this.spinPoints.length-1]);
@@ -351,7 +353,7 @@ hitCircle.prototype.drawObject = function()
 			
 				ctx.save();
 				ctx.globalCompositeOperation = "source-over";
-				ctx.drawImageAngle(image, (Wr/2), (Hr/2), (isCircle) ? angleDiff : -angleDiff);
+				ctx.drawImageAngle(image, (w*512/2), (h*384/2), isCircle ? angleDiff : -angleDiff);
 				ctx.restore();
 			}
 		
@@ -359,14 +361,14 @@ hitCircle.prototype.drawObject = function()
 			{
 				//progress
 				var progress = (1-(this.endTime-time)/(this.endTime-this.time));//1 -> 0
-				var image = pic["spinner-metre"];
+				var image = Data.Skin["spinner-metre"];
 				
 				ctx.save();
 				ctx.globalCompositeOperation = "source-over";
 				ctx.drawImage(image,
 					0, (image.height-progress*image.height),
 					image.width, progress*image.height,
-					((Wr-image.width)/2), (((Hr+image.height)/2)-progress*image.height),
+					((512*h-image.width)/2), (((384*h+image.height)/2)-progress*image.height),
 					image.width, progress*image.height);
 				ctx.restore();
 			}
@@ -402,7 +404,7 @@ hitCircle.prototype.drawPath = function()
 	ctx.save();
 		ctx.beginPath();
 			ctx.fillStyle = "white";
-			ctx.circle(target[0]*ws, target[1]*hs, 5);
+			ctx.circle(target[0]*w, target[1]*h, 5);
 		ctx.fill();
 	ctx.restore();
 }
@@ -425,7 +427,7 @@ hitCircle.prototype.drawApproach = function()
 		
 		ctx.beginPath();
 			ctx.strokeStyle = rgba;
-			ctx.circle(this.x*ws, this.y*hs, (1+3*taux)*circleSize*hs);
+			ctx.circle(this.x*w, this.y*h, (1+3*taux)*circleSize*h);
 		ctx.stroke();
 		ctx.restore();
 	}
@@ -461,7 +463,7 @@ hitCircle.prototype.drawBall = function()
 				ctx.beginPath();
 				ctx.strokeStyle = "yellow";
 				ctx.lineWidth = 5;
-					ctx.circle(at[0]*ws, at[1]*hs, circleSize*hs*2);
+					ctx.circle(at[0]*w, at[1]*h, circleSize*h*2);
 				ctx.stroke();
 				ctx.restore();
 			}
@@ -470,20 +472,20 @@ hitCircle.prototype.drawBall = function()
 			var i = (Math.floor(dist/10) % 10);
 			if(this.curveData[at[3]][0] > this.curveData[at[3]+1][0]) i = 9 - i;//fix issues where ball goes backward
 		
-			var image = pic["sliderb" + i];
+			var image = Data.Skin["sliderb" + i];
 			ctx.save();
 				ctx.globalCompositeOperation = "source-over";
-				ctx.drawImageScaled(image, at[0]*hs, at[1]*ws, at[2]);
+				ctx.drawImageScaled(image, at[0]*h, at[1]*w, at[2]);
 			ctx.restore();
 	}
 }
 
 hitCircle.prototype.drawScore = function()
 {
-	var image = pic["hit" + this.score];
+	var image = Data.Skin["hit" + this.score];
 	ctx.save();
 	ctx.globalCompositeOperation = "destination-over";
-	ctx.drawImageScaled(image, this.x*ws, this.y*hs);
+	ctx.drawImageScaled(image, this.x*w, this.y*h);
 	ctx.restore();
 }
 
@@ -567,11 +569,11 @@ hitCircle.prototype.checkSpin = function(mouseX, mouseY)
 
 hitCircle.prototype.color = function()
 {
-	var key = this.combo % color.length;
+	var key = this.combo % Game.color.length;
 	if(arguments[0])
-		return "rgba(" + color[key][0] + ", " + color[key][1] + ", " + color[key][2] + ", " + arguments[0] + ")";
+		return "rgba(" + Game.color[key][0] + ", " + Game.color[key][1] + ", " + Game.color[key][2] + ", " + arguments[0] + ")";
 	else
-		return "rgb(" + color[key][0] + ", " + color[key][1] + ", " + color[key][2] + ")";
+		return  "rgb(" + Game.color[key][0] + ", " + Game.color[key][1] + ", " + Game.color[key][2] + ")";
 }
 
 hitCircle.prototype.playSound = function()
@@ -581,6 +583,6 @@ hitCircle.prototype.playSound = function()
 	var sound_array = ["hitnormal", "hitwhistle"];
 	if(this.sound > sound_array.length-1) this.sound = 1;
 	
-	sounds[sound_array[this.sound]].currentTime = 0;
-	sounds[sound_array[this.sound]].play();
+	Data.Sound[sound_array[this.sound]].currentTime = 0;
+	Data.Sound[sound_array[this.sound]].play();
 }
