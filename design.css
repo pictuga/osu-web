@@ -175,7 +175,7 @@ h2
 		border : 1px solid silver;
 		border-right : 0;
 		border-radius : 10px 0 0 10px;
-		margin-top : 1%;
+		margin : 0.5% 0;
 		padding : 1%;
 		position : relative;
 		width : 95%;
@@ -184,11 +184,22 @@ h2
 		-moz-transition : background-color 0.3s ease-in;
 		-webkit-transition : background-color 0.3s ease-in;
 	}
+
+		#picker > div:before
+		{
+			content : attr(data-title);
+		}
 	
 		#picker > div:hover
 		{
 			font-weight : bold;
 			background-color : silver;
+		}
+		
+		#picker > div:not(:hover):after
+		{
+			content : " – " attr(data-artist) " – " attr(data-creator);
+			font-size : 0.75em;
 		}
 		
 		#picker > div:hover > div
