@@ -2,7 +2,7 @@ function pickBeatMap()
 {
 	var div_rm = $('<div/>', {id : 'readme', html : Setting.ReadMe}).appendTo(document.body);
 	var picker = $('<div/>', {id : 'picker'}).appendTo(document.body);
-	$(document.body).addClass('scroll');
+	$('html').addClass('scroll');
 	
 	var out = sortBeatmap();
 	for(var i in out)
@@ -18,7 +18,7 @@ function pickBeatMap()
 			{
 				$('#picker').remove();
 				$('#readme').remove();
-				$(document.body).removeClass('scroll');
+				$('html').removeClass('scroll');
 				new BeatMap(event.data.id, event.data.version);
 			});
 		}
