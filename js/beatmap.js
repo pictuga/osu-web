@@ -276,7 +276,7 @@ BeatMap.prototype.update = function()
 		
 		if(4*this.HH < 3*this.WW)
 			diff_width  = this.WW/2 - (4/3 * this.HH)/2;
-		else if(4*HH > 3*WW)
+		else if(4*this.HH > 3*this.WW)
 			diff_height = this.HH/2 - (3/4 * this.WW)/2;
 		
 		this.ctx.translate(diff_width, diff_height);
