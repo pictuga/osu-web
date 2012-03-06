@@ -80,6 +80,14 @@ progress
 	left : 10%;
 }
 
+progress:after
+{
+	content : attr(value) "%";
+	display : block;
+	margin : auto;
+	text-align : center;
+}
+
 progress + div
 {
 	position : fixed;
@@ -158,16 +166,15 @@ h2
 
 /******************************************** picker ********************************************/
 
+body.scroll
+{
+	overflow : auto;
+}
+
 #picker
 {
 	width : 50%;
-	height : 100%;
-	
-	position : fixed;
-	top : 0;
-	right : 0;
-	
-	overflow : auto;
+	float : right;
 }
 
 	#picker > div
