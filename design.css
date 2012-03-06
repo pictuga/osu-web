@@ -194,47 +194,21 @@ h2
 		#picker > div:hover > div
 		{
 			font-weight : normal;
+			display : inline;
 		}
 	
 	#picker > div > div
 	{
-		padding-left : 5%;
+		margin-left : 5%;
+		padding : 0 2px;
+		display : none;
 	}
 	
 		#picker > div > div:hover
 		{
-			font-weight : bold;
+			border-radius : 10px;
+			background-color : white;
 		}
-
-/******************************************** jWindow ********************************************/
-
-#jWindow
-{
-	width : 30%;
-	height : 30%;
-
-	position : absolute;
-	overflow-x : hidden;
-	overflow-y : hidden;
-
-	background-color : rgba(192, 192, 192, 0.75);
-	border : 1px solid black;
-	
-	z-index : 1000;
-}
-
-#jWindow #jWindowText
-{
-	width : 90%;
-	height : 100%;
-	margin-right : 0;
-
-	overflow-x : hidden;
-	overflow-y : auto;
-
-	background-color : white;
-	cursor : default;
-}
 
 /******************************************** slider ********************************************/
 
