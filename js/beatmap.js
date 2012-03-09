@@ -171,24 +171,6 @@ BeatMap.prototype.init = function()
 	//values (circleSize...)
 		this.circleSize = 64 * (1 - 0.7*((this.osu.Difficulty.CircleSize-5)/5)) / 2;
 	
-	//events
-		//new
-			$(this.canvas).bind('mousedown',	function(e){Game.checkHit(e)});
-			$(this.canvas).bind('mouseup',		function(){Game.unbind()});
-			
-			$(this.canvas).bind('touchstart',	function(e){Game.checkHit(e)});
-			$(this.canvas).bind('touchend',		function(){Game.unbind()});
-			
-			
-			$(this.window).keydown(function(){Game.checkKey()});
-			$(window).resize(function(){Game.resize()});
-			$(window).blur(pause);
-			
-			$(this.canvas).bind('contextmenu', prevent);
-			$(window).bind('touchmove', prevent);
-			
-			$(this.player).bind('playing', function(){Game.autoUpdateBeatMap()});
-	
 	//addons
 		runAddons("initBeatMap");
 	
@@ -197,14 +179,50 @@ BeatMap.prototype.init = function()
 		this.resize();
 		
 		this.player.currentTime = 0;
+		this.play();
+}
+
+BeatMap.prototype.play = function()
+{
+	//events
+		$(this.canvas).bind('mousedown',	function(e){Game.checkHit(e)});
+		$(this.canvas).bind('mouseup',		function(){Game.unbind()});
+	
+		$(this.canvas).bind('touchstart',	function(e){Game.checkHit(e)});
+		$(this.canvas).bind('touchend',		function(){Game.unbind()});
+	
+	
+		$(window).keydown(function(e){Game.checkKey(e)});
+		$(window).resize(function(){Game.resize()});
+		$(window).blur(function(){Game.pause()});
+	
+		$(this.canvas).bind('contextmenu', prevent);
+		$(window).bind('touchmove', prevent);
+	
+	//start
 		this.player.play();
+		this.autoUpdateBeatMap();
+}
+
+BeatMap.prototype.pause = function()
+{
+	this.player.pause();
+	$(this.canvas).unbind();
+	menu();
 }
 
 BeatMap.prototype.end = function()
 {
+	//stop
+		this.player.pause();
 	//unbind
+		$(this.canvas).unbind();
+		$(window).unbind();
 	//reset
 	//remove DOM stuff
+		$(this.canvas).remove();
+	//go on
+		pickBeatMap();
 }
 
 BeatMap.prototype.unbind = function()//FIXME remove?
@@ -227,17 +245,12 @@ BeatMap.prototype.autoUpdateBeatMap = function()
 		if(this.player.ended)
 		{
 			log('ended');
-			
-			$(this.canvas).unbind();
-			$(this.player).unbind();
-			$(window).unbind('resize blur touchmove');
-			
-			pickBeatMap();
+			this.end();
 		}
 		else
 		{
 			log('paused');
-			pause();
+			this.pause();
 		}
 		
 		return;
@@ -581,7 +594,7 @@ BeatMap.prototype.resize = function()
 	runAddons("resizeBeatMap");
 }
 
-function checkKey(e)
+BeatMap.prototype.checkKey = function(e)
 {
 	if (e == null) e = window.event;
 	
@@ -590,17 +603,10 @@ function checkKey(e)
 	
 	log('key hit', key, keyCode);
 	
-	switch(key)
-	{
-		case "q":
-			removejWindow();
-			break;
-	}
-	
 	switch(keyCode)
 	{
 		case 27:
-			pause();
+			this.pause();
 			break;
 	}
 	

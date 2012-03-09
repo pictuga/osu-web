@@ -14,11 +14,11 @@
 	{
 		switchOnOff : function()
 		{
-			if(Games.slice(-1)[0].player.ended) return false;
+			if(Game.player.ended) return false;
 			
-			if(Games.slice(-1)[0].player.paused)
-				Games.slice(-1)[0].player.play();
-			else	Games.slice(-1)[0].player.pause();
+			if(Game.player.paused)
+				Game.play();
+			else	Game.pause();
 		}
 	}
 }

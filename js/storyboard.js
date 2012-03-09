@@ -31,7 +31,7 @@ Storyboard.prototype.init = function()
 		{
 			case 3:
 				//color
-				$(document.body).css('backgroundColor', "rgb(" + this.game.osu.Events[i][2] + "," + this.game.osu.Events[i][3] + "," + this.game.osu.Events[i][4] + ")");
+				$(this.game.canvas).css('backgroundColor', "rgb(" + this.game.osu.Events[i][2] + "," + this.game.osu.Events[i][3] + "," + this.game.osu.Events[i][4] + ")");
 			break;
 				
 			case 0:
@@ -39,7 +39,7 @@ Storyboard.prototype.init = function()
 				if(this.game.osu.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'jpg'
 				|| this.game.osu.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'jpeg'
 				|| this.game.osu.Events[i][2].split('.').slice(-1)[0].toLowerCase() == 'png')
-				$(document.body).css('backgroundImage', "url('" + Setting.Path.BeatMap + this.game.osu.Metadata.id + "/" + this.game.osu.Events[i][2] + "')");
+				$(this.game.canvas).css('backgroundImage', "url('" + Setting.Path.BeatMap + this.game.osu.Metadata.id + "/" + this.game.osu.Events[i][2] + "')");
 			
 				else log(this.game.osu.Events[i][2]);
 			break;

@@ -50,16 +50,12 @@ html > *
 	cursor: url("cursor.png") 32 32, auto;
 }
 
-body
+canvas
 {
 	background-repeat : no-repeat;
 	background-position : center center;
 	background-attachment : fixed;
 	background-size: 100%;
-}
-
-canvas
-{
 	margin : auto;
 }
 
