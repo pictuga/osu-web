@@ -181,35 +181,7 @@ function loadAll()
 	loadBeatMap();
 	loadReadme();
 	
-	//loadAddons(); → moved to loadJS();
 	//loadSound(); → buggy for now (once more)
-}
-
-function loadAddons()
-{
-	var addon_loader = new loader();
-	addon_loader.url = "addons";
-	addon_loader.type = "folder";
-	addon_loader.callback = function(array)
-	{
-		array = array.data;
-		
-		for(key in array)
-		{
-			var url = "addons/" + array[key];
-			
-			var new_addon = new loader();
-			new_addon.url = url;
-			new_addon.type = "ajax";
-			new_addon.callback = function(array)
-			{
-				var new_addon = eval('('+array.data+')');
-				addons[new_addon.Metadata.Package] = new_addon;
-			}
-			new_addon.start();
-		}
-	}
-	addon_loader.start();
 }
 
 function loadSkin()
@@ -265,9 +237,6 @@ function loadJS()
 				{
 					switch(array.extra.filename)
 					{
-						case "addons.js":
-							loadAddons();
-							break;
 						case "translation.js":
 							loadTranslation();
 							break;

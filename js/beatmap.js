@@ -177,9 +177,6 @@ BeatMap.prototype.init = function()
 	//values (circleSize...)
 		this.circleSize = 64 * (1 - 0.7*((this.osu.Difficulty.CircleSize-5)/5)) / 2;
 	
-	//addons
-		runAddons("initBeatMap");
-	
 	//start the game
 		this.storyboard.init();
 		this.resize();
@@ -292,9 +289,6 @@ BeatMap.prototype.update = function()
 	if(this.paused) return;
 	
 	this.time = this.player.currentTime * 1000;
-	
-	//addons
-	runAddons("updateBeatMap");
 	
 	if(this.ratio)
 	{
@@ -605,9 +599,6 @@ BeatMap.prototype.resize = function()
 	
 	$(this.canvas).attr("width",		this.WW);
 	$(this.canvas).attr("height",	this.HH);
-	
-	//addons
-	runAddons("resizeBeatMap");
 }
 
 BeatMap.prototype.checkKey = function(e)
@@ -624,23 +615,5 @@ BeatMap.prototype.checkKey = function(e)
 		case 27:
 			this.playPause();
 			break;
-	}
-	
-	for(i in addons)
-	{
-		if(addons[i].ActivationKey == key)
-		{
-			if(addons[i].Running == true)
-			{
-				addons[i].Running = false;
-				if(isFunction(addons[i].Functions["switchOff"])) addons[i].Functions["switchOff"]();
-			}
-			else
-			{
-				addons[i].Running = true;
-				if(isFunction(addons[i].Functions["switchOn"])) addons[i].Functions["switchOn"]();
-			}
-			if(isFunction(addons[i].Functions["switchOnOff"])) addons[i].Functions["switchOnOff"]();
-		}
 	}
 }
