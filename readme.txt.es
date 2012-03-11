@@ -25,16 +25,7 @@
 		<strong>El sitio web está todavía en desarollo y puede que no funcione de vez en cuando.</strong>
 	</div><div data-title="Atajos" class="diapo">
 		<span class='key'>F11</span><strong>plena pantalla</strong> con la mayoría de los navegadores
-
-		<span class='key'>r</span><strong>reiniciar</strong> la partida
-		<span class='key'>m</span><strong>silenciar</strong> el juego
-		<span class='key'>p</span>poner la partida en<strong>pausa</strong>
-		<span class='key'>c</span><strong>elegir</strong> otra beatmap
-		<span class='key'>q</span><strong>cerrar</strong> el pop-up
-
-		<span class='key'>h</span><strong>ver</strong> de nuevo esta página
-
-		<span class='key'>d</span>ver informaciones de<strong>debug</strong>
+		<span class='key'>ESC</span>poner la partida en<strong>pausa</strong>
 	</div><div data-title="Sobre nosotros" class="diapo">
 		Hecho por <a href='http://pictuga.com/' title='TheCaméléon'>TheCaméléon</a> → <a href='http://twitter.com/pictuga' title='@pictuga'>twitter</a>
 		<a href='http://www.pictuga.com/fiche-305.html' title='Project page'>Página del proyecto</a> - <a href='http://osu.ppy.sh/forum/viewtopic.php?t=36805' title='Forum'>Forum</a> 

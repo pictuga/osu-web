@@ -25,16 +25,7 @@
 		<strong>Ce site est encore en développement et peut ne pas fonctionner de temps à autres.</strong>
 	</div><div data-title="Raccourcis" class="diapo">
 		<span class='key'>F11</span><strong>plein-écran</strong> sur de nombreux navigateurs
-
-		<span class='key'>r</span><strong>redémarrer</strong> la partie
-		<span class='key'>m</span><strong>couper</strong> le son
-		<span class='key'>p</span>mettre la partie en <strong>pause</strong>
-		<span class='key'>c</span><strong>choisir</strong> une autre beatmap
-		<span class='key'>q</span><strong>fermer</strong> la pop-up
-
-		<span class='key'>h</span><strong>voir</strong> à nouveau cette page
-
-		<span class='key'>d</span>afficher des informations de <strong>debug</strong>
+		<span class='key'>ESC</span>mettre la partie en <strong>pause</strong>
 	</div><div data-title="À propos de nous" class="diapo">
 		Fait par <a href='http://pictuga.com/' title='TheCaméléon'>TheCaméléon</a> → <a href='http://twitter.com/pictuga' title='@pictuga'>twitter</a>
 		<a href='http://www.pictuga.com/fiche-305.html' title='Project page'>Page du projet</a> - <a href='http://osu.ppy.sh/forum/viewtopic.php?t=36805' title='Forum'>Forum</a> 

@@ -25,15 +25,7 @@
 		<strong>This website is still in developement and may not work from time to time.</strong>
 	</div><div data-title="Shortcuts" class="diapo">
 		<span class='key'>F11</span><strong>fullscreen</strong> on a lot of modern browsers
-
-		<span class='key'>r</span><strong>restart</strong> the game
-		<span class='key'>m</span><strong>mute</strong> the game
-		<span class='key'>p</span><strong>pause</strong> the game
-		<span class='key'>c</span><strong>pick</strong> another beatmap
-		<span class='key'>q</span><strong>close</strong> pop-up windows
-
-		<span class='key'>h</span><strong>show</strong> this page again
-		<span class='key'>d</span>display <strong>debug</strong> information
+		<span class='key'>ESC</span><strong>pause</strong> the game
 	</div><div data-title="About us" class="diapo">
 		Made by <a href='http://pictuga.com/' title='TheCaméléon'>TheCaméléon</a> → <a href='http://twitter.com/pictuga' title='@pictuga'>twitter</a>
 		<a href='http://www.pictuga.com/fiche-305.html' title='Project page'>Project page</a> - <a href='http://osu.ppy.sh/forum/viewtopic.php?t=36805' title='Forum'>Forum</a> 
