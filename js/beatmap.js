@@ -194,19 +194,22 @@ BeatMap.prototype.play = function()
 		this.ended = false;
 	
 	//events
-		$(this.canvas).bind('mousedown',	function(e){Game.checkHit(e)});
-		$(this.canvas).bind('mouseup',		function(){Game.unbind()});
+		//reset
+			$(this.canvas).unbind();
+			$(window).unbind();
+		//apply
+			$(this.canvas).bind('mousedown',	function(e){Game.checkHit(e)});
+			$(this.canvas).bind('mouseup',		function(){Game.unbind()});
 	
-		$(this.canvas).bind('touchstart',	function(e){Game.checkHit(e)});
-		$(this.canvas).bind('touchend',		function(){Game.unbind()});
+			$(this.canvas).bind('touchstart',	function(e){Game.checkHit(e)});
+			$(this.canvas).bind('touchend',		function(){Game.unbind()});
 	
+			$(window).keydown(function(e){Game.checkKey(e)});
+			$(window).resize(function(){Game.resize()});
+			$(window).blur(function(){Game.pause()});
 	
-		$(window).keydown(function(e){Game.checkKey(e)});
-		$(window).resize(function(){Game.resize()});
-		$(window).blur(function(){Game.pause()});
-	
-		$(this.canvas).bind('contextmenu', prevent);
-		$(window).bind('touchmove', prevent);
+			$(this.canvas).bind('contextmenu', prevent);
+			$(window).bind('touchmove', prevent);
 	
 	//start
 		this.player.play();
@@ -237,7 +240,6 @@ BeatMap.prototype.end = function()
 	//unbind
 		$(this.canvas).unbind();
 		$(window).unbind();
-	//reset
 	//remove DOM stuff
 		$(this.canvas).remove();
 	//go on
