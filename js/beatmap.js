@@ -49,6 +49,8 @@ function BeatMap(id, version)
 	this.raw
 	this.player
 	
+	this.requestID;
+	
 	this.storyboard	= new Storyboard(this);
 	
 	//size
@@ -60,6 +62,10 @@ function BeatMap(id, version)
 
 	this.hs,	this.ws;	//beatmaps coordinates (ratio of course)(MOST USED SO FAR)(thrown to global namespace)
 	this.ratio	= false;	//→ ratio has to be changed
+	
+	//state
+	this.ended	= false;
+	this.paused	= false;
 	
 	Game = this;
 	Games.push(Game);
@@ -184,6 +190,12 @@ BeatMap.prototype.init = function()
 
 BeatMap.prototype.play = function()
 {
+	if(this.ended) return;
+
+	//status
+		this.paused = false;
+		this.ended = false;
+	
 	//events
 		$(this.canvas).bind('mousedown',	function(e){Game.checkHit(e)});
 		$(this.canvas).bind('mouseup',		function(){Game.unbind()});
@@ -201,11 +213,15 @@ BeatMap.prototype.play = function()
 	
 	//start
 		this.player.play();
-		this.autoUpdateBeatMap();
+		this.autoUpdate();
 }
 
 BeatMap.prototype.pause = function()
 {
+	if(this.paused) return;
+	
+	cancelAnimationFrame(this.requestID);
+	this.paused = true;
 	this.player.pause();
 	$(this.canvas).unbind();
 	menu();
@@ -213,8 +229,14 @@ BeatMap.prototype.pause = function()
 
 BeatMap.prototype.end = function()
 {
+	if(this.ended) return;
+	
 	//stop
+		cancelAnimationFrame(this.requestID);
 		this.player.pause();
+	//state
+		this.paused	= true;
+		this.ended	= true;
 	//unbind
 		$(this.canvas).unbind();
 		$(window).unbind();
@@ -223,6 +245,12 @@ BeatMap.prototype.end = function()
 		$(this.canvas).remove();
 	//go on
 		pickBeatMap();
+}
+
+BeatMap.prototype.playPause = function()
+{
+	if(this.paused)	this.play();
+	else		this.pause();
 }
 
 BeatMap.prototype.unbind = function()//FIXME remove?
@@ -236,44 +264,32 @@ function prevent(event)//FIXME required ?
 	return false;
 }
 
-BeatMap.prototype.autoUpdateBeatMap = function()
+BeatMap.prototype.autoUpdate = function()
 {
-	if(this.player.ended || this.player.paused)
+	if(this.paused) return;
+	
+	if(this.player.ended)
 	{
-		log('ended');
-		this.ctx.clear();
-		if(this.player.ended)
-		{
-			log('ended');
-			this.end();
-		}
-		else
-		{
-			log('paused');
-			this.pause();
-		}
-		
+		this.end();
 		return;
 	}
-	else
-	{
-		requestAnimationFrame((function(self)
-			{
-				return	function()
-					{
-						self.autoUpdateBeatMap();
-					}
-			})(this));
-		this.update();
-	}
+	
+	this.requestID = requestAnimationFrame((function(self)
+		{
+			return	function()
+				{
+					self.autoUpdate();
+				}
+		})(this));
+	this.update();
 }
 
 var tps = 0;
 var time, ctx, w, h, circleSize;
 BeatMap.prototype.update = function()
 {
-	if(this.player.ended) return;
 	this.ctx.clear();
+	if(this.paused) return;
 	
 	this.time = this.player.currentTime * 1000;
 	
@@ -606,7 +622,7 @@ BeatMap.prototype.checkKey = function(e)
 	switch(keyCode)
 	{
 		case 27:
-			this.pause();
+			this.playPause();
 			break;
 	}
 	
