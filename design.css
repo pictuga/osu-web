@@ -92,6 +92,7 @@ progress + div
 	background-image : url(logo.png);
 	background-position : center 28.75%;
 	background-repeat : no-repeat;
+	cursor : progress;
 }
 
 /******************************************** readme ********************************************/
