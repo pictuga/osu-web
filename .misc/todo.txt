@@ -4,3 +4,5 @@ multi-skin picker (skin/)
 beatmap multi-server
 double render
 fix slider/spinner
+cache stuff (servers !)
+use javascript to fetch translations (for better compatibility)
