@@ -6,7 +6,8 @@ var DefaultSetting =
 		Skin:		"/skin/",
 		Sound:		"/sound/"
 		},
-	ReadMe:	""
+	ReadMe:	"",
+	Lang:	navigator.language.split('-')[0] || "en"
 }
 var Setting = DefaultSetting;
 

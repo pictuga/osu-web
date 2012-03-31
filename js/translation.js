@@ -1,21 +1,10 @@
 function loadTranslation()
 {
 	var tr = new loader();
-	tr.url = "translation.txt";
+	tr.url = "translation.txt." + Setting.Lang;
 	tr.type = "ajax";
 	tr.callback = function(array)
 	{
-		var lang = array.xhr.getResponseHeader('Content-location').split('.').slice(-1)[0];
-		
-		if(lang == "en")
-		{
-			//
-		}
-		else
-		{
-			//need to get .en in case of missing translations, since .en will be done first
-		}
-		
 		parseTranslation(array.data);
 	}
 	tr.start();

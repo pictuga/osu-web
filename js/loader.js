@@ -306,7 +306,7 @@ function loadBeatMap()
 function loadReadme()
 {
 	var bm = new loader();
-	bm.url = "readme.txt";
+	bm.url = "readme.txt." + Setting.Lang;
 	bm.type = "ajax";
 	bm.callback = function(array)
 	{
