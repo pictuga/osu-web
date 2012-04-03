@@ -7,7 +7,7 @@ var DefaultSetting =
 		Sound:		"/sound/"
 		},
 	ReadMe:	"",
-	Lang:	navigator.language.split('-')[0] || "en"
+	Lang:	(['en', 'es', 'fr'].indexOf(navigator.language.split('-')[0] || 'en') != -1) ? navigator.language.split('-')[0] : 'en'
 }
 var Setting = DefaultSetting;
 
