@@ -5,3 +5,4 @@ beatmap multi-server
 double render
 fix slider/spinner
 cache stuff (servers !)
+check if already ddl'd in loader.js

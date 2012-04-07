@@ -35,8 +35,7 @@ function loader()
 			break;
 		}
 		
-		
-		if(isFunction(this.callback))
+		if(typeof this.callback == 'function')
 			this.callback(this);
 		
 		checkLoad();
@@ -50,16 +49,6 @@ function loader()
 	
 	loader.prototype.start = function()
 	{
-		//check that the file isn't already loaded !
-		for(var i in load)
-		{
-			if(load[i].url == this.url)
-			{
-				//
-			}
-		}
-		
-		//if not, ddl it
 		this.id = (load.push(this)-1);
 		var id = this.id;
 		
@@ -111,7 +100,7 @@ function loader()
 					{
 						if(xhr.status == 200)
 						{
-							load[id].data = newLine(xhr.responseText);
+							load[id].data = xhr.responseText.replace(/\r\n/g, "\n");
 							load[id].done();
 						}
 						else if(xhr.status >= 400)
