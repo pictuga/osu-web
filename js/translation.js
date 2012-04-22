@@ -1,7 +1,7 @@
 function loadTranslation()
 {
 	var tr = new loader();
-	tr.url = "translation.txt." + Setting.Lang;
+	tr.url = "translation." + Setting.Lang + ".txt";
 	tr.type = "ajax";
 	tr.callback = function(array)
 	{
