@@ -572,6 +572,8 @@ BeatMap.prototype.resize = function()
 	
 	$(this.canvas).attr("width",		this.WW);
 	$(this.canvas).attr("height",	this.HH);
+	
+	this.pause();
 }
 
 BeatMap.prototype.checkKey = function(e)
