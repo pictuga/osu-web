@@ -258,13 +258,6 @@ function loadBeatMap()
 			osz.extra.param = 'ext full';
 			osz.callback = function(array)
 			{
-				if(typeof array.data.mp4 != 'undefined'
-				|| typeof array.data.mov != 'undefined'
-				|| typeof array.data.avi != 'undefined'
-				|| typeof array.data.mpg != 'undefined'
-				|| typeof array.data.mpeg != 'undefined')
-					log('movie', array.url);
-			
 				var osu = array.data.osu;
 				for(j in osu)
 				{
