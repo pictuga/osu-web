@@ -18,6 +18,8 @@ var Data =
 	Sound:		{}
 }
 
+var Cache = UnStoreObject('beatmap');
+
 var Games = [];
 var Game;
 
@@ -28,6 +30,9 @@ window.onload = function()
 
 var main = function()
 {
-	loaded = function(){pickBeatMap();};
+	loaded = function(){
+		StoreObject('beatmap', Cache);
+		pickBeatMap();
+		}
 	loadAll();
 }

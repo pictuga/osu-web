@@ -66,6 +66,19 @@ CanvasRenderingContext2D.prototype.drawImageScaled = function(image, x, y, angle
 	this.drawImageAngle(image, x, y, angle, coeff);
 }
 
+function StoreObject(key, value)
+{
+	if(!localStorage) return false;
+	localStorage.setItem(key, JSON.stringify(value));
+}
+
+function UnStoreObject(key)
+{
+	if(!localStorage) return {};
+	var out = JSON.parse(localStorage.getItem(key));
+	return (out != null) ? out : {};
+}
+
 (function ()
 {
 	var lastTime = 0;

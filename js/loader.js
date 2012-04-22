@@ -248,38 +248,47 @@ function loadBeatMap()
 	{
 		for(i in array.data)
 		{
-			//check
 			var id = array.data[i].basename;
 			
-			//list osu
-			var osz = new loader();
-			osz.url = array.url + array.data[i].url;
-			osz.type = "folder";
-			osz.extra.param = 'ext full';
-			osz.callback = function(array)
+			//check
+			if(Cache && typeof Cache[id] != 'undefined')
 			{
-				var osu = array.data.osu;
-				for(j in osu)
+				Data.BeatMap[id] = Cache[id];
+			}
+			else
+			{
+				//list osu
+				var osz = new loader();
+				osz.url = array.url + array.data[i].url;
+				osz.type = "folder";
+				osz.extra.param = 'ext full';
+				osz.callback = function(array)
 				{
-					//list levels
-					var id = array.url.replace(/^.+\/([0-9]+)\/.*$/gi, "$1");
-					if(typeof Data.BeatMap[id] == 'undefined')
+					var osu = array.data.osu;
+					for(j in osu)
 					{
-						Data.BeatMap[id] = {};
-						Data.BeatMap[id].version = [];
+						//list levels
+						var more    = osu[j].basename.replace(/^(.*) \(.*?\).*$/g, "$1").split(' - ', 2);
+						
+						var id = array.url.replace(/^.+\/([0-9]+)\/.*$/gi, "$1");
+						if(typeof Data.BeatMap[id] == 'undefined')
+						{
+							Data.BeatMap[id] = {};
+							Data.BeatMap[id].version = [];
+						
+							Data.BeatMap[id].artist	= more[0];
+							Data.BeatMap[id].creator= osu[j].basename.replace(/^.*\((.*?)\).*$/g, "$1");
+							Data.BeatMap[id].title	= more[1];
+						}
+						
+						var version	= osu[j].basename.replace(/^.*\[(.*?)\]$/g, "$1");
+						Data.BeatMap[id].version.push(version);
 					}
 					
-					var more    = osu[j].basename.replace(/^(.*) \(.*?\).*$/g, "$1").split(' - ', 2);
-					
-					Data.BeatMap[id].artist	= more[0];
-					Data.BeatMap[id].title	= more[1];
-						var version	= osu[j].basename.replace(/^.*\[(.*?)\]$/g, "$1");
-					Data.BeatMap[id].creator= osu[j].basename.replace(/^.*\((.*?)\).*$/g, "$1");
-					
-					Data.BeatMap[id].version.push(version);
+					Cache[id] = Data.BeatMap[id];
 				}
+				osz.start();
 			}
-			osz.start();
 		}
 	}
 	ls.start();
