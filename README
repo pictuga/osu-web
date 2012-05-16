@@ -1,3 +1,9 @@
+	INFORMATION
+
+osu! web - osu! for browsers 
+
+	BEATMAP STORAGE
+
 beatmap/
 	100/
 	101/
@@ -12,4 +18,11 @@ conv/
 1 beatmap per folder, folder name = beatmap id
 .ogg conversion in conv/
 
-path can be changed in js/main.js
+	CONFIGURATION
+
+Various paths can be changed in js/main.js
+
+	USAGE
+
+Most http servers should work since we dropped apache specific configurations for translations delivery.
+Apache and python's SimpleHTTPServer have been tested successfully.
