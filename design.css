@@ -246,7 +246,7 @@ html.scroll body
 	-moz-animation-play-state	: paused;
 	-webkit-animation-play-state	: paused;
 }
-#slider #mask
+#slider > #mask
 {
 	height : 100%;
 	width : 400%;
@@ -258,7 +258,7 @@ html.scroll body
 	left : 0px;
 	overflow:hidden;
 }
-#slider .diapo
+#slider > #mask > div
 {
 	display : inline;
 	width : 25%;

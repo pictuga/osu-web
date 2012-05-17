@@ -3,7 +3,7 @@
 <div id="share"><a href="https://www.facebook.com/osu.web/"><img src="image/facebook.png" /></a><a href="http://twitter.com/share?text=osu! web – osu! for browsers&url=http://osu-web.com/&via=pictuga"><img src="image/twitter.png" /></a><a href="http://flattr.com/thing/178671/osu-web"><img src="image/flattr.png" /></a><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ECGPQVTWBY22L&item_name=osu%21%20web&currency_code=USD"><img src="image/paypal.png" /></a></div>
 
 <div id="slider"><div id="mask">
-	<div data-title="SOCORRO !!!" class="diapo">
+	<div data-title="SOCORRO !!!">
 		 - Encended los alta-voces
 		 - Leed esto
 		 - Apretad sobre el botón abajo
@@ -11,7 +11,7 @@
 		 - Disfrutad :)
 
 		<strong>Si no sabéis qué beatmap elegir, os recomendamos "Bad Apple" → "Easy"</strong> ;)
-	</div><div data-title="Todavía perdido ?" class="diapo">
+	</div><div data-title="Todavía perdido ?">
 		Vale, intentaré explicaros lo que tenéis que hacer aquí.
 
 		El objetivo principal es apretar sobre los círculos que aparecen, en ritmo con la música, al momento justo. También hay "sliders" sobre los cuales tenéis que hacer rebotar la bola. Puede que también encontréis "spinners". Debéis apretarlos y girar lo más rápido posible.
@@ -23,10 +23,10 @@
 		El juego es gratis, pero acceptamos donos !
 
 		<strong>El sitio web está todavía en desarollo y puede que no funcione de vez en cuando.</strong>
-	</div><div data-title="Atajos" class="diapo">
+	</div><div data-title="Atajos">
 		<span class='key'>F11</span><strong>plena pantalla</strong> con la mayoría de los navegadores
 		<span class='key'>ESC</span>poner la partida en<strong>pausa</strong>
-	</div><div data-title="Sobre nosotros" class="diapo">
+	</div><div data-title="Sobre nosotros">
 		Hecho por <a href='http://pictuga.com/' title='TheCaméléon'>TheCaméléon</a> → <a href='http://twitter.com/pictuga' title='@pictuga'>twitter</a>
 		<a href='http://www.pictuga.com/fiche-305.html' title='Project page'>Página del proyecto</a> - <a href='http://osu.ppy.sh/forum/viewtopic.php?t=36805' title='Forum'>Forum</a> 
 
@@ -35,7 +35,7 @@
 		<a href='http://www.pictuga.com/fiche-363.html' title='Buscamos devs !'>Contribuir</a> – <a href='http://osu.ppy.sh/' title='osu.ppy.sh'>sitio oficial osu!</a>
 
 		License GPL 3 – Copyright (C) 2010 TheCaméléon
-		→ Source Code : <strong>bzr clone http://bzr.pictuga.com/osu-web/</strong> or <a href="http://osu-web.com/latest.tar.gz">full archive</a>
+		→ Source Code : <a href="https://github.com/pictuga/osu-web">http://github.com/pictuga/osu-web</a>
 		NB. The original osu! game (for Windows) is NOT OpenSource.
 	</div>
 </div></div>
