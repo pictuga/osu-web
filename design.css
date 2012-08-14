@@ -12,6 +12,7 @@
 	font-weight: normal;
 	src: local('Ubuntu Italic'), local('Ubuntu-Italic.woff'), url('font/italic') format('woff');
 }
+
 @font-face
 {
 	font-family: 'Arial';
@@ -19,6 +20,7 @@
 	font-weight: bold;
 	src: local('Ubuntu Bold'), local('Ubuntu-Bold'), url('font/bold.woff') format('woff');
 }
+
 @font-face
 {
 	font-family: 'Arial';
@@ -194,11 +196,6 @@ html.scroll body
 		-webkit-transition : background-color 0.3s ease-in;
 	}
 
-		#picker > div:before
-		{
-			content : attr(data-title);
-		}
-	
 		#picker > div:hover
 		{
 			font-weight : bold;
@@ -241,12 +238,14 @@ html.scroll body
 	position : relative;
 	width : 100%;
 }
+
 #slider:hover #mask
 {
 	-moz-animation-play-state	: paused;
 	-webkit-animation-play-state	: paused;
 }
-#slider > #mask
+
+#slider #mask
 {
 	height : 100%;
 	width : 400%;
@@ -258,7 +257,8 @@ html.scroll body
 	left : 0px;
 	overflow:hidden;
 }
-#slider > #mask > div
+
+#slider .diapo
 {
 	display : inline;
 	width : 25%;
@@ -298,4 +298,15 @@ html.scroll body
 	98%	{left : -300%;}
 
 	100%	{left : 0;}
+}
+
+/******************************************** mobile ********************************************/
+
+@media handheld, screen and (max-width : 800px), print
+{
+	#picker > div > div
+	{
+		font-weight : normal;
+		display : inline;
+	}
 }

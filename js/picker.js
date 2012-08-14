@@ -8,7 +8,7 @@ function pickBeatMap()
 	for(var i in out)
 	{
 		var id = out[i];
-		var osz = $('<div/>', {'data-title': Data.BeatMap[id].title, 'data-creator': Data.BeatMap[id].creator, 'data-artist': Data.BeatMap[id].artist}).appendTo(picker);
+		var osz = $('<div/>', {html: Data.BeatMap[id].title, 'data-creator': Data.BeatMap[id].creator, 'data-artist': Data.BeatMap[id].artist}).appendTo(picker);
 		
 		for(i in Data.BeatMap[id].version)
 		{

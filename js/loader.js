@@ -13,7 +13,7 @@ function loader()
 	this.url = null;
 	
 	this.data = null;
-	this.extra = [];
+	this.extra = {};
 	
 	this.id = null;
 }
@@ -144,18 +144,28 @@ function checkFail()
 			log(i, load[i].type, load[i].url);
 }
 
+function clickLoad()
+{
+	log('load!!');
+	for(i in load)
+		if(load[i].type == "audio")
+			load[i].data.load();
+}
+
 function showLoader(percent)
 {
 	if(!$('progress').length)
 	{
 		$('<progress/>', {value : 0, max : 100}).appendTo(document.body);
 		$('<div/>').appendTo(document.body);
+		$('body').bind('click', clickLoad);
 	}
 	$('progress').attr('value', percent);
 }
 
 function endLoader()
 {
+	$('body').unbind('click', clickLoad);
 	$('progress + img').remove();
 	$('progress').remove();
 	loaded();
