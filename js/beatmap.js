@@ -384,10 +384,14 @@ BeatMap.prototype.checkSlide = function(e)
 	mouseY = mouseY / this.hs;
 	
 	for(key in this.hc)
-		if(this.hc[key].Type == "slider" && this.hc[key].checkSlide(mouseX, mouseY))
+		if(this.hc[key].Type == "slider")
 		{
-			this.hc[key].slidePoints.push([mouseX, mouseY]);
-			break;
+			if(!this.hc[key].slidePoints.length || distancePoints(this.hc[key].slidePoints.slice(-1)[0], [mouseX, mouseY]) > 3)
+				if(this.hc[key].checkSlide(mouseX, mouseY))
+				{
+					this.hc[key].slidePoints.push([mouseX, mouseY]);
+					break;
+				}
 		}
 	
 	e.preventDefault();

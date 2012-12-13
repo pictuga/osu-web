@@ -1,14 +1,21 @@
+function isPointInCircle(point, center, radius)
+{
+	return distancePoints(point, center) <= radius;
+}
+
+function distancePoints(p1, p2)
+{
+	var x = (p1[0]-p2[0]);
+	var y = (p1[1]-p2[1]);
+	return Math.sqrt(x*x+ y*y);
+}
+
 function distanceFromPoints(array)
 {
 	var distance = 0;
 	
 	for(i = 1; i <= array.length - 1; i++)
-	{
-		var x = (array[i][0]-array[i-1][0]);
-		var y = (array[i][1]-array[i-1][1]);
-		
-		distance += (Math.sqrt(x*x+y*y));
-	}
+		distance += distancePoints(array[i], array[i-1]);
 	
 	return distance;
 }

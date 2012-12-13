@@ -20,6 +20,8 @@ function hitCircle(id, prev, input)//class
 	
 	this.x		= this.input[0];
 	this.y		= this.input[1];
+	
+	this.point	= [this.x, this.y];
 
 	this.time	= this.input[2];
 	this.type	= this.input[3];
@@ -507,11 +509,7 @@ hitCircle.prototype.calcPoints = function()
 
 hitCircle.prototype.checkHit = function(mouseX, mouseY)
 {
-	var radius = circleSize * 1.25;
-	
-	ctx.beginPath();
-	ctx.circle(this.x, this.y, radius);
-	this.clic = ctx.isPointInPath(mouseX, mouseY);
+	this.clic = isPointInCircle([mouseX, mouseY], this.point, circleSize);
 	
 	if(this.clic)
 	{
@@ -528,16 +526,10 @@ hitCircle.prototype.checkSlide = function(mouseX, mouseY)
 {
 	if(time <= this.time)
 	{
-		var radius = circleSize * 1.25;
-	
-		ctx.beginPath();
-		ctx.circle(this.x, this.y, radius);
-		return ctx.isPointInPath(mouseX, mouseY);
+		return isPointInCircle([mouseX, mouseY], this.point, circleSize);
 	}
 	else
 	{
-		var radius = circleSize * 1.25;
-	
 		if(isIn(time, this.time-1500, this.endTime))
 		{
 			var progress = ( ( time - this.time ) - ( this.t * (this.repeat-1) ) ) / this.t;
@@ -550,9 +542,7 @@ hitCircle.prototype.checkSlide = function(mouseX, mouseY)
 			
 			if(!isNaN(at[0]) && !isNaN(at[1]))
 			{
-				ctx.beginPath();
-				ctx.circle(at[0], at[1], radius);
-				return ctx.isPointInPath(mouseX, mouseY);
+				return isPointInCircle([mouseX, mouseY], [at[0], at[1]], circleSize);
 			}
 			else return false;
 		}
