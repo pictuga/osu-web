@@ -258,7 +258,7 @@ html.scroll body
 	overflow:hidden;
 }
 
-#slider .diapo
+#slider #mask > div
 {
 	display : inline;
 	width : 25%;
