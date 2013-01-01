@@ -258,6 +258,13 @@ var tps = 0;
 var time, ctx, w, h, circleSize;
 BeatMap.prototype.update = function()
 {
+	//double buffer
+	
+	var oldCtx = this.ctx;
+	this.ctx = $('<canvas/>').attr({width: this.WW, height: this.HH}).get(0).getContext('2d');
+	
+	//actual update
+	
 	this.ctx.clear();
 	if(this.paused) return;
 	
@@ -296,6 +303,12 @@ BeatMap.prototype.update = function()
 	
 	this.drawInfo('FPS ⋅ ' + Math.floor(1000 / Math.abs(new Date().getMilliseconds() - tps)));
 	tps = new Date().getMilliseconds();
+	
+	//swap buffers
+	
+	oldCtx.clear();
+	oldCtx.drawImage(this.ctx.canvas, 0, 0);
+	this.ctx = oldCtx;
 }
 
 BeatMap.prototype.checkHit = function(e)
@@ -574,7 +587,7 @@ BeatMap.prototype.resize = function()
 	}
 	else	this.ratio = false;
 	
-	$(this.canvas).attr("width",		this.WW);
+	$(this.canvas).attr("width",	this.WW);
 	$(this.canvas).attr("height",	this.HH);
 	
 	this.pause();
