@@ -15,10 +15,16 @@ function connect()
 		curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 5);
 		$file_contents = curl_exec($ch);
 		curl_close($ch);
-	
-		preg_match_all('#name="sid" value="(\w+?)" />#', $file_contents, $match_array);
-		$sid = $match_array[1][0];
-	
+		
+		$dom = new DOMDocument();
+		@$dom->loadHTML($file_contents);
+		$xpath = new DOMXPath($dom);
+		
+		if($xpath->query("//input[@name='sid']")->length == 0)
+			return true;
+		
+		$sid = $xpath->query("//input[@name='sid']")->item(0)->getAttribute('value');
+		
 	//on se connecte
 		$url = $root . '/forum/ucp.php?mode=login';
 
@@ -113,8 +119,10 @@ function downloadOSZ($id)
 			
 			else
 			{
-				preg_match_all("#<span id='seconds'>(\d+)</span>#", $file_contents, $wait_array);
-				return $wait_array[1][0];
+				$dom = new DOMDocument();
+				@$dom->loadHTML($content);
+				$time = $dom->getElementById('seconds')->nodeValue;
+				return $time;
 			}
 		}
 		
