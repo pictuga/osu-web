@@ -200,7 +200,7 @@ function downloadOSU($id)
 function unzip($file, $dest)
 {
 	$zip = new ZipArchive;
-	if ($zip->open($dest) === true)
+	if ($zip->open($file) === true)
 	{
 		$zip->extractTo($dest);
 		$zip->close();
