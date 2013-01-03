@@ -101,29 +101,19 @@ function downloadOSZ($id)
 		
 		$ch = curl_init();
 		curl_setopt ($ch, CURLOPT_URL, $url);
-		//curl_setopt ($ch, CURLOPT_HEADER, 1);
 		curl_setopt ($ch, CURLOPT_COOKIEFILE, $ckfile);
 		curl_setopt ($ch, CURLOPT_COOKIEJAR, $ckfile);
 		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt ($ch, CURLOPT_HEADER, true);
 		curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 5);
-		$file_contents = curl_exec($ch);
-		$file_errors   = curl_error($ch);
-		$file_headers  = curl_getinfo($ch);
+		$content = curl_exec($ch);
+		$header  = curl_getinfo($ch);
 		curl_close($ch);
 		
-		/*echo '<pre>';
-		print_r($file_headers);
-		print_r($file_errors);
-		echo '</pre>';*/
-		
-		list($header, $file_contents) = explode("\r\n\r\n", $file_contents, 2);
-		
-		if($file_headers['http_code'] == 200)
+		if($header['http_code'] == 200)
 		{
-			if($file_headers['content_type'] == 'application/download')
+			if($header['content_type'] == 'application/download')
 			{
-				file_put_contents($dest_file, $file_contents);
+				file_put_contents($dest_file, $content);
 				return true;
 			}
 			
@@ -135,12 +125,9 @@ function downloadOSZ($id)
 				return $time;
 			}
 		}
-		
-		elseif($file_headers['http_code'] == 302)
+		elseif($header['http_code'] == 302)
 		{
-			preg_match('/(Location:|URI:)(.*?)\n/', $header, $matches);
-			$url = trim(array_pop($matches));
-			//$url_parsed = parse_url($url);
+			$url = $header['redirect_url'];
 			
 			//on dl le zip
 				$ch = curl_init();
