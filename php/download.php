@@ -97,8 +97,6 @@ function downloadOSZ($id)
 	//on dl la 1° beatmap
 		$url = $root . "/d/" . $id;
 		
-		//echo $url;
-		
 		$ch = curl_init();
 		curl_setopt ($ch, CURLOPT_URL, $url);
 		curl_setopt ($ch, CURLOPT_COOKIEFILE, $ckfile);
