@@ -78,6 +78,14 @@ function listRanked()
 	return $return;
 }
 
+function getOSZ($id)
+{
+	$osz = downloadOSZ($id);
+	if($osz === true)
+		unzip(ROOT . '/ddl/' . $id . '.osz', ROOT . '/ddl/' . $id . '/');
+	else	echo $osz . 'sec';
+}
+
 function downloadOSZ($id)
 {
 	$root =  "http://osu.ppy.sh";
