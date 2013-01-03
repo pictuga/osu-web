@@ -1,4 +1,6 @@
 <?php
+define('ROOT', $_SERVER['DOCUMENT_ROOT']);
+
 function connect()
 {
 	$root =  "http://osu.ppy.sh";
@@ -90,7 +92,7 @@ function downloadOSZ($id)
 {
 	$root =  "http://osu.ppy.sh";
 	$ckfile = "cookie_osu";
-	$dest_file = $_SERVER['DOCUMENT_ROOT'] . '/latest.osz';
+	$dest_file = ROOT . '/ddl/' . $id . '.osz';
 
 	//on dl la 1° beatmap
 		$url = $root . "/d/" . $id;
