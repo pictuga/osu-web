@@ -45,7 +45,7 @@ function parseOSU(osu_file)
 {
 	var return_array = {};
 
-	var cat = osu_file.replace(/(^\s+|\s+$)/g, '').split("\n\n");
+	var cat = osu_file.replace(/(^\s+|\s+$)/g, '').replace(/\n\n\n+/g, "\n\n").split("\n\n");
 
 	//parse
 	for(i in cat)//chaque catégorie
