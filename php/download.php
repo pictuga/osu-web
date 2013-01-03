@@ -180,4 +180,19 @@ function downloadOSU($id)
 	
 		return $osu_file;
 }
+
+function unzip($file, $dest)
+{
+	$zip = new ZipArchive;
+	if ($zip->open($dest) === true)
+	{
+		$zip->extractTo($dest);
+		$zip->close();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 ?>
