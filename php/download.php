@@ -5,7 +5,7 @@ function connect()
 	$ckfile = "cookie_osu";
 
 	//on récupère le sid sur la page d'accueil
-		$url = $root;
+		$url = $root . '/forum/ucp.php?mode=login';
 	
 		$ch = curl_init();
 		curl_setopt ($ch, CURLOPT_URL, $url);
