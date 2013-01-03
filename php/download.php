@@ -1,6 +1,9 @@
 <?php
+header('Content-Type: text/plain');
 define('ROOT', $_SERVER['DOCUMENT_ROOT']);
 
+connect();
+getOSZ(45853);
 function connect()
 {
 	$root =  "http://osu.ppy.sh";
