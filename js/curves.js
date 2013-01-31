@@ -12,8 +12,13 @@ function factorial(n)
 
 function Cpn(p, n)
 {
-	p = parseInt(p), n = parseInt(n);
-	return Math.round( factorial(n) / ( factorial(p) * factorial(n-p) ) );
+	if(p < 0 || p > n)
+		return 0;
+	var p = Math.min(p, n-p);
+	var out = 1;
+	for(var i = 1; i < p+1; i++)
+		out = out * (n - p + i) / i;
+	return out;
 }
 
 function array_values(array)
