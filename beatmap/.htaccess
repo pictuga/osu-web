@@ -1,0 +1,4 @@
+<Files ~ "\.(php|php3|php4|php5|phtml)$">
+	Deny from all
+	ErrorDocument 403 "php disabled for security
+</Files>
