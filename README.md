@@ -25,7 +25,7 @@ The project tries to remain as simple as possible, with no server side, wich tur
 
 ##Configuration
 
-Various paths can be changed in js/main.js
+Various paths can be changed in `js/main.js`
 
 ##Usage
 
